@@ -1,4 +1,4 @@
-Membros Partincipes do projeto:
+Membros Participes do projeto:
 
 -Arthur Cesar
 -Felipe Nere
