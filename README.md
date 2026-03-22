@@ -1,3 +1,11 @@
+Membros Partincipes do projeto:
+
+-Arthur Cesar
+-Felipe Nere
+-Gabriel Vieira
+-Pedro Henrique Brandão
+-Vinicius Fernandes
+
 No primeiro momento sem ter muita ciência das condições do terreno do cliente, consideramos trabalhar em cima dos seguintes pontos:
 
 -Duas portarias
