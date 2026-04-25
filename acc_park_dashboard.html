@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ACC Park — Dashboard</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f6f8;}
+.layout{display:flex;height:100vh;overflow:hidden;}
+.sidebar{width:220px;background:#4A9FE0;display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo{background:#fff;padding:16px;display:flex;flex-direction:column;gap:6px;}
+.logo-a{font-size:14px;font-weight:600;color:#a100ff;display:flex;align-items:center;gap:5px;}
+.logo-v{font-size:13px;font-weight:600;color:#d04baf;display:flex;align-items:center;gap:6px;}
+.logo-sub{font-size:10px;color:#666;}
+.sb-title{padding:16px 16px 4px;color:#fff;font-size:16px;font-weight:600;font-style:italic;}
+.sb-greet{padding:2px 16px 14px;color:#c8e6f8;font-size:12px;font-style:italic;}
+.sb-nav{padding:6px 8px;flex:1;display:flex;flex-direction:column;gap:2px;}
+.ni{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;cursor:pointer;color:#cce6f7;font-size:12px;transition:background 0.15s;}
+.ni:hover{background:rgba(255,255,255,0.15);}
+.ni.active{background:rgba(255,255,255,0.22);color:#fff;font-weight:600;}
+.nic{width:15px;height:15px;flex-shrink:0;}
+.sb-footer{padding:11px 14px;border-top:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;gap:8px;}
+.av{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;flex-shrink:0;}
+.av-n{font-size:12px;color:#fff;font-weight:600;}
+.av-r{font-size:10px;color:#b8dcf0;}
+.main{flex:1;background:#fff;display:flex;flex-direction:column;overflow:hidden;min-width:0;}
+.topbar{padding:13px 18px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:#fff;}
+.topbar h1{font-size:14px;font-weight:600;color:#111;}
+.tb-r{display:flex;gap:7px;align-items:center;}
+.bdg{font-size:11px;padding:3px 9px;border-radius:20px;background:#E6F1FB;color:#185FA5;font-weight:500;}
+.btn-bl{font-size:11px;padding:6px 13px;border-radius:8px;border:none;background:#4A9FE0;color:#fff;cursor:pointer;font-weight:600;}
+.content{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.page{display:none;flex-direction:column;flex:1;overflow:hidden;}
+.page.active{display:flex;}
+
+/* DASHBOARD */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 16px 0;flex-shrink:0;}
+.sc{background:#f9fafb;border-radius:8px;padding:11px 13px;border:1px solid #e5e7eb;}
+.sc-lbl{font-size:10px;color:#6b7280;margin-bottom:3px;}
+.sc-val{font-size:22px;font-weight:700;color:#111;}
+.sc-sub{font-size:10px;margin-top:2px;}
+.g{color:#3B6D11;}.r{color:#A32D2D;}
+.tbl-wrap{margin:10px 16px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;flex:1;overflow-y:auto;}
+.th{display:grid;grid-template-columns:1.2fr 1fr 1fr 0.8fr 0.7fr;padding:7px 11px;background:#f9fafb;font-size:10px;font-weight:600;color:#6b7280;gap:6px;position:sticky;top:0;border-bottom:1px solid #e5e7eb;}
+.tr{display:grid;grid-template-columns:1.2fr 1fr 1fr 0.8fr 0.7fr;padding:8px 11px;border-top:1px solid #f3f4f6;font-size:11px;color:#111;gap:6px;align-items:center;}
+.tr:hover{background:#fafafa;}
+.pl{font-family:'Courier New',monospace;font-size:11px;font-weight:700;background:#f3f4f6;padding:2px 6px;border-radius:4px;border:1px solid #e5e7eb;}
+.pill{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.pi{background:#EAF3DE;color:#3B6D11;}.po{background:#FCEBEB;color:#A32D2D;}
+.ab{font-size:10px;padding:3px 8px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#111;cursor:pointer;}
+.ab:hover{background:#f3f4f6;}
+
+/* ENTRADA */
+.form-wrap{padding:16px;flex:1;overflow-y:auto;background:#f9fafb;}
+.form-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:18px;max-width:540px;}
+.fc-title{font-size:14px;font-weight:600;color:#111;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #e5e7eb;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px;}
+.form-row.full{grid-template-columns:1fr;}
+.fld{display:flex;flex-direction:column;gap:4px;}
+.fld label{font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+.fld input,.fld select{font-size:12px;padding:8px 10px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;outline:none;width:100%;transition:border 0.15s;}
+.fld input:focus,.fld select:focus{border-color:#4A9FE0;box-shadow:0 0 0 3px rgba(74,159,224,0.12);}
+.fld input::placeholder{color:#9ca3af;}
+.plate-input{font-family:'Courier New',monospace;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:3px;}
+.form-footer{display:flex;gap:9px;margin-top:16px;padding-top:14px;border-top:1px solid #e5e7eb;}
+.btn-sec{font-size:11px;padding:8px 15px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;}
+.btn-prim{font-size:11px;padding:8px 18px;border-radius:8px;border:none;background:#4A9FE0;color:#fff;cursor:pointer;font-weight:600;}
+.swatch-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:3px;}
+.sw{width:24px;height:24px;border-radius:5px;cursor:pointer;border:3px solid transparent;transition:border-color 0.15s;}
+.sw.sel,.sw:hover{border-color:#BA7517;}
+.success-box{background:#EAF3DE;border:1px solid #97C459;border-radius:8px;padding:11px 13px;font-size:12px;color:#3B6D11;margin-bottom:13px;display:none;}
+.vaga-badge{background:#E6F1FB;color:#185FA5;font-size:12px;font-weight:600;padding:5px 11px;border-radius:6px;display:inline-block;}
+
+/* MAPA */
+.map-tb{padding:10px 16px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:11px;flex-shrink:0;flex-wrap:wrap;background:#fff;}
+.mst{display:flex;gap:12px;}
+.ms{display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280;}
+.dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}
+.df{background:#639922;}.do{background:#E24B4A;}.dr{background:#378ADD;}
+.ms-n{font-weight:600;color:#111;}
+.flt-g{display:flex;gap:5px;margin-left:auto;}
+.flt{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid #d1d5db;background:#fff;color:#6b7280;cursor:pointer;transition:all 0.15s;}
+.flt.on{background:#4A9FE0;color:#fff;border-color:#4A9FE0;}
+.map-body{flex:1;display:flex;overflow:hidden;min-height:0;}
+.map-scroll{flex:1;overflow-y:auto;padding:10px 14px;background:#f4f6f8;}
+.sec-lbl{font-size:10px;font-weight:600;color:#6b7280;margin:8px 0 4px;text-transform:uppercase;letter-spacing:0.4px;}
+.sec-lbl:first-child{margin-top:0;}
+.road{height:6px;background:#d1d5db;border-radius:2px;margin:3px 0;}
+.spots{display:flex;flex-wrap:wrap;gap:2px;}
+.sp{width:8px;height:13px;border-radius:1px;cursor:pointer;transition:opacity 0.1s;}
+.sp:hover{opacity:0.7;}
+.sp.f{background:#639922;}.sp.o{background:#E24B4A;}.sp.r{background:#378ADD;}
+.sp.sel{outline:2px solid #BA7517;outline-offset:1px;}
+.dp{width:190px;border-left:1px solid #e5e7eb;background:#fff;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.dp-hd{padding:12px 13px;border-bottom:1px solid #e5e7eb;}
+.dp-t{font-size:12px;font-weight:600;color:#111;}
+.dp-s{font-size:10px;color:#6b7280;margin-top:2px;}
+.dp-bd{padding:12px 13px;flex:1;}
+.dp-mt{font-size:11px;color:#9ca3af;text-align:center;margin-top:24px;line-height:1.6;}
+.dpf{margin-bottom:10px;}
+.dpk{font-size:10px;color:#6b7280;margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.3px;}
+.dpv{font-size:12px;font-weight:500;color:#111;}
+.dp-pl{font-family:'Courier New',monospace;font-size:13px;font-weight:700;background:#f3f4f6;padding:3px 8px;border-radius:4px;border:1px solid #e5e7eb;display:inline-block;}
+.csw{width:14px;height:14px;border-radius:3px;border:1px solid #e5e7eb;display:inline-block;vertical-align:middle;margin-right:5px;}
+.dps{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;display:inline-block;}
+.sf{background:#EAF3DE;color:#3B6D11;}.so{background:#FCEBEB;color:#A32D2D;}.sr{background:#E6F1FB;color:#185FA5;}
+.prog-b{height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden;margin-top:6px;}
+.prog-f{height:100%;border-radius:3px;background:#E24B4A;}
+
+/* HISTÓRICO */
+.hist-toolbar{padding:10px 16px;border-bottom:1px solid #e5e7eb;display:flex;gap:9px;align-items:center;flex-shrink:0;background:#fff;}
+.hist-toolbar input,.hist-toolbar select{font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;}
+.hist-toolbar input{width:190px;}
+.ht-stat{margin-left:auto;font-size:11px;color:#6b7280;}
+.hist-tbl{margin:10px 16px 16px;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;flex:1;overflow-y:auto;}
+.hth{display:grid;grid-template-columns:0.9fr 1.1fr 0.8fr 0.7fr 0.7fr 0.7fr;padding:7px 11px;background:#f9fafb;font-size:10px;font-weight:600;color:#6b7280;gap:5px;position:sticky;top:0;border-bottom:1px solid #e5e7eb;}
+.htr{display:grid;grid-template-columns:0.9fr 1.1fr 0.8fr 0.7fr 0.7fr 0.7fr;padding:8px 11px;border-top:1px solid #f3f4f6;font-size:11px;color:#111;gap:5px;align-items:center;}
+.htr:hover{background:#fafafa;}
+.te{background:#EAF3DE;color:#3B6D11;}.ts2{background:#E6F1FB;color:#185FA5;}
+
+/* USUÁRIOS */
+.usr-toolbar{padding:10px 16px;border-bottom:1px solid #e5e7eb;display:flex;gap:9px;align-items:center;flex-shrink:0;background:#fff;}
+.usr-toolbar input,.usr-toolbar select{font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #d1d5db;background:#fff;color:#111;}
+.usr-toolbar input{width:190px;}
+.usr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 16px;overflow-y:auto;flex:1;background:#f9fafb;}
+.uc{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:13px;transition:box-shadow 0.15s;}
+.uc:hover{box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.uc-top{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
+.uav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.uc-name{font-size:12px;font-weight:600;color:#111;}
+.uc-role{font-size:10px;color:#6b7280;}
+.uc-info{display:flex;flex-direction:column;gap:5px;border-top:1px solid #f3f4f6;padding-top:9px;}
+.ui-row{display:flex;justify-content:space-between;font-size:10px;}
+.ui-k{color:#6b7280;}.ui-v{color:#111;font-weight:500;}
+.role-pill{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.rp-op{background:#EAF3DE;color:#3B6D11;}.rp-ad{background:#E6F1FB;color:#185FA5;}.rp-sup{background:#FAEEDA;color:#633806;}
+.uc-footer{margin-top:9px;display:flex;gap:6px;}
+.uf-btn{flex:1;font-size:10px;padding:5px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#374151;cursor:pointer;}
+.uf-btn:hover{background:#f3f4f6;}
+.uf-btn.danger{border-color:#F09595;color:#A32D2D;}
+.uf-btn.danger:hover{background:#FCEBEB;}
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="sidebar">
+    <div class="sb-logo">
+      <div class="logo-a">
+        <svg width="13" height="13" viewBox="0 0 14 14"><polygon points="7,1 13,7 7,13 1,7" fill="#a100ff"/></svg>
+        accenture
+      </div>
+      <div class="logo-v">
+        <svg width="14" height="14" viewBox="0 0 20 20"><rect x="2" y="6" width="7" height="7" rx="2" fill="#F5A623" opacity="0.85"/><rect x="11" y="6" width="7" height="7" rx="2" fill="#d04baf" opacity="0.85"/></svg>
+        avanade
+      </div>
+      <span class="logo-sub">Local Technology Services</span>
+    </div>
+    <div class="sb-title">ACC Park</div>
+    <div class="sb-greet">Olá, João Silva!</div>
+    <nav class="sb-nav">
+      <div class="ni active" onclick="goPage('dashboard',this)">
+        <svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>
+        Dashboard
+      </div>
+      <div class="ni" onclick="goPage('entrada',this)">
+        <svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>
+        Entrada de Veículos
+      </div>
+      <div class="ni" onclick="goPage('mapa',this)">
+        <svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>
+        Mapa de Vagas
+      </div>
+      <div class="ni" onclick="goPage('hist',this)">
+        <svg class="nic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Histórico
+      </div>
+      <div class="ni" onclick="goPage('usuarios',this)">
+        <svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 14c0-2.2 2.7-4 6-4s6 1.8 6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Usuários
+      </div>
+    </nav>
+    <div class="sb-footer">
+      <div class="av">JS</div>
+      <div><div class="av-n">João Silva</div><div class="av-r">Operador</div></div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard — Entrada e Saída</h1>
+      <div class="tb-r">
+        <span class="bdg">25 abr 2026</span>
+        <button class="btn-bl" onclick="goPage('entrada', document.querySelectorAll('.ni')[1])">+ Registrar entrada</button>
+      </div>
+    </div>
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats">
+          <div class="sc"><div class="sc-lbl">Veículos no pátio</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
+          <div class="sc"><div class="sc-lbl">Vagas disponíveis</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
+          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val">61</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
+          <div class="sc"><div class="sc-lbl">Saídas hoje</div><div class="sc-val">57</div><div class="sc-sub" style="color:#6b7280">Última: 14:22</div></div>
+        </div>
+        <div class="tbl-wrap">
+          <div class="th"><span>Placa</span><span>Proprietário</span><span>Entrada</span><span>Status</span><span>Ação</span></div>
+          <div class="tr"><span><span class="pl">BRA2E19</span></span><span>Carlos Mendes</span><span>08:14</span><span><span class="pill pi">No pátio</span></span><button class="ab">Saída</button></div>
+          <div class="tr"><span><span class="pl">GHT5F32</span></span><span>Ana Ribeiro</span><span>09:47</span><span><span class="pill pi">No pátio</span></span><button class="ab">Saída</button></div>
+          <div class="tr"><span><span class="pl">MNK1A08</span></span><span>Pedro Costa</span><span>11:03</span><span><span class="pill pi">No pátio</span></span><button class="ab">Saída</button></div>
+          <div class="tr" style="opacity:0.5"><span><span class="pl">JJP3C77</span></span><span>Fernanda Lima</span><span>13:30</span><span><span class="pill po">Saiu</span></span><button class="ab" disabled>—</button></div>
+          <div class="tr"><span><span class="pl">QWE3T45</span></span><span>Marcos Souza</span><span>14:05</span><span><span class="pill pi">No pátio</span></span><button class="ab">Saída</button></div>
+        </div>
+      </div>
+
+      <!-- ENTRADA DE VEÍCULOS -->
+      <div class="page" id="page-entrada">
+        <div class="form-wrap">
+          <div class="form-card">
+            <div class="fc-title">Registrar entrada de veículo</div>
+            <div id="suc-box" class="success-box"></div>
+            <div class="form-row">
+              <div class="fld"><label>Placa *</label><input class="plate-input" id="f-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
+              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="vaga-num">A-247</span><button class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga()">Sortear</button></div></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label>Proprietário *</label><input id="f-nome" placeholder="Nome completo"/></div>
+              <div class="fld"><label>Documento (CPF/RG)</label><input id="f-doc" placeholder="000.000.000-00"/></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label>Marca *</label>
+                <select id="f-marca"><option value="">Selecione…</option><option>Toyota</option><option>Volkswagen</option><option>Chevrolet</option><option>Hyundai</option><option>Fiat</option><option>Jeep</option><option>Honda</option><option>Renault</option><option>Ford</option><option>BMW</option><option>Mercedes-Benz</option><option>Outro</option></select>
+              </div>
+              <div class="fld"><label>Modelo *</label><input id="f-modelo" placeholder="Ex: Corolla"/></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label>Cor *</label>
+                <div class="swatch-row" id="swatch-row"></div>
+                <input id="f-cor" placeholder="Selecione uma cor acima" readonly style="margin-top:6px;font-size:11px;"/>
+              </div>
+              <div class="fld"><label>Tipo de veículo</label>
+                <select id="f-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select>
+              </div>
+            </div>
+            <div class="form-row full">
+              <div class="fld"><label>Observações</label><input id="f-obs" placeholder="Ex: veículo com dano na lateral…"/></div>
+            </div>
+            <div class="form-footer">
+              <button class="btn-sec" onclick="limparForm()">Limpar</button>
+              <button class="btn-prim" onclick="registrarEntrada()">Confirmar entrada</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAPA DE VAGAS -->
+      <div class="page" id="page-mapa">
+        <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+          <div class="map-tb">
+            <div class="mst">
+              <div class="ms"><span class="dot df"></span><span class="ms-n" id="m-f">—</span>&nbsp;livres</div>
+              <div class="ms"><span class="dot do"></span><span class="ms-n" id="m-o">—</span>&nbsp;ocupadas</div>
+              <div class="ms"><span class="dot dr"></span><span class="ms-n" id="m-r">—</span>&nbsp;reservadas</div>
+            </div>
+            <div class="flt-g">
+              <button class="flt on" onclick="setFlt('all',this)">Todas</button>
+              <button class="flt" onclick="setFlt('f',this)">Livres</button>
+              <button class="flt" onclick="setFlt('o',this)">Ocupadas</button>
+              <button class="flt" onclick="setFlt('r',this)">Reservadas</button>
+            </div>
+          </div>
+          <div class="map-body">
+            <div class="map-scroll" id="map-scroll"></div>
+            <div class="dp">
+              <div class="dp-hd"><div class="dp-t">Detalhes da vaga</div><div class="dp-s" id="dp-s">Nenhuma selecionada</div></div>
+              <div class="dp-bd" id="dp-bd"><div class="dp-mt">Clique em uma vaga para ver detalhes do veículo.</div></div>
+              <div style="padding:10px 13px;border-top:1px solid #e5e7eb;">
+                <div style="font-size:10px;color:#6b7280;margin-bottom:3px;">Ocupação geral</div>
+                <div style="font-size:13px;font-weight:700;color:#111;margin-bottom:4px;" id="dp-pct">—%</div>
+                <div class="prog-b"><div class="prog-f" id="dp-prog" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="page" id="page-hist">
+        <div class="hist-toolbar">
+          <input id="hist-search" placeholder="Buscar por placa ou nome…" oninput="filterHist()"/>
+          <select id="hist-filter" onchange="filterHist()">
+            <option value="all">Todos</option>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+          </select>
+          <span class="ht-stat" id="hist-count"></span>
+        </div>
+        <div class="hist-tbl">
+          <div class="hth"><span>Placa</span><span>Proprietário</span><span>Vaga</span><span>Entrada</span><span>Saída</span><span>Tipo</span></div>
+          <div id="hist-body"></div>
+        </div>
+      </div>
+
+      <!-- USUÁRIOS -->
+      <div class="page" id="page-usuarios">
+        <div class="usr-toolbar">
+          <input placeholder="Buscar usuário…" oninput="filterUsers(this.value)"/>
+          <select onchange="filterUserRole(this.value)"><option value="all">Todos os perfis</option><option value="Administrador">Administrador</option><option value="Operador">Operador</option><option value="Supervisor">Supervisor</option></select>
+          <button class="btn-bl" style="margin-left:auto;">+ Novo usuário</button>
+        </div>
+        <div class="usr-grid" id="usr-grid"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const MARCAS=[{m:'Toyota',md:['Corolla','Hilux','Yaris','SW4']},{m:'Volkswagen',md:['Gol','Polo','T-Cross','Virtus']},{m:'Chevrolet',md:['Onix','Tracker','S10','Cruze']},{m:'Hyundai',md:['HB20','Creta','Tucson','ix35']},{m:'Fiat',md:['Pulse','Strada','Toro','Argo']},{m:'Jeep',md:['Compass','Renegade','Commander']},{m:'Honda',md:['Civic','HR-V','City','Fit']},{m:'Renault',md:['Kwid','Sandero','Duster','Logan']},{m:'Ford',md:['Ranger','Territory','Ka']},{m:'BMW',md:['320i','X1','X3','118i']}];
+const CORES=[{n:'Preto',h:'#1a1a1a'},{n:'Branco',h:'#f0f0f0'},{n:'Prata',h:'#a8a8a8'},{n:'Cinza',h:'#6e6e6e'},{n:'Vermelho',h:'#c0392b'},{n:'Azul',h:'#2471a3'},{n:'Verde',h:'#1e8449'},{n:'Bege',h:'#c9a87c'},{n:'Amarelo',h:'#d4ac0d'}];
+const LETRAS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function randPlate(){let p='';for(let i=0;i<3;i++)p+=rnd(LETRAS.split(''));p+=Math.floor(Math.random()*10);p+=rnd(LETRAS.split(''));for(let i=0;i<2;i++)p+=Math.floor(Math.random()*10);return p;}
+function randTime(){const h=7+Math.floor(Math.random()*9);const min=Math.floor(Math.random()*60);return(h<10?'0':'')+h+':'+(min<10?'0':'')+min;}
+function randCar(){const mb=rnd(MARCAS);return{marca:mb.m,modelo:rnd(mb.md),placa:randPlate(),cor:rnd(CORES)};}
+
+const TOTAL=5000;
+const SECTORS=[{name:'Setor A',count:1000},{name:'Setor B',count:1000},{name:'Setor C',count:1000},{name:'Setor D',count:1000},{name:'Setor E',count:1000}];
+const states=[];
+let allSpots=[],selIdx=null,curFlt='all';
+
+for(let i=0;i<TOTAL;i++){const r=Math.random();const st=r<0.62?'o':r<0.90?'f':'r';const car=st!=='f'?randCar():null;const time=st==='o'?randTime():null;states.push({st,car,time});}
+
+function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
+
+function updateStats(){
+  const c=getCounts();
+  document.getElementById('m-f').textContent=c.f.toLocaleString('pt-BR');
+  document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');
+  document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');
+  document.getElementById('d-pat').textContent=c.o.toLocaleString('pt-BR');
+  document.getElementById('d-liv').textContent=c.f.toLocaleString('pt-BR');
+  const pct=Math.round((c.o/TOTAL)*100);
+  document.getElementById('d-pct').textContent=Math.round((c.f/TOTAL)*100)+'% livre';
+  document.getElementById('dp-pct').textContent=pct+'%';
+  document.getElementById('dp-prog').style.width=pct+'%';
+}
+
+function buildMap(){
+  const area=document.getElementById('map-scroll');
+  let gi=0;
+  SECTORS.forEach(sec=>{
+    const lbl=document.createElement('div');lbl.className='sec-lbl';lbl.textContent=sec.name+' ('+sec.count+' vagas)';area.appendChild(lbl);
+    const road=document.createElement('div');road.className='road';area.appendChild(road);
+    const grid=document.createElement('div');grid.className='spots';
+    for(let i=0;i<sec.count;i++){
+      const idx=gi++;const s=states[idx];
+      const el=document.createElement('div');el.className='sp '+s.st;
+      el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));
+      grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});
+    }
+    area.appendChild(grid);
+  });
+}
+
+function selectSpot(idx,el,secName,numVaga){
+  if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}
+  selIdx=idx;el.classList.add('sel');
+  const s=states[idx];
+  document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;
+  const body=document.getElementById('dp-bd');
+  if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:10px;">Nenhum veículo nesta vaga.</div>';}
+  else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}
+}
+
+function setFlt(f,btn){curFlt=f;document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');allSpots.forEach(({el,idx})=>{const s=states[idx];el.style.opacity=(f==='all'||s.st===f)?'1':'0.15';});}
+
+function goPage(id,navEl){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  navEl.classList.add('active');
+  const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};
+  document.getElementById('page-title').textContent=titles[id]||id;
+}
+
+// SWATCHES
+const swRow=document.getElementById('swatch-row');
+CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('.sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;};swRow.appendChild(sw);});
+
+const SETORES_LABEL=['A','B','C','D','E'];
+function sortearVaga(){const sec=rnd(SETORES_LABEL);const num=Math.floor(Math.random()*1000)+1;document.getElementById('vaga-num').textContent=sec+'-'+num;}
+
+function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.getElementById('f-tipo').selectedIndex=0;document.querySelectorAll('.sw').forEach(s=>s.style.borderColor='transparent');sortearVaga();}
+
+function registrarEntrada(){
+  const placa=document.getElementById('f-placa').value.trim();
+  const nome=document.getElementById('f-nome').value.trim();
+  const marca=document.getElementById('f-marca').value;
+  const modelo=document.getElementById('f-modelo').value.trim();
+  const cor=document.getElementById('f-cor').value;
+  const vaga=document.getElementById('vaga-num').textContent;
+  if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}
+  const box=document.getElementById('suc-box');
+  box.textContent='Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  box.style.display='block';
+  addHistEntry(placa,nome,vaga);
+  setTimeout(()=>{box.style.display='none';limparForm();},4000);
+}
+
+// HISTÓRICO
+const NOMES=['Carlos Mendes','Ana Ribeiro','Pedro Costa','Fernanda Lima','Marcos Souza','Juliana Alves','Ricardo Nunes','Beatriz Moura','Thiago Pinto','Camila Rocha','Lucas Ferreira','Patrícia Gomes','Rafael Carvalho','Simone Dias','André Matos'];
+const histData=[];
+for(let i=0;i<40;i++){const car=randCar();const sec=rnd(SETORES_LABEL);const vaga=sec+'-'+Math.floor(Math.random()*1000+1);const ent=randTime();const hasSaida=Math.random()>0.35;const saida=hasSaida?(parseInt(ent.split(':')[0])+Math.floor(Math.random()*4+1)).toString().padStart(2,'0')+':'+Math.floor(Math.random()*60).toString().padStart(2,'0'):'—';histData.push({placa:car.placa,nome:rnd(NOMES),vaga,entrada:ent,saida,tipo:hasSaida?'saida':'entrada'});}
+
+function addHistEntry(placa,nome,vaga){const t=new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0');histData.unshift({placa,nome,vaga,entrada:t,saida:'—',tipo:'entrada'});filterHist();}
+
+function renderHist(data){const body=document.getElementById('hist-body');body.innerHTML='';data.forEach(h=>{const row=document.createElement('div');row.className='htr';row.innerHTML=`<span><span class="pl">${h.placa}</span></span><span>${h.nome}</span><span>${h.vaga}</span><span>${h.entrada}</span><span>${h.saida}</span><span><span class="pill ${h.tipo==='entrada'?'te':'ts2'}">${h.tipo==='entrada'?'Entrada':'Saída'}</span></span>`;body.appendChild(row);});document.getElementById('hist-count').textContent=data.length+' registros';}
+
+function filterHist(){const q=document.getElementById('hist-search').value.toLowerCase();const f=document.getElementById('hist-filter').value;renderHist(histData.filter(h=>(h.placa.toLowerCase().includes(q)||h.nome.toLowerCase().includes(q))&&(f==='all'||h.tipo===f)));}
+
+// USUÁRIOS
+const USERS=[{nome:'João Silva',iniciais:'JS',role:'Operador',email:'joao.silva@avanade.com',registros:61,ativo:true,cor:'#2471a3'},{nome:'Fernanda Lima',iniciais:'FL',role:'Supervisor',email:'f.lima@avanade.com',registros:142,ativo:true,cor:'#d04baf'},{nome:'Carlos Mendes',iniciais:'CM',role:'Operador',email:'c.mendes@avanade.com',registros:38,ativo:true,cor:'#1e8449'},{nome:'Ana Beatriz',iniciais:'AB',role:'Administrador',email:'ana.b@accenture.com',registros:210,ativo:true,cor:'#a100ff'},{nome:'Thiago Pinto',iniciais:'TP',role:'Operador',email:'t.pinto@avanade.com',registros:19,ativo:false,cor:'#c0392b'},{nome:'Mariana Costa',iniciais:'MC',role:'Supervisor',email:'m.costa@avanade.com',registros:87,ativo:true,cor:'#BA7517'}];
+
+function roleClass(r){return r==='Administrador'?'rp-ad':r==='Supervisor'?'rp-sup':'rp-op';}
+
+function renderUsers(data){const grid=document.getElementById('usr-grid');grid.innerHTML='';data.forEach(u=>{const card=document.createElement('div');card.className='uc';card.innerHTML=`<div class="uc-top"><div class="uav" style="background:${u.cor}22;color:${u.cor}">${u.iniciais}</div><div><div class="uc-name">${u.nome}</div><div class="uc-role">${u.email}</div></div></div><div class="uc-info"><div class="ui-row"><span class="ui-k">Perfil</span><span class="ui-v"><span class="role-pill ${roleClass(u.role)}">${u.role}</span></span></div><div class="ui-row"><span class="ui-k">Registros</span><span class="ui-v">${u.registros}</span></div><div class="ui-row"><span class="ui-k">Status</span><span class="ui-v" style="color:${u.ativo?'#3B6D11':'#A32D2D'}">${u.ativo?'Ativo':'Inativo'}</span></div></div><div class="uc-footer"><button class="uf-btn">Editar</button><button class="uf-btn danger">Desativar</button></div>`;grid.appendChild(card);});}
+
+function filterUsers(q){renderUsers(q?USERS.filter(u=>u.nome.toLowerCase().includes(q.toLowerCase())||u.email.toLowerCase().includes(q.toLowerCase())):USERS);}
+function filterUserRole(r){renderUsers(r==='all'?USERS:USERS.filter(u=>u.role===r));}
+
+buildMap();
+updateStats();
+renderHist(histData);
+renderUsers(USERS);
+sortearVaga();
+</script>
+</body>
+</html>
