@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Pagamento com Cartão</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 540px;
+      padding: 24px 32px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* Header */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-flag { display: flex; flex-direction: column; gap: 2px; }
+    .brand-flag span { display: block; width: 14px; height: 3px; border-radius: 1px; }
+    .brand-flag span:nth-child(1) { background: #2563eb; }
+    .brand-flag span:nth-child(2) { background: #16a34a; }
+    .brand-flag span:nth-child(3) { background: #eab308; }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    /* Card illustration */
+    .card-illustration {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 16px 0 24px;
+      position: relative;
+      height: 110px;
+    }
+
+    .card-back {
+      width: 140px;
+      height: 90px;
+      background: #1a1a2e;
+      border-radius: 12px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-60%) rotate(-6deg);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .card-front {
+      width: 145px;
+      height: 92px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-radius: 12px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-40%) rotate(4deg);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.35);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-front .chip {
+      width: 22px;
+      height: 16px;
+      background: #eab308;
+      border-radius: 3px;
+    }
+
+    .card-front .card-number {
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 1.5px;
+      font-family: monospace;
+    }
+
+    /* Options */
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 24px;
+    }
+
+    .option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .option-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .option-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: #374151;
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Header -->
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-flag">
+        <span></span><span></span><span></span>
+      </div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:30
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="eyebrow">Escolha de pagamento</div>
+    <h1>Pagamento com cartão</h1>
+    <p>Aproxime, insira ou deslize seu cartão</p>
+  </div>
+
+  <!-- Card Illustration -->
+  <div class="card-illustration">
+    <div class="card-back"></div>
+    <div class="card-front">
+      <div class="chip"></div>
+      <div class="card-number">•••• •••• •••• 1234</div>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="options">
+    <div class="option">
+      <div class="option-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="8" height="8" rx="1"/>
+          <rect x="13" y="3" width="8" height="8" rx="1"/>
+          <rect x="3" y="13" width="8" height="8" rx="1"/>
+          <rect x="13" y="13" width="4" height="4" rx="0.5"/>
+          <rect x="19" y="13" width="2" height="2" rx="0.5"/>
+          <rect x="13" y="19" width="2" height="2" rx="0.5"/>
+          <rect x="17" y="17" width="4" height="4" rx="0.5"/>
+        </svg>
+      </div>
+      Aproxime (NFC)
+    </div>
+    <div class="option">
+      <div class="option-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="4" y="5" width="16" height="14" rx="2"/>
+          <rect x="7" y="9" width="4" height="5" rx="0.5" fill="#374151" stroke="none"/>
+        </svg>
+      </div>
+      Insira o chip
+    </div>
+    <div class="option">
+      <div class="option-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="7" width="20" height="10" rx="2"/>
+          <line x1="2" y1="11" x2="22" y2="11" stroke-width="2"/>
+        </svg>
+      </div>
+      Passe o cartão
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <a href="resumo.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura e criptografada
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simula aguardar o cartão e redireciona para a tela de processamento
+  document.querySelector('.card-illustration').addEventListener('click', () => {
+    window.location.href = 'processando.html';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Processando</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 480px;
+      padding: 24px 32px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border: 2px solid #2563eb;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-flag { display: flex; flex-direction: column; gap: 2px; }
+    .brand-flag span { display: block; width: 14px; height: 3px; border-radius: 1px; }
+    .brand-flag span:nth-child(1) { background: #2563eb; }
+    .brand-flag span:nth-child(2) { background: #16a34a; }
+    .brand-flag span:nth-child(3) { background: #eab308; }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    /* Spinner */
+    .spinner-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .spinner-ring {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 5px solid #e5e7eb;
+      border-top-color: #2563eb;
+      animation: spin 1s linear infinite;
+    }
+
+    .spinner-inner {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .spinner-inner svg {
+      width: 28px;
+      height: 18px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Dots */
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
+    }
+
+    .dot.active {
+      background: #2563eb;
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-flag">
+        <span></span><span></span><span></span>
+      </div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:30
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Processando pagamento</div>
+    <h1>Processando pagamento...</h1>
+    <p>Aguarde, não retire o cartão</p>
+  </div>
+
+  <div class="spinner-wrap">
+    <div class="spinner-ring"></div>
+    <div class="spinner-inner">
+      <!-- Card chip icon -->
+      <svg viewBox="0 0 44 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="28" rx="4" fill="#eab308"/>
+        <rect x="6" y="6" width="32" height="16" rx="2" fill="#d97706" opacity="0.5"/>
+        <line x1="6" y1="11" x2="38" y2="11" stroke="#d97706" stroke-width="1"/>
+        <line x1="6" y1="17" x2="38" y2="17" stroke="#d97706" stroke-width="1"/>
+        <line x1="18" y1="6" x2="18" y2="22" stroke="#d97706" stroke-width="1"/>
+        <line x1="26" y1="6" x2="26" y2="22" stroke="#d97706" stroke-width="1"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+
+  <div class="card-footer">
+    <a href="pagamento-cartao.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura e criptografada
+    </div>
+  </div>
+</div>
+
+<script>
+  // Redireciona para aprovado após 3 segundos
+  setTimeout(() => {
+    window.location.href = 'aprovado.html';
+  }, 3000);
+</script>
+
+</body>
+</html>

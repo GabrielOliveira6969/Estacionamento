@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Início</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 560px;
+      padding: 28px 32px 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    /* Header */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-flag {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-flag span {
+      display: block;
+      width: 14px;
+      height: 3px;
+      border-radius: 1px;
+    }
+    .brand-flag span:nth-child(1) { background: #2563eb; }
+    .brand-flag span:nth-child(2) { background: #16a34a; }
+    .brand-flag span:nth-child(3) { background: #eab308; }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .header-datetime svg { width: 13px; height: 13px; }
+
+    .btn-ajuda {
+      font-size: 12px;
+      color: #2563eb;
+      background: #eff6ff;
+      border: none;
+      border-radius: 20px;
+      padding: 4px 12px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    /* Payment options */
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .payment-card {
+      border-radius: 14px;
+      padding: 18px 14px 14px;
+      color: #fff;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+
+    .payment-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+    }
+
+    .payment-card.cartao { background: #2563eb; }
+    .payment-card.pix    { background: #16a34a; }
+    .payment-card.dinheiro { background: #ea8c00; }
+    .payment-card.qrcode { background: #7c3aed; }
+
+    .payment-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .payment-card p {
+      font-size: 11px;
+      opacity: 0.85;
+      margin-top: 3px;
+    }
+
+    .payment-card .arrow-btn {
+      align-self: flex-start;
+      background: rgba(255,255,255,0.25);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 14px;
+    }
+
+    .payment-card .arrow-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: #fff;
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    .footer-brands {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Header -->
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-flag">
+        <span></span><span></span><span></span>
+      </div>
+      PAGUE AQUI
+    </div>
+    <div class="header-right">
+      <div class="header-datetime">
+        <svg viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6.5"/>
+          <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+        </svg>
+        23/05/2024 · 14:15
+      </div>
+      <button class="btn-ajuda">? Precisa de ajuda?</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>Bem-vindo!</h1>
+    <p>Escolha a forma de pagamento</p>
+  </div>
+
+  <!-- Payment Grid -->
+  <div class="payment-grid">
+    <a href="pagamento-cartao.html" class="payment-card cartao">
+      <div>
+        <h3>Cartão</h3>
+        <p>Débito ou crédito</p>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+    </a>
+
+    <a href="resumo.html" class="payment-card pix">
+      <div>
+        <h3>Pix</h3>
+        <p>Pagamento instantâneo</p>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+    </a>
+
+    <a href="resumo.html" class="payment-card dinheiro">
+      <div>
+        <h3>Dinheiro</h3>
+        <p>Pagamento em espécie</p>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+    </a>
+
+    <a href="resumo.html" class="payment-card qrcode">
+      <div>
+        <h3>QR Code</h3>
+        <p>Débito contactless</p>
+      </div>
+      <div class="arrow-btn">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura
+    </div>
+    <div class="footer-brands">Visa · Master · Elo · Pix</div>
+  </div>
+</div>
+
+</body>
+</html>

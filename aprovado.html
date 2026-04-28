@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Pagamento Aprovado</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 600px;
+      padding: 24px 28px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-flag { display: flex; flex-direction: column; gap: 2px; }
+    .brand-flag span { display: block; width: 14px; height: 3px; border-radius: 1px; }
+    .brand-flag span:nth-child(1) { background: #2563eb; }
+    .brand-flag span:nth-child(2) { background: #16a34a; }
+    .brand-flag span:nth-child(3) { background: #eab308; }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* Left */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .check-circle {
+      width: 72px;
+      height: 72px;
+      background: #16a34a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      animation: pop 0.4s ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .check-circle svg {
+      width: 36px;
+      height: 36px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .left-panel h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .left-panel p {
+      font-size: 13px;
+      color: #6b7280;
+      text-align: center;
+    }
+
+    .transaction-id {
+      margin-top: 16px;
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 10px 14px;
+      width: 100%;
+    }
+
+    .transaction-id .label {
+      font-size: 11px;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 3px;
+    }
+
+    .transaction-id .id {
+      font-size: 12px;
+      color: #374151;
+      font-family: monospace;
+    }
+
+    /* Right */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .detail-box {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .detail-box h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12.5px;
+      color: #374151;
+      padding: 4px 0;
+    }
+
+    .detail-row .label { color: #6b7280; }
+    .detail-row .discount { color: #ef4444; }
+
+    .total-row {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-top: 8px;
+    }
+
+    .payment-method {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    /* Nota fiscal */
+    .nota-box {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .nota-box h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .nota-box p {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .nota-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .nota-btn {
+      flex: 1;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      color: #374151;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .nota-btn:hover, .nota-btn.selected {
+      border-color: #2563eb;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+
+    .nota-btn .icon { font-size: 18px; margin-bottom: 4px; }
+    .nota-btn .label { font-weight: 600; display: block; }
+    .nota-btn .sub { font-size: 11px; color: #9ca3af; }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #2563eb;
+    }
+
+    .btn-finalize {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-finalize:hover { background: #1d4ed8; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-flag">
+        <span></span><span></span><span></span>
+      </div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      25/05/2024 · 14:45
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <!-- Left -->
+    <div class="left-panel">
+      <div class="check-circle">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2>Pagamento aprovado!</h2>
+      <p>Seu pagamento foi realizado com sucesso.</p>
+
+      <div class="transaction-id">
+        <div class="label">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.5">
+            <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+          </svg>
+          Transação segura
+        </div>
+        <div class="id">ID: 87a1b2c-8b1c</div>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="right-panel">
+      <div class="detail-box">
+        <h3>Detalhes do pagamento</h3>
+        <div class="detail-row">
+          <span class="label">Estacionamento</span>
+          <span>Central</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Período</span>
+          <span>6h 15min</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Entrada</span>
+          <span>08:15</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Veículo</span>
+          <span>ABC-1234</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Subtotal</span>
+          <span>R$ 37,50</span>
+        </div>
+        <div class="detail-row">
+          <span class="label discount">Desconto</span>
+          <span class="discount">–R$ 2,00</span>
+        </div>
+        <div class="total-row">R$ 35,50</div>
+        <div class="payment-method">Pagamento: •••• 1234</div>
+      </div>
+
+      <div class="nota-box">
+        <h3>Deseja nota fiscal?</h3>
+        <p>Escolha como deseja receber</p>
+        <div class="nota-options">
+          <div class="nota-btn" onclick="this.classList.toggle('selected')">
+            <div class="icon">🖨️</div>
+            <span class="label">Física</span>
+            <span class="sub">Imprimir</span>
+          </div>
+          <div class="nota-btn" onclick="this.classList.toggle('selected')">
+            <div class="icon">📧</div>
+            <span class="label">Digital</span>
+            <span class="sub">E-mail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <a href="index.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura
+    </div>
+    <a href="finalizado.html" class="btn-finalize">Finalizar →</a>
+  </div>
+</div>
+
+</body>
+</html>
