@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>ACC Park — Dashboard v3</title>
 <style>
@@ -34,6 +35,9 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 .layout{display:flex;height:100vh;overflow:hidden;}
 
 .sidebar{width:220px;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo-wrap{background:var(--card-bg);padding:16px 14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
+.sb-logo-img{width:72px;height:72px;object-fit:contain;display:block;}
+.sb-logo-brand{font-size:13px;font-weight:800;color:#2563eb;letter-spacing:1px;text-transform:uppercase;}
 .sb-logo{background:var(--card-bg);padding:14px;display:flex;flex-direction:column;gap:5px;border-bottom:1px solid var(--border);}
 .logo-a{font-size:13px;font-weight:700;color:#a100ff;display:flex;align-items:center;gap:4px;}
 .logo-v{font-size:12px;font-weight:700;color:#d04baf;display:flex;align-items:center;gap:5px;}
@@ -210,9 +214,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 <div id="app">
 <div class="layout">
   <div class="sidebar">
-    <img src="/src/assets/images/logoresumida-projeto-estacionamento.png" alt="Logo" width="90" height="90"/>
-    <div class="sb-title">ACC Park</div>
-    <div class="sb-greet">Olá, Júnior!</div>
+    <div class="sb-logo-wrap">
+      <img src="/src/assets/images/logoresumida-projeto-estacionamento.png" alt="ACC Park Logo" class="sb-logo-img"/>
+      <div class="sb-logo-brand">ACC Park</div>
+    </div>
+    <div class="sb-title">Menu</div>
+    <div class="sb-greet">Olá, Júnior! 👋</div>
     <nav class="sb-nav">
       <div class="ni active" onclick="goPage('dashboard',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>Dashboard</div>
       <div class="ni" onclick="goPage('entrada',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>Entrada de Veículos</div>

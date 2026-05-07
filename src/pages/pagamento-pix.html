@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Pagamento via PIX</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 580px;
+      padding: 24px 32px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #16a34a;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #16a34a;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 5px;
+    }
+
+    .hero p {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    /* Content grid */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* QR Code panel */
+    .qr-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f0fdf4;
+      border-radius: 14px;
+      padding: 20px 16px;
+      border: 2px solid #bbf7d0;
+    }
+
+    .qr-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #16a34a;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 14px;
+    }
+
+    /* Rendered QR Code (CSS pattern) */
+    .qr-code {
+      width: 148px;
+      height: 148px;
+      position: relative;
+      margin-bottom: 14px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px;
+      box-shadow: 0 2px 12px rgba(22,163,74,0.15);
+    }
+
+    .qr-inner {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+      gap: 1px;
+    }
+
+    .qr-cell { border-radius: 1px; }
+    .qr-cell.b { background: #1a1a2e; }
+    .qr-cell.w { background: #fff; }
+
+    /* Corner markers */
+    .qr-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 3px solid #1a1a2e;
+      border-radius: 4px;
+    }
+
+    .qr-corner::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background: #1a1a2e;
+      border-radius: 2px;
+    }
+
+    .qr-corner.tl { top: 8px; left: 8px; }
+    .qr-corner.tr { top: 8px; right: 8px; }
+    .qr-corner.bl { bottom: 8px; left: 8px; }
+
+    /* PIX logo overlay */
+    .qr-pix-badge {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 32px; height: 32px;
+      background: #16a34a;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(22,163,74,0.4);
+    }
+
+    .qr-pix-badge svg {
+      width: 20px; height: 20px; fill: #fff;
+    }
+
+    .pix-amount {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 4px;
+    }
+
+    .pix-amount-label {
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Timer */
+    .pix-timer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      padding: 6px 12px;
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .pix-timer svg { width: 13px; height: 13px; stroke: #16a34a; fill: none; stroke-width: 1.5; }
+    .pix-timer span { font-size: 12px; color: #16a34a; font-weight: 600; }
+    #pix-countdown { font-size: 13px; font-weight: 800; color: #16a34a; }
+
+    /* Right panel */
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Status */
+    .status-box {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .pulse-dot {
+      width: 12px; height: 12px;
+      background: #16a34a;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      animation: pulse-green 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(22,163,74,0); }
+    }
+
+    .status-title { font-size: 13px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+    .status-sub { font-size: 12px; color: #6b7280; }
+
+    /* Steps */
+    .steps-box {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .steps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .step {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .step:last-child { margin-bottom: 0; }
+
+    .step-num {
+      width: 20px; height: 20px;
+      background: #16a34a;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text { font-size: 12px; color: #374151; line-height: 1.5; }
+    .step-text strong { color: #1a1a2e; }
+
+    /* PIX Key */
+    .pix-key-box {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+
+    .pix-key-label { font-size: 11px; color: #6b7280; margin-bottom: 5px; }
+
+    .pix-key-value {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .pix-key-text {
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1a2e;
+      background: #e8f5e9;
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid #bbf7d0;
+      flex: 1;
+    }
+
+    .btn-copy {
+      background: #16a34a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-copy:hover { background: #15803d; }
+    .btn-copy.copied { background: #6b7280; }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+      margin-top: 20px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #16a34a;
+    }
+
+    /* Confirmed state */
+    .confirmed-overlay {
+      display: none;
+      text-align: center;
+      padding: 20px 0 10px;
+    }
+
+    .confirmed-circle {
+      width: 72px; height: 72px;
+      background: #16a34a;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      animation: pop 0.4s ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0; }
+      80% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .confirmed-circle svg { width: 36px; height: 36px; stroke: #fff; fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:30
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Pagamento instantâneo</div>
+    <h1>Pague com PIX</h1>
+    <p>Escaneie o QR Code com o app do seu banco</p>
+  </div>
+
+  <div class="content-grid">
+    <!-- QR Code -->
+    <div class="qr-panel">
+      <div class="qr-label">📱 Escaneie com seu banco</div>
+
+      <div class="qr-code">
+        <!-- Corner markers -->
+        <div class="qr-corner tl"></div>
+        <div class="qr-corner tr"></div>
+        <div class="qr-corner bl"></div>
+        <!-- Random dot pattern for visual QR representation -->
+        <svg width="100%" height="100%" viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:8px;width:calc(100% - 16px);height:calc(100% - 16px);">
+          <!-- Top-left finder -->
+          <rect x="0" y="0" width="38" height="38" rx="3" fill="#1a1a2e"/>
+          <rect x="5" y="5" width="28" height="28" rx="2" fill="#fff"/>
+          <rect x="10" y="10" width="18" height="18" rx="1" fill="#1a1a2e"/>
+          <!-- Top-right finder -->
+          <rect x="94" y="0" width="38" height="38" rx="3" fill="#1a1a2e"/>
+          <rect x="99" y="5" width="28" height="28" rx="2" fill="#fff"/>
+          <rect x="104" y="10" width="18" height="18" rx="1" fill="#1a1a2e"/>
+          <!-- Bottom-left finder -->
+          <rect x="0" y="94" width="38" height="38" rx="3" fill="#1a1a2e"/>
+          <rect x="5" y="99" width="28" height="28" rx="2" fill="#fff"/>
+          <rect x="10" y="104" width="18" height="18" rx="1" fill="#1a1a2e"/>
+          <!-- Data dots (decorative pattern) -->
+          <g fill="#1a1a2e">
+            <rect x="44" y="0" width="6" height="6" rx="1"/><rect x="52" y="0" width="6" height="6" rx="1"/>
+            <rect x="68" y="0" width="6" height="6" rx="1"/><rect x="76" y="0" width="6" height="6" rx="1"/>
+            <rect x="84" y="0" width="6" height="6" rx="1"/>
+            <rect x="44" y="8" width="6" height="6" rx="1"/><rect x="60" y="8" width="6" height="6" rx="1"/>
+            <rect x="76" y="8" width="6" height="6" rx="1"/>
+            <rect x="52" y="16" width="6" height="6" rx="1"/><rect x="68" y="16" width="6" height="6" rx="1"/>
+            <rect x="84" y="16" width="6" height="6" rx="1"/>
+            <rect x="44" y="24" width="6" height="6" rx="1"/><rect x="60" y="24" width="6" height="6" rx="1"/>
+            <rect x="0" y="44" width="6" height="6" rx="1"/><rect x="16" y="44" width="6" height="6" rx="1"/>
+            <rect x="32" y="44" width="6" height="6" rx="1"/><rect x="52" y="44" width="6" height="6" rx="1"/>
+            <rect x="68" y="44" width="6" height="6" rx="1"/><rect x="84" y="44" width="6" height="6" rx="1"/>
+            <rect x="100" y="44" width="6" height="6" rx="1"/><rect x="116" y="44" width="6" height="6" rx="1"/>
+            <rect x="0" y="52" width="6" height="6" rx="1"/><rect x="24" y="52" width="6" height="6" rx="1"/>
+            <rect x="44" y="52" width="6" height="6" rx="1"/><rect x="60" y="52" width="6" height="6" rx="1"/>
+            <rect x="76" y="52" width="6" height="6" rx="1"/><rect x="92" y="52" width="6" height="6" rx="1"/>
+            <rect x="108" y="52" width="6" height="6" rx="1"/>
+            <rect x="8" y="60" width="6" height="6" rx="1"/><rect x="32" y="60" width="6" height="6" rx="1"/>
+            <rect x="52" y="60" width="6" height="6" rx="1"/><rect x="68" y="60" width="6" height="6" rx="1"/>
+            <rect x="84" y="60" width="6" height="6" rx="1"/><rect x="100" y="60" width="6" height="6" rx="1"/>
+            <rect x="116" y="60" width="6" height="6" rx="1"/>
+            <rect x="0" y="68" width="6" height="6" rx="1"/><rect x="16" y="68" width="6" height="6" rx="1"/>
+            <rect x="44" y="68" width="6" height="6" rx="1"/><rect x="60" y="68" width="6" height="6" rx="1"/>
+            <rect x="92" y="68" width="6" height="6" rx="1"/><rect x="108" y="68" width="6" height="6" rx="1"/>
+            <rect x="8" y="76" width="6" height="6" rx="1"/><rect x="24" y="76" width="6" height="6" rx="1"/>
+            <rect x="52" y="76" width="6" height="6" rx="1"/><rect x="76" y="76" width="6" height="6" rx="1"/>
+            <rect x="100" y="76" width="6" height="6" rx="1"/><rect x="116" y="76" width="6" height="6" rx="1"/>
+            <rect x="0" y="84" width="6" height="6" rx="1"/><rect x="32" y="84" width="6" height="6" rx="1"/>
+            <rect x="60" y="84" width="6" height="6" rx="1"/><rect x="84" y="84" width="6" height="6" rx="1"/>
+            <rect x="44" y="100" width="6" height="6" rx="1"/><rect x="60" y="100" width="6" height="6" rx="1"/>
+            <rect x="76" y="100" width="6" height="6" rx="1"/><rect x="100" y="100" width="6" height="6" rx="1"/>
+            <rect x="116" y="100" width="6" height="6" rx="1"/>
+            <rect x="52" y="108" width="6" height="6" rx="1"/><rect x="68" y="108" width="6" height="6" rx="1"/>
+            <rect x="84" y="108" width="6" height="6" rx="1"/><rect x="108" y="108" width="6" height="6" rx="1"/>
+            <rect x="44" y="116" width="6" height="6" rx="1"/><rect x="60" y="116" width="6" height="6" rx="1"/>
+            <rect x="76" y="116" width="6" height="6" rx="1"/><rect x="92" y="116" width="6" height="6" rx="1"/>
+            <rect x="116" y="116" width="6" height="6" rx="1"/>
+          </g>
+          <!-- Center PIX logo -->
+          <rect x="51" y="51" width="30" height="30" rx="6" fill="#16a34a"/>
+          <path d="M61 66l4 4 6-8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+
+      <div class="pix-amount">R$ 35,50</div>
+      <div class="pix-amount-label">Valor total a pagar</div>
+
+      <div class="pix-timer">
+        <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2 1.5" stroke-linecap="round"/></svg>
+        <span>Expira em <span id="pix-countdown">04:59</span></span>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="right-panel">
+      <div class="status-box">
+        <div class="pulse-dot"></div>
+        <div class="status-title">Aguardando pagamento...</div>
+        <div class="status-sub">Mantenha esta tela aberta até a confirmação</div>
+      </div>
+
+      <div class="steps-box">
+        <div class="steps-title">Como pagar</div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Abra o <strong>app do seu banco</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Acesse a área de <strong>PIX</strong> e escolha <strong>Pagar com QR Code</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">Aponte a câmera para o <strong>código ao lado</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">Confirme o pagamento de <strong>R$ 35,50</strong></div>
+        </div>
+      </div>
+
+      <div class="pix-key-box">
+        <div class="pix-key-label">Ou copie a chave PIX</div>
+        <div class="pix-key-value">
+          <div class="pix-key-text" id="pix-key">acc.park@estac.com.br</div>
+          <button class="btn-copy" id="btn-copy" onclick="copiarChave()">Copiar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <a href="index.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#16a34a" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura e criptografada
+    </div>
+    <!-- Simulate confirm for demo -->
+    <button onclick="simularPagamento()" style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:12px;font-weight:600;cursor:pointer;">Pagamento ↗</button>
+  </div>
+</div>
+
+<script>
+  // Dynamic datetime
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+
+  // PIX countdown (5 minutes)
+  var seconds = 4*60 + 59;
+  var countdownEl = document.getElementById('pix-countdown');
+  var interval = setInterval(function(){
+    seconds--;
+    if(seconds <= 0){ clearInterval(interval); countdownEl.textContent = '00:00'; countdownEl.style.color = '#ef4444'; return; }
+    var m = Math.floor(seconds/60);
+    var s = seconds % 60;
+    countdownEl.textContent = m.toString().padStart(2,'0') + ':' + s.toString().padStart(2,'0');
+  }, 1000);
+
+  function copiarChave(){
+    var key = document.getElementById('pix-key').textContent;
+    navigator.clipboard.writeText(key).catch(function(){});
+    var btn = document.getElementById('btn-copy');
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(function(){ btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+  }
+
+  function simularPagamento(){
+    clearInterval(interval);
+    window.location.href = 'processando.html';
+  }
+</script>
+
+</body>
+</html>

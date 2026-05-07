@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Pagamento em Dinheiro</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 560px;
+      padding: 24px 32px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #ea8c00;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #ea8c00;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 5px; }
+    .hero p { font-size: 13px; color: #6b7280; }
+
+    /* Cash slot illustration */
+    .cash-machine {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 0 22px;
+      position: relative;
+    }
+
+    .machine-body {
+      width: 220px;
+      background: linear-gradient(160deg, #2d2d3a 0%, #1a1a2e 100%);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    }
+
+    .machine-screen {
+      background: #0a1628;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 2px solid #1d4ed8;
+      text-align: center;
+    }
+
+    .screen-label { font-size: 9px; color: #3b82f6; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .screen-amount { font-size: 24px; font-weight: 800; color: #22d3ee; font-family: 'Courier New', monospace; }
+    .screen-sub { font-size: 9px; color: #3b82f6; margin-top: 3px; }
+
+    .machine-slot {
+      background: #111827;
+      border-radius: 4px;
+      height: 14px;
+      width: 100%;
+      position: relative;
+      border: 2px solid #374151;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .machine-slot::before {
+      content: '▼ INSIRA AS CÉDULAS ▼';
+      font-size: 7px;
+      color: #6b7280;
+      letter-spacing: 1px;
+    }
+
+    /* Animated bill entering the slot */
+    .bill {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 72px;
+      height: 30px;
+      background: linear-gradient(135deg, #4ade80, #16a34a);
+      border-radius: 3px;
+      border: 1px solid #15803d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 800;
+      color: #fff;
+      animation: insertBill 2.5s ease-in-out infinite;
+      box-shadow: 0 2px 8px rgba(22,163,74,0.4);
+    }
+
+    @keyframes insertBill {
+      0%   { bottom: 60px; opacity: 1; }
+      60%  { bottom: 2px; opacity: 1; }
+      70%  { bottom: 2px; opacity: 0.5; }
+      80%  { bottom: -20px; opacity: 0; }
+      100% { bottom: 60px; opacity: 0; }
+    }
+
+    .machine-label {
+      font-size: 10px;
+      color: #9ca3af;
+      text-align: center;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Info grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .info-box {
+      background: #f8faff;
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .info-box .label {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 3px;
+    }
+
+    .info-box .value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    .info-box.highlight {
+      background: #fff7ed;
+      border: 1.5px solid #fed7aa;
+    }
+
+    .info-box.highlight .value { color: #ea580c; }
+
+    /* Input area */
+    .input-section {
+      background: #f8faff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .input-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 12px;
+    }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .input-row label {
+      font-size: 12px;
+      color: #6b7280;
+      width: 110px;
+      flex-shrink: 0;
+    }
+
+    .currency-input {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 8px 12px;
+      gap: 6px;
+      flex: 1;
+      transition: border-color 0.15s;
+    }
+
+    .currency-input:focus-within { border-color: #ea8c00; }
+
+    .currency-input .prefix {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .currency-input input {
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a2e;
+      width: 100%;
+      background: transparent;
+    }
+
+    .change-result {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: #f0fdf4;
+      border-radius: 8px;
+      border: 1.5px solid #bbf7d0;
+      margin-top: 4px;
+    }
+
+    .change-label { font-size: 12px; font-weight: 600; color: #374151; }
+    .change-value { font-size: 18px; font-weight: 800; color: #16a34a; }
+    .change-warning { font-size: 11px; color: #ef4444; display: none; }
+
+    /* Notes quick buttons */
+    .notes-grid {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .note-btn {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .note-btn:hover {
+      border-color: #ea8c00;
+      background: #fff7ed;
+      color: #ea8c00;
+    }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #ea8c00;
+    }
+
+    .btn-confirm {
+      background: #ea8c00;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0.5;
+      pointer-events: none;
+      transition: all 0.15s;
+    }
+
+    .btn-confirm.ready { opacity: 1; pointer-events: all; }
+    .btn-confirm.ready:hover { background: #c97700; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:30
+    </div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Pagamento em espécie</div>
+    <h1>Pagamento em Dinheiro</h1>
+    <p>Insira as cédulas na máquina abaixo</p>
+  </div>
+
+  <!-- Cash machine illustration -->
+  <div class="cash-machine">
+    <div class="machine-body">
+      <div class="machine-screen">
+        <div class="screen-label">Valor a pagar</div>
+        <div class="screen-amount">R$ 35,50</div>
+        <div class="screen-sub">INSIRA AS CÉDULAS</div>
+      </div>
+      <div class="machine-slot" style="position:relative;overflow:visible;">
+        <div class="bill">R$ 50</div>
+      </div>
+    </div>
+    <div class="machine-label">Terminal de pagamento em espécie</div>
+  </div>
+
+  <!-- Info -->
+  <div class="info-grid">
+    <div class="info-box highlight">
+      <div class="label">Valor a pagar</div>
+      <div class="value">R$ 35,50</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Estacionamento</div>
+      <div class="value">Central · 6h15</div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-section">
+    <div class="input-title">Calcular troco</div>
+    <div class="input-row">
+      <label>Valor entregue</label>
+      <div class="currency-input">
+        <span class="prefix">R$</span>
+        <input type="number" id="valor-input" placeholder="0,00" min="0" step="0.01" oninput="calcularTroco()"/>
+      </div>
+    </div>
+    <div class="notes-grid">
+      <button class="note-btn" onclick="setValor(50)">R$ 50</button>
+      <button class="note-btn" onclick="setValor(100)">R$ 100</button>
+      <button class="note-btn" onclick="setValor(40)">R$ 40</button>
+      <button class="note-btn" onclick="setValor(36)">R$ 36</button>
+    </div>
+    <div class="change-result" style="margin-top:12px;">
+      <span class="change-label">Troco a devolver</span>
+      <span class="change-value" id="troco-val">R$ 0,00</span>
+    </div>
+    <div class="change-warning" id="change-warning">⚠ Valor insuficiente</div>
+  </div>
+
+  <div class="card-footer">
+    <a href="index.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#ea8c00" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Pagamento em espécie
+    </div>
+    <button class="btn-confirm" id="btn-confirm" onclick="confirmarPagamento()">Confirmar →</button>
+  </div>
+</div>
+
+<script>
+  var TOTAL = 35.50;
+
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+
+  function setValor(v) {
+    document.getElementById('valor-input').value = v;
+    calcularTroco();
+  }
+
+  function calcularTroco() {
+    var val = parseFloat(document.getElementById('valor-input').value) || 0;
+    var troco = val - TOTAL;
+    var trocoEl = document.getElementById('troco-val');
+    var warnEl = document.getElementById('change-warning');
+    var btn = document.getElementById('btn-confirm');
+    var box = document.querySelector('.change-result');
+
+    if(val <= 0) {
+      trocoEl.textContent = 'R$ 0,00';
+      trocoEl.style.color = '#16a34a';
+      warnEl.style.display = 'none';
+      btn.classList.remove('ready');
+      box.style.borderColor = '#bbf7d0';
+    } else if(troco < 0) {
+      trocoEl.textContent = '—';
+      warnEl.style.display = 'block';
+      btn.classList.remove('ready');
+      box.style.borderColor = '#fecaca';
+    } else {
+      trocoEl.textContent = 'R$ ' + troco.toFixed(2).replace('.', ',');
+      trocoEl.style.color = troco > 0 ? '#16a34a' : '#374151';
+      warnEl.style.display = 'none';
+      btn.classList.add('ready');
+      box.style.borderColor = '#bbf7d0';
+    }
+  }
+
+  function confirmarPagamento() {
+    window.location.href = 'processando.html';
+  }
+</script>
+
+</body>
+</html>
