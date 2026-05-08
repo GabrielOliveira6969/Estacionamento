@@ -220,7 +220,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
       <img src="/src/assets/images/logo-resumida-estacionamento-png.png" alt="ACC Park Logo" class="sb-logo-img"/>
       <div class="sb-logo-brand">ACC Park</div>
       <div class="sb-title">Menu</div>
-      <div class="sb-greet">Olá, Júnior! 👋</div>
+      <div class="sb-greet">Olá, Júnior!</div>
     </div>
 
     <nav class="sb-nav">
@@ -233,7 +233,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
     </nav>
     <div class="sb-footer">
       <div class="sb-theme">
-        <span class="sb-theme-lbl" id="theme-lbl">☀️ Tema claro</span>
+        <span class="sb-theme-lbl" id="theme-lbl">Tema claro</span>
         <button class="toggle" onclick="toggleTheme()"><div class="toggle-dot" id="toggle-dot"></div></button>
       </div>
       <div class="sb-user">
@@ -490,7 +490,7 @@ let USERS=[
 ];
 let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='';
 
-function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?'🌙 Tema escuro':'☀️ Tema claro';}
+function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
 function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
