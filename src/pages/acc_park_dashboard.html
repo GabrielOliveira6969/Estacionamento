@@ -73,10 +73,20 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 .page{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .page.active{display:flex;}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:12px 16px 0;flex-shrink:0;}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;padding:12px 16px 0;flex-shrink:0;}
 .sc{background:var(--card-bg);border-radius:9px;padding:11px 13px;border:1px solid var(--border);}
+.sc[onclick]:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(74,159,224,0.12);}
+#card-ocu:hover{border-color:#E24B4A !important;box-shadow:0 0 0 3px rgba(226,75,74,0.15) !important;}
+#card-ocu.card-full:hover{border-color:#c0392b !important;box-shadow:0 0 0 3px rgba(226,75,74,0.25) !important;background:#c0392b !important;}
+#card-ocu.card-ocu-orange:hover{border-color:#b86503 !important;box-shadow:0 0 0 3px rgba(219,122,4,0.25) !important;background:#b86503 !important;}
+#card-ocu.card-ocu-green:hover{border-color:#158f24 !important;box-shadow:0 0 0 3px rgba(2,199,26,0.25) !important;background:#158f24 !important;}
+#card-liv:hover{border-color:#19A82B !important;box-shadow:0 0 0 3px rgba(2,199,26,0.15) !important;}
+#card-liv.card-zero:hover{border-color:#c0392b !important;box-shadow:0 0 0 3px rgba(226,75,74,0.25) !important;background:#c0392b !important;}
+#card-liv.card-liv-orange:hover{border-color:#b86503 !important;box-shadow:0 0 0 3px rgba(219,122,4,0.25) !important;background:#b86503 !important;}
+#card-liv.card-liv-green:hover{border-color:#158f24 !important;box-shadow:0 0 0 3px rgba(2,199,26,0.25) !important;background:#158f24 !important;}
 .sc-lbl{font-size:10px;color:var(--text-secondary);margin-bottom:2px;}
 .sc-val{font-size:22px;font-weight:700;color:var(--text-primary);}
+#d-rec{font-size:clamp(11px,1.8vw,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sc-sub{font-size:10px;margin-top:2px;}
 .g{color:var(--green-text);}.r{color:var(--red-text);}
 
@@ -252,10 +262,11 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 
       <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
-        <div class="stats">
-          <div class="sc"><div class="sc-lbl">Veículos no pátio</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
-          <div class="sc"><div class="sc-lbl">Vagas disponíveis</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
-          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="d-ent">61</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
+        <div class="stats" id="stats-grid">
+          <div class="sc" id="card-ocu" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('o',document.querySelectorAll('.flt')[2]);" style="cursor:pointer;border-color:#E24B4A;" title="Ver vagas ocupadas no mapa"><div class="sc-lbl">Vagas ocupadas ↗</div><div class="sc-val" id="d-ocu">—</div><div class="sc-sub r" id="d-opct">—</div></div>
+          <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
+          <div class="sc" id="card-pat"><div class="sc-lbl">Entradas Manuais</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
+          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
           <div class="sc"><div class="sc-lbl">Receita hoje</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
         </div>
         <div class="tbl-wrap">
@@ -359,8 +370,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
         <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div class="map-tb">
             <div class="mst">
-              <div class="ms"><span class="dot df"></span><span class="ms-n" id="m-f">—</span>&nbsp;livres</div>
               <div class="ms"><span class="dot do"></span><span class="ms-n" id="m-o">—</span>&nbsp;ocupadas</div>
+              <div class="ms"><span class="dot df"></span><span class="ms-n" id="m-f">—</span>&nbsp;livres</div>
               <div class="ms"><span class="dot dr"></span><span class="ms-n" id="m-r">—</span>&nbsp;reservadas</div>
             </div>
             <div class="flt-g">
@@ -461,7 +472,7 @@ function randPlate(){let p='';for(let i=0;i<3;i++)p+=rnd(LETRAS.split(''));p+=Ma
 function randTime(){const h=7+Math.floor(Math.random()*8);const min=Math.floor(Math.random()*60);return(h<10?'0':'')+h+':'+(min<10?'0':'')+min;}
 function randCar(){const mb=rnd(MARCAS);return{marca:mb.m,modelo:rnd(mb.md),placa:randPlate(),cor:rnd(CORES)};}
 function nowTime(){const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
-function fmt(v){return'R$ '+v.toFixed(2).replace('.',',');}
+function fmt(v){return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
 const TOTAL=5000;
 const SECTORS=[{name:'Setor A',count:1000},{name:'Setor B',count:1000},{name:'Setor C',count:1000},{name:'Setor D',count:1000},{name:'Setor E',count:1000}];
@@ -488,13 +499,13 @@ let USERS=[
   {id:5,nome:'Thiago Pinto',iniciais:'TP',role:'Operador',email:'t.pinto@avanade.com',registros:19,ativo:false,cor:'#c0392b'},
   {id:6,nome:'Mariana Costa',iniciais:'MC',role:'Supervisor',email:'m.costa@avanade.com',registros:87,ativo:true,cor:'#BA7517'},
 ];
-let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='';
+let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0;
 
 function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
 function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
-function updateStats(){const c=getCounts();document.getElementById('m-f').textContent=c.f.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-pat').textContent=(c.o+patioVeiculos.length).toLocaleString('pt-BR');document.getElementById('d-liv').textContent=c.f.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((c.f/TOTAL)*100)+'% livre';document.getElementById('dp-pct').textContent=Math.round((c.o/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round((c.o/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(receita);document.getElementById('d-sai').textContent=saidas+' saídas hoje';}
+function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-pat').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
 
 function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
 
@@ -506,7 +517,7 @@ const swRow=document.getElementById('swatch-row');
 CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;};swRow.appendChild(sw);});
 function sortearVaga(){const sec=rnd(SETORES);const num=Math.floor(Math.random()*1000)+1;document.getElementById('vaga-num').textContent=sec+'-'+num;}
 function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sortearVaga();}
-function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});renderDash();renderHist(histData);document.getElementById('d-ent').textContent=(parseInt(document.getElementById('d-ent').textContent)||61)+1;setTimeout(()=>{box.style.display='none';limparForm();},4000);}
+function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
 
 function iniciarSaida(placa){goPage('saida',document.querySelectorAll('.ni')[2]);document.getElementById('s-placa').value=placa;buscarVeiculo();}
 function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
