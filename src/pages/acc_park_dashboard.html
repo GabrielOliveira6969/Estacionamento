@@ -477,7 +477,7 @@ function fmt(v){return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,ma
 const TOTAL=5000;
 const SECTORS=[{name:'Setor A',count:1000},{name:'Setor B',count:1000},{name:'Setor C',count:1000},{name:'Setor D',count:1000},{name:'Setor E',count:1000}];
 const states=[];let allSpots=[],selIdx=null;
-for(let i=0;i<TOTAL;i++){const r=Math.random();const st=r<0.62?'o':r<0.90?'f':'r';const car=st!=='f'?randCar():null;const time=st==='o'?randTime():null;states.push({st,car,time});}
+{const scenario=Math.random();let stFn;if(scenario<0.1){stFn=()=>'f';}else if(scenario<0.2){stFn=()=>'o';}else{stFn=()=>{const r=Math.random();return r<0.62?'o':r<0.90?'f':'r';};}for(let i=0;i<TOTAL;i++){const st=stFn();const car=st!=='f'?randCar():null;const time=st==='o'?randTime():null;states.push({st,car,time});}}
 
 const patioVeiculos=[
   {placa:'BRA2E19',nome:'Carlos Mendes',entrada:'08:14',vaga:'A-112',marca:'Toyota',modelo:'Corolla',cor:CORES[0]},
