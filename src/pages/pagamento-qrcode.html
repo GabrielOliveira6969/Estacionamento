@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – QR Code / Débito Contactless</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 540px;
+      padding: 24px 32px 20px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #7c3aed;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 22px;
+      gap: 2px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      text-align: center;
+      border: none;
+      background: transparent;
+      transition: all 0.18s;
+    }
+
+    .tab.active {
+      background: #fff;
+      color: #7c3aed;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Tab panels */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ------- NFC panel ------- */
+    .nfc-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 8px 0 20px;
+    }
+
+    .nfc-zone {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin-bottom: 20px;
+    }
+
+    /* Concentric rings animation */
+    .nfc-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 2.5px solid #7c3aed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+      animation: nfc-expand 2.4s ease-out infinite;
+    }
+
+    .nfc-ring:nth-child(1) { width: 180px; height: 180px; animation-delay: 0s; }
+    .nfc-ring:nth-child(2) { width: 130px; height: 130px; animation-delay: 0.5s; }
+    .nfc-ring:nth-child(3) { width: 80px; height: 80px; animation-delay: 1s; }
+
+    @keyframes nfc-expand {
+      0%   { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+      30%  { opacity: 0.8; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+
+    .nfc-core {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 68px; height: 68px;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+      z-index: 1;
+    }
+
+    .nfc-core svg { width: 36px; height: 36px; stroke: #fff; fill: none; stroke-width: 1.8; }
+
+    .nfc-title { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .nfc-sub { font-size: 13px; color: #6b7280; text-align: center; margin-bottom: 18px; line-height: 1.5; }
+
+    .nfc-amount-badge {
+      background: #f5f3ff;
+      border: 2px solid #ddd6fe;
+      border-radius: 12px;
+      padding: 12px 24px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .nfc-amount-badge .amt-label { font-size: 11px; color: #7c3aed; margin-bottom: 3px; font-weight: 600; }
+    .nfc-amount-badge .amt-val { font-size: 28px; font-weight: 800; color: #1a1a2e; }
+
+    .wallets {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .wallet-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 10px 14px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 11px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .wallet-btn:hover, .wallet-btn.sel {
+      border-color: #7c3aed;
+      background: #f5f3ff;
+      color: #7c3aed;
+    }
+
+    .wallet-icon { font-size: 22px; }
+
+    /* ------- QR panel ------- */
+    .qr-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 0 16px;
+    }
+
+    .qr-scan-box {
+      width: 200px;
+      height: 200px;
+      background: #f3f4f6;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Scanning laser line */
+    .scan-line {
+      position: absolute;
+      left: 10px; right: 10px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+      animation: scan 2s ease-in-out infinite;
+    }
+
+    @keyframes scan {
+      0%   { top: 10px; opacity: 1; }
+      50%  { top: 180px; opacity: 1; }
+      100% { top: 10px; opacity: 1; }
+    }
+
+    /* Corner brackets */
+    .corner { position: absolute; width: 24px; height: 24px; }
+    .corner.tl { top: 12px; left: 12px; border-top: 3px solid #7c3aed; border-left: 3px solid #7c3aed; border-radius: 4px 0 0 0; }
+    .corner.tr { top: 12px; right: 12px; border-top: 3px solid #7c3aed; border-right: 3px solid #7c3aed; border-radius: 0 4px 0 0; }
+    .corner.bl { bottom: 12px; left: 12px; border-bottom: 3px solid #7c3aed; border-left: 3px solid #7c3aed; border-radius: 0 0 0 4px; }
+    .corner.br { bottom: 12px; right: 12px; border-bottom: 3px solid #7c3aed; border-right: 3px solid #7c3aed; border-radius: 0 0 4px 0; }
+
+    /* QR placeholder pattern */
+    .qr-placeholder svg { width: 140px; height: 140px; opacity: 0.2; }
+
+    .qr-scan-title { font-size: 18px; font-weight: 700; color: #1a1a2e; margin-bottom: 5px; }
+    .qr-scan-sub { font-size: 13px; color: #6b7280; text-align: center; margin-bottom: 14px; }
+
+    .qr-apps {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .qr-apps span { font-size: 16px; }
+
+    /* Footer */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .btn-back {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-size: 13px;
+      color: #374151;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #7c3aed;
+    }
+
+    .btn-proceed {
+      background: #7c3aed;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-proceed:hover { background: #6d28d9; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:30
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('nfc', this)">📲 Débito Contactless (NFC)</button>
+    <button class="tab" onclick="switchTab('qr', this)">📷 Leitor de QR Code</button>
+  </div>
+
+  <!-- NFC Panel -->
+  <div class="tab-panel active" id="panel-nfc">
+    <div class="nfc-center">
+      <div class="nfc-zone">
+        <div class="nfc-ring"></div>
+        <div class="nfc-ring"></div>
+        <div class="nfc-ring"></div>
+        <div class="nfc-core">
+          <!-- NFC contactless icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M4.5 8a9 9 0 0 1 15 0" stroke-linecap="round"/>
+            <path d="M7 11a6 6 0 0 1 10 0" stroke-linecap="round"/>
+            <path d="M9.5 14a3 3 0 0 1 5 0" stroke-linecap="round"/>
+            <circle cx="12" cy="17" r="1" fill="#fff" stroke="none"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="nfc-amount-badge">
+        <div class="amt-label">Aproxime para pagar</div>
+        <div class="amt-val">R$ 35,50</div>
+      </div>
+
+      <div class="nfc-title">Débito Contactless</div>
+      <div class="nfc-sub">Aproxime seu cartão, celular ou smartwatch<br>ao terminal para pagar</div>
+
+      <div class="wallets">
+        <div class="wallet-btn" onclick="selectWallet(this)">
+          <span class="wallet-icon">💳</span>
+          Cartão NFC
+        </div>
+        <div class="wallet-btn" onclick="selectWallet(this)">
+          <span class="wallet-icon">📱</span>
+          Google Pay
+        </div>
+        <div class="wallet-btn" onclick="selectWallet(this)">
+          <span class="wallet-icon">🍎</span>
+          Apple Pay
+        </div>
+        <div class="wallet-btn" onclick="selectWallet(this)">
+          <span class="wallet-icon">⌚</span>
+          Smartwatch
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Panel -->
+  <div class="tab-panel" id="panel-qr">
+    <div class="qr-center">
+      <div class="qr-scan-box">
+        <div class="corner tl"></div>
+        <div class="corner tr"></div>
+        <div class="corner bl"></div>
+        <div class="corner br"></div>
+        <div class="scan-line"></div>
+        <div class="qr-placeholder">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="35" height="35" rx="3" fill="none" stroke="#374151" stroke-width="3"/>
+            <rect x="13" y="13" width="19" height="19" rx="1" fill="#374151"/>
+            <rect x="60" y="5" width="35" height="35" rx="3" fill="none" stroke="#374151" stroke-width="3"/>
+            <rect x="68" y="13" width="19" height="19" rx="1" fill="#374151"/>
+            <rect x="5" y="60" width="35" height="35" rx="3" fill="none" stroke="#374151" stroke-width="3"/>
+            <rect x="13" y="68" width="19" height="19" rx="1" fill="#374151"/>
+            <rect x="60" y="60" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="72" y="60" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="84" y="60" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="60" y="72" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="84" y="72" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="60" y="84" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="72" y="84" width="8" height="8" rx="1" fill="#374151"/>
+            <rect x="84" y="84" width="8" height="8" rx="1" fill="#374151"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="qr-scan-title">Escaneie seu QR Code</div>
+      <div class="qr-scan-sub">Apresente o QR Code do seu app de pagamento<br>na câmera do terminal</div>
+
+      <div class="qr-apps">
+        <span>📱</span> Compatível com: Mercado Pago · PicPay · NuBank · Iti
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer">
+    <a href="index.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#7c3aed" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura
+    </div>
+    <button class="btn-proceed" onclick="window.location.href='processando.html'">Simular pagamento →</button>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('panel-'+id).classList.add('active');
+  }
+
+  function selectWallet(el) {
+    document.querySelectorAll('.wallet-btn').forEach(function(b){ b.classList.remove('sel'); });
+    el.classList.add('sel');
+    setTimeout(function(){ window.location.href = 'processando.html'; }, 800);
+  }
+</script>
+
+</body>
+</html>

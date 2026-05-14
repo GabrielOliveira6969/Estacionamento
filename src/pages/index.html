@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pague Aqui – Início</title>
   <link rel="icon" type="image/png" href="/src/assets/images/favicon-projeto-estacionamento.ico" />
@@ -186,6 +187,16 @@
       font-size: 11px;
       color: #9ca3af;
     }
+
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #2563eb;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .brand-flag { display: none; }
   </style>
 </head>
 <body>
@@ -194,7 +205,7 @@
   <!-- Header -->
   <div class="card-header">
     <div class="brand">
-    <img src="/src/assets/images/logoresumida-projeto-estacionamento.png" alt="Logo" width="60" height="60"/>
+      <div class="brand-icon">P</div>
       PAGUE AQUI
     </div>
     <div class="header-right">
@@ -205,13 +216,12 @@
         </svg>
         23/05/2024 · 14:15
       </div>
-      <button class="btn-ajuda">? Precisa de ajuda?</button>
     </div>
   </div>
 
   <!-- Hero -->
   <div class="hero">
-    <h1>Bem-vindo!</h1>
+    <h1>Bem-vindo ao ACC PARK!</h1>
     <p>Escolha a forma de pagamento</p>
   </div>
 
@@ -227,7 +237,7 @@
       </div>
     </a>
 
-    <a href="resumo.html" class="payment-card pix">
+    <a href="pagamento-pix.html" class="payment-card pix">
       <div>
         <h3>Pix</h3>
         <p>Pagamento instantâneo</p>
@@ -237,7 +247,7 @@
       </div>
     </a>
 
-    <a href="resumo.html" class="payment-card dinheiro">
+    <a href="pagamento-dinheiro.html" class="payment-card dinheiro">
       <div>
         <h3>Dinheiro</h3>
         <p>Pagamento em espécie</p>
@@ -247,7 +257,7 @@
       </div>
     </a>
 
-    <a href="resumo.html" class="payment-card qrcode">
+    <a href="pagamento-qrcode.html" class="payment-card qrcode">
       <div>
         <h3>QR Code</h3>
         <p>Débito contactless</p>
@@ -270,5 +280,18 @@
   </div>
 </div>
 
+<script>
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+</script>
 </body>
 </html>

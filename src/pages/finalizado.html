@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pague Aqui – Finalizado</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e8ebf0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      width: 480px;
+      padding: 40px 32px 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a1a2e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-flag { display: flex; flex-direction: column; gap: 2px; }
+    .brand-flag span { display: block; width: 14px; height: 3px; border-radius: 1px; }
+    .brand-flag span:nth-child(1) { background: #2563eb; }
+    .brand-flag span:nth-child(2) { background: #16a34a; }
+    .brand-flag span:nth-child(3) { background: #eab308; }
+
+    .header-datetime {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Wave animation */
+    .wave-circle {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 24px;
+    }
+
+    .wave-circle::before,
+    .wave-circle::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: #16a34a;
+      opacity: 0;
+      animation: ripple 2s ease-out infinite;
+    }
+
+    .wave-circle::after { animation-delay: 0.6s; }
+
+    @keyframes ripple {
+      0%  { transform: scale(0.8); opacity: 0.4; }
+      100%{ transform: scale(1.6); opacity: 0; }
+    }
+
+    .checkmark {
+      position: relative;
+      z-index: 1;
+      width: 100px;
+      height: 100px;
+      background: #16a34a;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .checkmark svg {
+      width: 48px;
+      height: 48px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .info-row {
+      background: #f8faff;
+      border-radius: 10px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .info-row .label { color: #6b7280; }
+    .info-row .value { font-weight: 600; }
+
+    .divider { height: 1px; background: #f0f0f0; margin: 20px 0; }
+
+    .goodbye {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+
+    .goodbye-sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    /* Countdown */
+    .countdown-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+    }
+
+    .countdown-num {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2563eb;
+      min-width: 20px;
+      display: inline-block;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-home:hover { background: #1d4ed8; }
+
+    .footer-security {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 20px;
+    }
+  
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #2563eb;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .brand-flag { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="brand">
+      <div class="brand-icon">P</div>
+      PAGUE AQUI
+    </div>
+    <div class="header-datetime">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
+      </svg>
+      23/05/2024 · 14:52
+    </div>
+  </div>
+
+  <div class="wave-circle">
+    <div class="checkmark">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+  </div>
+
+  <h2>Tudo certo! 🎉</h2>
+  <p class="subtitle">Seu pagamento foi confirmado.<br>Obrigado por usar o ACC Park.</p>
+
+  <div class="info-row">
+    <span class="label">Valor pago</span>
+    <span class="value" style="color:#16a34a;">R$ 35,50</span>
+  </div>
+  <div class="info-row">
+    <span class="label">Forma de pagamento</span>
+    <span class="value">•••• 1234</span>
+  </div>
+  <div class="info-row">
+    <span class="label">Comprovante</span>
+    <span class="value" style="font-family:monospace;font-size:12px;">ID: 87a1b2c-8b1c</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="goodbye">Boa viagem! 🚗</p>
+  <p class="goodbye-sub">Esta tela voltará ao início automaticamente.</p>
+
+  <div class="countdown-wrap">
+    Voltando ao início em <span class="countdown-num" id="counter">10</span> segundos
+  </div>
+
+  <a href="index.html" class="btn-home">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+      <polyline points="9 21 9 12 15 12 15 21"/>
+    </svg>
+    Ir para o início
+  </a>
+
+  <div class="footer-security">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#9ca3af" stroke-width="1.5">
+      <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+    </svg>
+    Transação segura e criptografada — Pague Aqui
+  </div>
+</div>
+
+<script>
+  // Dynamic datetime
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+
+  // Countdown and auto-redirect
+  var count = 10;
+  var el = document.getElementById('counter');
+  var interval = setInterval(function(){
+    count--;
+    el.textContent = count;
+    if(count <= 0){
+      clearInterval(interval);
+      window.location.href = 'index.html';
+    }
+  }, 1000);
+</script>
+
+</body>
+</html>

@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>ACC Park — Dashboard v3</title>
+<title>Bad weather Park — Dashboard v3</title>
 <style>
 :root {
   --bg-primary:#ffffff; --bg-secondary:#f9fafb; --bg-tertiary:#f3f4f6;
@@ -29,11 +30,16 @@
   --orange-bg:#2e1f08; --orange-text:#fbbf24;
   --modal-overlay:rgba(0,0,0,0.6);
 }
+
+.align-center { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 14px 12px; }
 *{box-sizing:border-box;margin:0;padding:0;transition:background-color 0.2s,color 0.2s,border-color 0.2s;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);height:100vh;overflow:hidden;}
 .layout{display:flex;height:100vh;overflow:hidden;}
 
 .sidebar{width:220px;background:var(--sidebar-bg);display:flex;flex-direction:column;flex-shrink:0;}
+.sb-logo-wrap{background:var(--card-bg);padding:16px 14px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;border-bottom:1px solid var(--border);}
+.sb-logo-img{width:158px;height:158px;object-fit:cover;display:block;text-align: center;}
+.sb-logo-brand{font-size:13px;font-weight:800;color:#ffffff;letter-spacing:1px;text-transform:uppercase;}
 .sb-logo{background:var(--card-bg);padding:14px;display:flex;flex-direction:column;gap:5px;border-bottom:1px solid var(--border);}
 .logo-a{font-size:13px;font-weight:700;color:#a100ff;display:flex;align-items:center;gap:4px;}
 .logo-v{font-size:12px;font-weight:700;color:#d04baf;display:flex;align-items:center;gap:5px;}
@@ -41,7 +47,8 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 .sb-title{padding:14px 14px 3px;color:#fff;font-size:16px;font-weight:700;font-style:italic;}
 .sb-greet{padding:2px 14px 12px;color:#c8e6f8;font-size:11px;font-style:italic;}
 .sb-nav{padding:5px 7px;flex:1;display:flex;flex-direction:column;gap:2px;}
-.ni{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:8px;cursor:pointer;color:#cce6f7;font-size:12px;}
+button.ni, .ni{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:8px;cursor:pointer;color:#cce6f7;font-size:12px;border:none;background:none;text-align:left;width:100%;}
+button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 .ni:hover{background:rgba(255,255,255,0.15);}
 .ni.active{background:rgba(255,255,255,0.22);color:#fff;font-weight:600;}
 .nic{width:15px;height:15px;flex-shrink:0;}
@@ -67,10 +74,20 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 .page{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .page.active{display:flex;}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:12px 16px 0;flex-shrink:0;}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;padding:12px 16px 0;flex-shrink:0;}
 .sc{background:var(--card-bg);border-radius:9px;padding:11px 13px;border:1px solid var(--border);}
+.sc[onclick]:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(74,159,224,0.12);}
+#card-ocu:hover{border-color:#E24B4A !important;box-shadow:0 0 0 3px rgba(226,75,74,0.15) !important;}
+#card-ocu.card-full:hover{border-color:#c0392b !important;box-shadow:0 0 0 3px rgba(226,75,74,0.25) !important;background:#c0392b !important;}
+#card-ocu.card-ocu-orange:hover{border-color:#b86503 !important;box-shadow:0 0 0 3px rgba(219,122,4,0.25) !important;background:#b86503 !important;}
+#card-ocu.card-ocu-green:hover{border-color:#158f24 !important;box-shadow:0 0 0 3px rgba(2,199,26,0.25) !important;background:#158f24 !important;}
+#card-liv:hover{border-color:#19A82B !important;box-shadow:0 0 0 3px rgba(2,199,26,0.15) !important;}
+#card-liv.card-zero:hover{border-color:#c0392b !important;box-shadow:0 0 0 3px rgba(226,75,74,0.25) !important;background:#c0392b !important;}
+#card-liv.card-liv-orange:hover{border-color:#b86503 !important;box-shadow:0 0 0 3px rgba(219,122,4,0.25) !important;background:#b86503 !important;}
+#card-liv.card-liv-green:hover{border-color:#158f24 !important;box-shadow:0 0 0 3px rgba(2,199,26,0.25) !important;background:#158f24 !important;}
 .sc-lbl{font-size:10px;color:var(--text-secondary);margin-bottom:2px;}
 .sc-val{font-size:22px;font-weight:700;color:var(--text-primary);}
+#d-rec{font-size:clamp(11px,1.8vw,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sc-sub{font-size:10px;margin-top:2px;}
 .g{color:var(--green-text);}.r{color:var(--red-text);}
 
@@ -210,21 +227,25 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 <div id="app">
 <div class="layout">
   <div class="sidebar">
-    <img src="/src/assets/images/logoresumida-projeto-estacionamento.png" alt="Logo" width="90" height="90"/>
-    <div class="sb-title">ACC Park</div>
-    <div class="sb-greet">Olá, Júnior!</div>
-    <nav class="sb-nav">
-      <div class="ni active" onclick="goPage('dashboard',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>Dashboard</div>
-      <div class="ni" onclick="goPage('entrada',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>Entrada de Veículos</div>
-      <div class="ni" onclick="goPage('saida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 10V12a3 3 0 0 0 6 0v-2" stroke="currentColor" stroke-width="1.2"/></svg>Saída / Pagamento</div>
-      <div class="ni" onclick="goPage('mapa',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Vagas</div>
-      <div class="ni" onclick="goPage('hist',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Histórico</div>
-      <div class="ni" onclick="goPage('usuarios',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 14c0-2.2 2.7-4 6-4s6 1.8 6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Usuários</div>
+    <div class="align-center">
+      <img src="/src/assets/images/logo-resumida-estacionamento-png.png" alt="Bad weather Park Logo" class="sb-logo-img"/>
+      <div class="sb-logo-brand">Bad weather Park</div>
+      <div class="sb-title">Menu</div>
+      <div class="sb-greet">Olá, Júnior!</div>
+    </div>
+
+    <nav class="sb-nav" role="navigation" aria-label="Menu principal">
+      <button type="button" class="ni active" aria-current="page" onclick="goPage('dashboard',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>Dashboard</button>
+      <button type="button" class="ni" onclick="goPage('entrada',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>Entrada de Veículos</button>
+      <button type="button" class="ni" onclick="goPage('saida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 10V12a3 3 0 0 0 6 0v-2" stroke="currentColor" stroke-width="1.2"/></svg>Saída / Pagamento</button>
+      <button type="button" class="ni" onclick="goPage('mapa',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Vagas</button>
+      <button type="button" class="ni" onclick="goPage('hist',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Histórico</button>
+      <button type="button" class="ni" onclick="goPage('usuarios',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 14c0-2.2 2.7-4 6-4s6 1.8 6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Usuários</button>
     </nav>
     <div class="sb-footer">
       <div class="sb-theme">
-        <span class="sb-theme-lbl" id="theme-lbl">☀️ Tema claro</span>
-        <button class="toggle" onclick="toggleTheme()"><div class="toggle-dot" id="toggle-dot"></div></button>
+        <span class="sb-theme-lbl" id="theme-lbl">Tema claro</span>
+        <button type="button" class="toggle" onclick="toggleTheme()"><div class="toggle-dot" id="toggle-dot"></div></button>
       </div>
       <div class="sb-user">
         <div class="av">JS</div>
@@ -233,63 +254,64 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
     </div>
   </div>
 
-  <div class="main">
-    <div class="topbar">
+  <main class="main">
+    <header class="topbar">
       <h1 id="page-title">Dashboard — Entrada e Saída</h1>
-      <div class="tb-r"><span class="bdg" id="date-badge"></span><button class="btn-bl" onclick="goPage('entrada',document.querySelectorAll('.ni')[1])">+ Registrar entrada</button></div>
-    </div>
+      <div class="tb-r"><span class="bdg" id="date-badge"></span><button type="button" class="btn-bl" onclick="goPage('entrada',document.querySelectorAll('.ni')[1])">+ Registrar entrada</button></div>
+    </header>
     <div class="content">
 
       <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
-        <div class="stats">
-          <div class="sc"><div class="sc-lbl">Veículos no pátio</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
-          <div class="sc"><div class="sc-lbl">Vagas disponíveis</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
-          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="d-ent">61</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
+      <section class="page active" id="page-dashboard" aria-label="Dashboard"> 
+        <div class="stats" id="stats-grid">
+          <div class="sc" id="card-ocu" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('o',document.querySelectorAll('.flt')[2]);" style="cursor:pointer;border-color:#E24B4A;" title="Ver vagas ocupadas no mapa"><div class="sc-lbl">Vagas ocupadas ↗</div><div class="sc-val" id="d-ocu">—</div><div class="sc-sub r" id="d-opct">—</div></div>
+          <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
+          <div class="sc" id="card-pat"><div class="sc-lbl">Entradas Manuais</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
+          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
           <div class="sc"><div class="sc-lbl">Receita hoje</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
         </div>
         <div class="tbl-wrap">
           <div class="th th5"><span>Placa</span><span>Proprietário</span><span>Entrada</span><span>Status</span><span>Ação</span></div>
           <div id="dash-body"></div>
         </div>
-      </div>
+      </section>
 
       <!-- ENTRADA -->
-      <div class="page" id="page-entrada">
+      <section class="page" id="page-entrada" aria-label="Entrada de veículo">
         <div class="form-wrap">
-          <div class="form-card">
+          <form class="form-card" id="entrada-form" novalidate>
             <div class="fc-title">Registrar entrada de veículo</div>
             <div id="suc-box" class="success-box"></div>
             <div class="form-row">
-              <div class="fld"><label>Placa *</label><input class="plate-input" id="f-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
-              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="vaga-num">A-247</span><button class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga()">Sortear</button></div></div>
+              <div class="fld"><label for="f-placa">Placa *</label><input class="plate-input" id="f-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
+              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="vaga-num">A-247</span><button type="button" class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga()">Sortear</button></div></div>
             </div>
             <div class="form-row">
-              <div class="fld"><label>Proprietário *</label><input id="f-nome" placeholder="Nome completo"/></div>
-              <div class="fld"><label>Documento (CPF/RG)</label><input id="f-doc" placeholder="000.000.000-00"/></div>
+              <div class="fld"><label for="f-nome">Proprietário *</label><input id="f-nome" placeholder="Nome completo"/></div>
+              <div class="fld"><label for="f-doc">Documento (CPF/RG)</label><input id="f-doc" placeholder="000.000.000-00"/></div>
             </div>
             <div class="form-row">
-              <div class="fld"><label>Marca *</label><select id="f-marca"><option value="">Selecione…</option><option>Toyota</option><option>Volkswagen</option><option>Chevrolet</option><option>Hyundai</option><option>Fiat</option><option>Jeep</option><option>Honda</option><option>Renault</option><option>Ford</option><option>BMW</option><option>Mercedes-Benz</option><option>Outro</option></select></div>
-              <div class="fld"><label>Modelo *</label><input id="f-modelo" placeholder="Ex: Corolla"/></div>
+              <div class="fld"><label for="f-marca">Marca *</label><select id="f-marca"><option value="">Selecione…</option><option>Toyota</option><option>Volkswagen</option><option>Chevrolet</option><option>Hyundai</option><option>Fiat</option><option>Jeep</option><option>Honda</option><option>Renault</option><option>Ford</option><option>BMW</option><option>Mercedes-Benz</option><option>Outro</option></select></div>
+              <div class="fld"><label for="f-modelo">Modelo *</label><input id="f-modelo" placeholder="Ex: Corolla"/></div>
             </div>
             <div class="form-row">
-              <div class="fld"><label>Cor *</label><div class="swatch-row" id="swatch-row"></div><input id="f-cor" placeholder="Selecione uma cor" readonly style="margin-top:5px;font-size:11px;"/></div>
-              <div class="fld"><label>Tipo</label><select id="f-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select></div>
+              <div class="fld"><label for="f-cor">Cor *</label><div class="swatch-row" id="swatch-row"></div><input id="f-cor" placeholder="Selecione uma cor" readonly style="margin-top:5px;font-size:11px;"/></div>
+              <div class="fld"><label for="f-tipo">Tipo</label><select id="f-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select></div>
             </div>
-            <div class="form-row full"><div class="fld"><label>Observações</label><input id="f-obs" placeholder="Ex: veículo com dano na lateral…"/></div></div>
-            <div class="form-footer"><button class="btn-sec" onclick="limparForm()">Limpar</button><button class="btn-prim" onclick="registrarEntrada()">Confirmar entrada</button></div>
-          </div>
+            <div class="form-row full"><div class="fld"><label for="f-obs">Observações</label><input id="f-obs" placeholder="Ex: veículo com dano na lateral…"/></div></div>
+            <div class="form-footer"><button type="button" class="btn-sec" onclick="limparForm()">Limpar</button><button type="button" class="btn-prim" onclick="registrarEntrada()">Confirmar entrada</button></div>
+          </form>
         </div>
-      </div>
+      </section>
 
       <!-- SAÍDA -->
-      <div class="page" id="page-saida">
+      <section class="page" id="page-saida" aria-label="Saída e pagamento">
         <div class="form-wrap">
-          <div class="form-card" style="max-width:490px;">
+          <form class="form-card" id="saida-form" novalidate style="max-width:490px;">
             <div class="fc-title">Registrar Saída e Pagamento</div>
             <div class="form-row full">
-              <div class="fld"><label>Buscar por placa *</label>
-                <div style="display:flex;gap:7px;"><input class="plate-input" id="s-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()" style="flex:1;"/><button class="btn-prim" onclick="buscarVeiculo()">Buscar</button></div>
+              <div class="fld"><label for="s-placa">Buscar por placa *</label>
+                <div style="display:flex;gap:7px;"><input class="plate-input" id="s-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()" style="flex:1;"/><button type="button" class="btn-prim" onclick="buscarVeiculo()">Buscar</button></div>
               </div>
             </div>
             <div id="veiculo-info" style="display:none;">
@@ -335,29 +357,29 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
                 </div>
               </div>
               <div class="form-footer">
-                <button class="btn-sec" onclick="cancelarSaida()">Cancelar</button>
-                <button class="btn-prim" id="btn-confirmar-saida" onclick="confirmarSaida()" disabled style="opacity:0.5;">Confirmar saída</button>
+                <button type="button" class="btn-sec" onclick="cancelarSaida()">Cancelar</button>
+                <button type="button" class="btn-prim" id="btn-confirmar-saida" onclick="confirmarSaida()" disabled style="opacity:0.5;">Confirmar saída</button>
               </div>
             </div>
             <div id="saida-vazio" style="margin-top:12px;font-size:12px;color:var(--text-tertiary);">Digite a placa do veículo para iniciar o processo de saída.</div>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- MAPA -->
-      <div class="page" id="page-mapa">
+      <section class="page" id="page-mapa" aria-label="Mapa de vagas">
         <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div class="map-tb">
             <div class="mst">
-              <div class="ms"><span class="dot df"></span><span class="ms-n" id="m-f">—</span>&nbsp;livres</div>
               <div class="ms"><span class="dot do"></span><span class="ms-n" id="m-o">—</span>&nbsp;ocupadas</div>
+              <div class="ms"><span class="dot df"></span><span class="ms-n" id="m-f">—</span>&nbsp;livres</div>
               <div class="ms"><span class="dot dr"></span><span class="ms-n" id="m-r">—</span>&nbsp;reservadas</div>
             </div>
             <div class="flt-g">
-              <button class="flt on" onclick="setFlt('all',this)">Todas</button>
-              <button class="flt" onclick="setFlt('f',this)">Livres</button>
-              <button class="flt" onclick="setFlt('o',this)">Ocupadas</button>
-              <button class="flt" onclick="setFlt('r',this)">Reservadas</button>
+              <button type="button" class="flt on" onclick="setFlt('all',this)">Todas</button>
+              <button type="button" class="flt" onclick="setFlt('f',this)">Livres</button>
+              <button type="button" class="flt" onclick="setFlt('o',this)">Ocupadas</button>
+              <button type="button" class="flt" onclick="setFlt('r',this)">Reservadas</button>
             </div>
           </div>
           <div class="map-body">
@@ -373,12 +395,12 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- HISTÓRICO -->
-      <div class="page" id="page-hist">
+      <section class="page" id="page-hist" aria-label="Histórico de movimentações">
         <div class="hist-toolbar">
-          <input id="hist-search" placeholder="Buscar placa ou nome…" oninput="filterHist()"/>
+          <input id="hist-search" placeholder="Buscar placa ou nome…" oninput="filterHist()"/>  
           <select id="hist-filter" onchange="filterHist()"><option value="all">Todos</option><option value="entrada">Entrada</option><option value="saida">Saída</option></select>
           <select id="hist-pay" onchange="filterHist()"><option value="all">Todos pagamentos</option><option value="pix">PIX</option><option value="dinheiro">Dinheiro</option><option value="cartao">Cartão</option></select>
           <span class="ht-stat" id="hist-count"></span>
@@ -387,17 +409,17 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
           <div class="hth"><span>Placa</span><span>Proprietário</span><span>Vaga</span><span>Entrada</span><span>Saída</span><span>Pagamento</span><span>Total</span></div>
           <div id="hist-body"></div>
         </div>
-      </div>
+      </section>
 
       <!-- USUÁRIOS -->
-      <div class="page" id="page-usuarios">
+      <section class="page" id="page-usuarios" aria-label="Gestão de usuários">
         <div class="usr-toolbar">
           <input placeholder="Buscar usuário…" oninput="filterUsers(this.value)"/>
           <select onchange="filterUserRole(this.value)"><option value="all">Todos os perfis</option><option value="Administrador">Administrador</option><option value="Operador">Operador</option><option value="Supervisor">Supervisor</option></select>
-          <button class="btn-bl" style="margin-left:auto;" onclick="openUserModal(null)">+ Novo usuário</button>
+          <button type="button" class="btn-bl" style="margin-left:auto;" onclick="openUserModal(null)">+ Novo usuário</button>
         </div>
         <div class="usr-grid" id="usr-grid"></div>
-      </div>
+      </section>
 
     </div>
   </div>
@@ -406,23 +428,23 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
 <!-- MODAL USUÁRIO -->
 <div class="modal-overlay" id="user-modal" style="display:none;" onclick="closeModalOutside(event)">
   <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-title"><span id="modal-title-txt">Novo Usuário</span><button class="modal-close" onclick="closeUserModal()">×</button></div>
+    <div class="modal-title"><span id="modal-title-txt">Novo Usuário</span><button type="button" class="modal-close" onclick="closeUserModal()">×</button></div>
     <div class="form-row">
-      <div class="fld"><label>Nome completo *</label><input id="m-nome" placeholder="Nome"/></div>
-      <div class="fld"><label>E-mail *</label><input id="m-email" placeholder="email@empresa.com" type="email"/></div>
+      <div class="fld"><label for="m-nome">Nome completo *</label><input id="m-nome" placeholder="Nome"/></div>
+      <div class="fld"><label for="m-email">E-mail *</label><input id="m-email" placeholder="email@empresa.com" type="email"/></div>
     </div>
     <div class="form-row">
-      <div class="fld"><label>Perfil *</label><select id="m-role"><option value="Operador">Operador</option><option value="Supervisor">Supervisor</option><option value="Administrador">Administrador</option></select></div>
-      <div class="fld"><label>Status</label><select id="m-status"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
+      <div class="fld"><label for="m-role">Perfil *</label><select id="m-role"><option value="Operador">Operador</option><option value="Supervisor">Supervisor</option><option value="Administrador">Administrador</option></select></div>
+      <div class="fld"><label for="m-status">Status</label><select id="m-status"><option value="true">Ativo</option><option value="false">Inativo</option></select></div>
     </div>
     <div class="form-row">
-      <div class="fld"><label>Senha *</label><input id="m-senha" type="password" placeholder="••••••••"/></div>
-      <div class="fld"><label>Confirmar senha *</label><input id="m-senha2" type="password" placeholder="••••••••"/></div>
+      <div class="fld"><label for="m-senha">Senha *</label><input id="m-senha" type="password" placeholder="••••••••"/></div>
+      <div class="fld"><label for="m-senha2">Confirmar senha *</label><input id="m-senha2" type="password" placeholder="••••••••"/></div>
     </div>
     <div class="form-row full">
       <div class="fld"><label>Cor do avatar</label><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;" id="avatar-colors"></div></div>
     </div>
-    <div class="form-footer"><button class="btn-sec" onclick="closeUserModal()">Cancelar</button><button class="btn-prim" onclick="salvarUsuario()">Salvar usuário</button></div>
+    <div class="form-footer"><button type="button" class="btn-sec" onclick="closeUserModal()">Cancelar</button><button type="button" class="btn-prim" onclick="salvarUsuario()">Salvar usuário</button></div>
   </div>
 </div>
 
@@ -434,7 +456,7 @@ body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg-secondary);heig
       <div class="success-title">Saída registrada com sucesso!</div>
       <div class="success-sub" id="pay-modal-info" style="margin-top:8px;line-height:1.6;"></div>
     </div>
-    <button class="btn-prim" style="width:100%;margin-top:16px;" onclick="closePayModal()">Fechar</button>
+    <button type="button" class="btn-prim" style="width:100%;margin-top:16px;" onclick="closePayModal()">Fechar</button>
   </div>
 </div>
 
@@ -451,12 +473,12 @@ function randPlate(){let p='';for(let i=0;i<3;i++)p+=rnd(LETRAS.split(''));p+=Ma
 function randTime(){const h=7+Math.floor(Math.random()*8);const min=Math.floor(Math.random()*60);return(h<10?'0':'')+h+':'+(min<10?'0':'')+min;}
 function randCar(){const mb=rnd(MARCAS);return{marca:mb.m,modelo:rnd(mb.md),placa:randPlate(),cor:rnd(CORES)};}
 function nowTime(){const n=new Date();return n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');}
-function fmt(v){return'R$ '+v.toFixed(2).replace('.',',');}
+function fmt(v){return'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
 const TOTAL=5000;
 const SECTORS=[{name:'Setor A',count:1000},{name:'Setor B',count:1000},{name:'Setor C',count:1000},{name:'Setor D',count:1000},{name:'Setor E',count:1000}];
 const states=[];let allSpots=[],selIdx=null;
-for(let i=0;i<TOTAL;i++){const r=Math.random();const st=r<0.62?'o':r<0.90?'f':'r';const car=st!=='f'?randCar():null;const time=st==='o'?randTime():null;states.push({st,car,time});}
+{const scenario=Math.random();let stFn;if(scenario<0.1){stFn=()=>'f';}else if(scenario<0.2){stFn=()=>'o';}else{stFn=()=>{const r=Math.random();return r<0.62?'o':r<0.90?'f':'r';};}for(let i=0;i<TOTAL;i++){const st=stFn();const car=st!=='f'?randCar():null;const time=st==='o'?randTime():null;states.push({st,car,time});}}
 
 const patioVeiculos=[
   {placa:'BRA2E19',nome:'Carlos Mendes',entrada:'08:14',vaga:'A-112',marca:'Toyota',modelo:'Corolla',cor:CORES[0]},
@@ -478,17 +500,17 @@ let USERS=[
   {id:5,nome:'Thiago Pinto',iniciais:'TP',role:'Operador',email:'t.pinto@avanade.com',registros:19,ativo:false,cor:'#c0392b'},
   {id:6,nome:'Mariana Costa',iniciais:'MC',role:'Supervisor',email:'m.costa@avanade.com',registros:87,ativo:true,cor:'#BA7517'},
 ];
-let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='';
+let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0;
 
-function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?'🌙 Tema escuro':'☀️ Tema claro';}
+function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
 function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
-function updateStats(){const c=getCounts();document.getElementById('m-f').textContent=c.f.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-pat').textContent=(c.o+patioVeiculos.length).toLocaleString('pt-BR');document.getElementById('d-liv').textContent=c.f.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((c.f/TOTAL)*100)+'% livre';document.getElementById('dp-pct').textContent=Math.round((c.o/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round((c.o/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(receita);document.getElementById('d-sai').textContent=saidas+' saídas hoje';}
+function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-pat').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
 
-function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
+function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button type="button" class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
 
-function buildMap(){const area=document.getElementById('map-scroll');let gi=0;SECTORS.forEach(sec=>{const lbl=document.createElement('div');lbl.className='sec-lbl';lbl.textContent=sec.name+' ('+sec.count+' vagas)';area.appendChild(lbl);const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
+function buildMap(){const area=document.getElementById('map-scroll');let gi=0;allSpots=[];area.innerHTML='';SECTORS.forEach(sec=>{const lbl=document.createElement('div');lbl.className='sec-lbl';lbl.textContent=sec.name+' ('+sec.count+' vagas)';area.appendChild(lbl);const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
 function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}selIdx=idx;el.classList.add('sel');const s=states[idx];document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;const body=document.getElementById('dp-bd');if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:8px;">Nenhum veículo nesta vaga.</div>';}else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}  }
 function setFlt(f,btn){document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');allSpots.forEach(({el,idx})=>{el.style.opacity=(f==='all'||states[idx].st===f)?'1':'0.12';});}
 
@@ -496,7 +518,7 @@ const swRow=document.getElementById('swatch-row');
 CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;};swRow.appendChild(sw);});
 function sortearVaga(){const sec=rnd(SETORES);const num=Math.floor(Math.random()*1000)+1;document.getElementById('vaga-num').textContent=sec+'-'+num;}
 function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sortearVaga();}
-function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});renderDash();renderHist(histData);document.getElementById('d-ent').textContent=(parseInt(document.getElementById('d-ent').textContent)||61)+1;setTimeout(()=>{box.style.display='none';limparForm();},4000);}
+function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
 
 function iniciarSaida(placa){goPage('saida',document.querySelectorAll('.ni')[2]);document.getElementById('s-placa').value=placa;buscarVeiculo();}
 function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
@@ -512,7 +534,7 @@ function filterHist(){const q=document.getElementById('hist-search').value.toLow
 
 function roleClass(r){return r==='Administrador'?'rp-ad':r==='Supervisor'?'rp-sup':'rp-op';}
 function getInitials(nome){return nome.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
-function renderUsers(data){const grid=document.getElementById('usr-grid');grid.innerHTML='';data.forEach(u=>{const card=document.createElement('div');card.className='uc';card.innerHTML=`<div class="uc-top"><div class="uav" style="background:${u.cor}22;color:${u.cor}">${u.iniciais}</div><div><div class="uc-name">${u.nome}</div><div class="uc-role">${u.email}</div></div></div><div class="uc-info"><div class="ui-row"><span class="ui-k">Perfil</span><span class="ui-v"><span class="role-pill ${roleClass(u.role)}">${u.role}</span></span></div><div class="ui-row"><span class="ui-k">Registros</span><span class="ui-v">${u.registros}</span></div><div class="ui-row"><span class="ui-k">Status</span><span class="ui-v" style="color:${u.ativo?'var(--green-text)':'var(--red-text)'}">${u.ativo?'Ativo':'Inativo'}</span></div></div><div class="uc-footer"><button class="uf-btn" onclick="openUserModal(${u.id})">Editar</button><button class="uf-btn danger" onclick="toggleUserStatus(${u.id})">${u.ativo?'Desativar':'Reativar'}</button></div>`;grid.appendChild(card);});}
+function renderUsers(data){const grid=document.getElementById('usr-grid');grid.innerHTML='';data.forEach(u=>{const card=document.createElement('div');card.className='uc';card.innerHTML=`<div class="uc-top"><div class="uav" style="background:${u.cor}22;color:${u.cor}">${u.iniciais}</div><div><div class="uc-name">${u.nome}</div><div class="uc-role">${u.email}</div></div></div><div class="uc-info"><div class="ui-row"><span class="ui-k">Perfil</span><span class="ui-v"><span class="role-pill ${roleClass(u.role)}">${u.role}</span></span></div><div class="ui-row"><span class="ui-k">Registros</span><span class="ui-v">${u.registros}</span></div><div class="ui-row"><span class="ui-k">Status</span><span class="ui-v" style="color:${u.ativo?'var(--green-text)':'var(--red-text)'}">${u.ativo?'Ativo':'Inativo'}</span></div></div><div class="uc-footer"><button type="button" class="uf-btn" onclick="openUserModal(${u.id})">Editar</button><button type="button" class="uf-btn danger" onclick="toggleUserStatus(${u.id})">${u.ativo?'Desativar':'Reativar'}</button></div>`;grid.appendChild(card);});}
 function filterUsers(q){renderUsers(q?USERS.filter(u=>u.nome.toLowerCase().includes(q.toLowerCase())||u.email.toLowerCase().includes(q.toLowerCase())):USERS);}
 function filterUserRole(r){renderUsers(r==='all'?USERS:USERS.filter(u=>u.role===r));}
 function toggleUserStatus(id){const u=USERS.find(x=>x.id===id);if(u)u.ativo=!u.ativo;renderUsers(USERS);}

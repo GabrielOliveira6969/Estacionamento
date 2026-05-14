@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pague Aqui – Resumo do Pedido</title>
   <style>
@@ -225,6 +226,16 @@
 
     .btn-continue:hover { background: #1d4ed8; }
     .btn-back:hover { background: #f9fafb; }
+  
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #2563eb;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px;
+      flex-shrink: 0;
+    }
+    .brand-flag { display: none; }
   </style>
 </head>
 <body>
@@ -233,9 +244,7 @@
   <!-- Header -->
   <div class="card-header">
     <div class="brand">
-      <div class="brand-flag">
-        <span></span><span></span><span></span>
-      </div>
+      <div class="brand-icon">P</div>
       ESTACIONAMENTO PAGUE AQUI
     </div>
     <div class="header-datetime">
@@ -316,5 +325,18 @@
   </div>
 </div>
 
+<script>
+  (function(){
+    var now=new Date();
+    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
+    var h=now.getHours().toString().padStart(2,"0");
+    var m=now.getMinutes().toString().padStart(2,"0");
+    var dt=d+" · "+h+":"+m;
+    document.querySelectorAll(".header-datetime").forEach(function(el){
+      var svg=el.querySelector("svg");
+      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
+    });
+  })();
+</script>
 </body>
 </html>
