@@ -74,7 +74,9 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 .page{display:none;flex-direction:column;flex:1;overflow:hidden;}
 .page.active{display:flex;}
 
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;padding:12px 16px 0;flex-shrink:0;}
+.stats{display:flex;flex-direction:column;gap:9px;padding:12px 16px 0;flex-shrink:0;}
+.stats-row1{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.stats-row2{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
 .sc{background:var(--card-bg);border-radius:9px;padding:11px 13px;border:1px solid var(--border);}
 .sc[onclick]:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(74,159,224,0.12);}
 #card-ocu:hover{border-color:#E24B4A !important;box-shadow:0 0 0 3px rgba(226,75,74,0.15) !important;}
@@ -136,8 +138,13 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 .flt.on{background:var(--accent);color:#fff;border-color:var(--accent);}
 .map-body{flex:1;display:flex;overflow:hidden;min-height:0;}
 .map-scroll{flex:1;overflow-y:auto;padding:10px 14px;background:var(--bg-secondary);}
-.sec-lbl{font-size:10px;font-weight:600;color:var(--text-secondary);margin:8px 0 4px;text-transform:uppercase;letter-spacing:0.4px;}
+.sec-lbl{font-size:10px;font-weight:600;color:var(--text-secondary);margin:8px 0 4px;text-transform:uppercase;letter-spacing:0.4px;display:flex;align-items:center;gap:5px;padding:5px 8px;border-radius:6px;cursor:pointer;transition:background .2s, transform .2s, box-shadow .2s, color .2s;}
 .sec-lbl:first-child{margin-top:0;}
+.sec-lbl:hover{background:var(--bg-secondary);transform:translateX(5px);box-shadow:2px 2px 8px rgba(0,0,0,0.08);}
+.sec-lbl-sel{background:var(--blue-bg) !important;color:var(--accent) !important;transform:translateX(5px);box-shadow:2px 2px 8px rgba(74,159,224,0.15);}
+.sec-info{font-weight:600;text-transform:none;letter-spacing:0;color:var(--text-primary);font-size:10px;}
+.sec-lbl-sel .sec-info strong{color:var(--accent);}
+.sec-name{color:var(--text-primary);}
 .road{height:6px;background:var(--border);border-radius:2px;margin:3px 0;}
 .spots{display:flex;flex-wrap:wrap;gap:2px;}
 .sp{width:8px;height:13px;border-radius:1px;cursor:pointer;transition:opacity 0.1s;}
@@ -236,6 +243,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 
     <nav class="sb-nav" role="navigation" aria-label="Menu principal">
       <button type="button" class="ni active" aria-current="page" onclick="goPage('dashboard',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>Dashboard</button>
+      <button type="button" class="ni" onclick="goPage('entradaSaida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Entrada e Saída de Veículos</button>
       <button type="button" class="ni" onclick="goPage('entrada',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>Entrada de Veículos</button>
       <button type="button" class="ni" onclick="goPage('saida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 10V12a3 3 0 0 0 6 0v-2" stroke="currentColor" stroke-width="1.2"/></svg>Saída / Pagamento</button>
       <button type="button" class="ni" onclick="goPage('mapa',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Vagas</button>
@@ -264,15 +272,84 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
       <!-- DASHBOARD -->
       <section class="page active" id="page-dashboard" aria-label="Dashboard"> 
         <div class="stats" id="stats-grid">
-          <div class="sc" id="card-ocu" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('o',document.querySelectorAll('.flt')[2]);" style="cursor:pointer;border-color:#E24B4A;" title="Ver vagas ocupadas no mapa"><div class="sc-lbl">Vagas ocupadas ↗</div><div class="sc-val" id="d-ocu">—</div><div class="sc-sub r" id="d-opct">—</div></div>
-          <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
-          <div class="sc" id="card-pat"><div class="sc-lbl">Entradas Manuais</div><div class="sc-val" id="d-pat">—</div><div class="sc-sub g">+4 hoje</div></div>
-          <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">↑ 8% vs ontem</div></div>
-          <div class="sc"><div class="sc-lbl">Receita hoje</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
+          <div class="stats-row1">
+            <div class="sc" id="card-ocu" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('o',document.querySelectorAll('.flt')[2]);" style="cursor:pointer;border-color:#E24B4A;" title="Ver vagas ocupadas no mapa"><div class="sc-lbl">Vagas ocupadas ↗</div><div class="sc-val" id="d-ocu">—</div><div class="sc-sub r" id="d-opct">—</div></div>
+            <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
+          </div>
+          <div class="stats-row2">
+            <div class="sc" style="cursor:pointer;" onclick="goPage('entrada',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Entrada ↗</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">Total de entradas</div></div>
+            <div class="sc" style="cursor:pointer;" onclick="goPage('saida',document.querySelectorAll('.ni')[2])"><div class="sc-lbl">Saída ↗</div><div class="sc-val" id="d-sai2">0</div><div class="sc-sub g">Total de saídas</div></div>
+            <div class="sc"><div class="sc-lbl">Receita hoje</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
+          </div>
         </div>
         <div class="tbl-wrap">
           <div class="th th5"><span>Placa</span><span>Proprietário</span><span>Entrada</span><span>Status</span><span>Ação</span></div>
           <div id="dash-body"></div>
+        </div>
+      </section>
+
+      <!-- ENTRADA E SAÍDA -->
+      <section class="page" id="page-entradaSaida" aria-label="Entrada e Saída de Veículos">
+        <div style="display:flex;flex:1;overflow:hidden;gap:0;">
+          <div style="flex:1;overflow-y:auto;padding:20px;border-right:1px solid var(--border);">
+            <div class="fc-title" style="margin-bottom:16px;">Registrar entrada de veículo</div>
+            <div id="suc-box2" class="success-box"></div>
+            <div class="form-row">
+              <div class="fld"><label for="e2-placa">Placa *</label><input class="plate-input" id="e2-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
+              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="e2-vaga-num">A-001</span><button type="button" class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga2()">Sortear</button></div></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label for="e2-nome">Proprietário *</label><input id="e2-nome" placeholder="Nome completo"/></div>
+              <div class="fld"><label for="e2-doc">Documento (CPF/RG)</label><input id="e2-doc" placeholder="000.000.000-00"/></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label for="e2-marca">Marca *</label><select id="e2-marca"><option value="">Selecione…</option><option>Toyota</option><option>Volkswagen</option><option>Chevrolet</option><option>Hyundai</option><option>Fiat</option><option>Jeep</option><option>Honda</option><option>Renault</option><option>Ford</option><option>BMW</option><option>Mercedes-Benz</option><option>Outro</option></select></div>
+              <div class="fld"><label for="e2-modelo">Modelo *</label><input id="e2-modelo" placeholder="Ex: Corolla"/></div>
+            </div>
+            <div class="form-row">
+              <div class="fld"><label for="e2-cor">Cor *</label><div class="swatch-row" id="e2-swatch-row"></div><input id="e2-cor" placeholder="Selecione uma cor" readonly style="margin-top:5px;font-size:11px;"/></div>
+              <div class="fld"><label for="e2-tipo">Tipo</label><select id="e2-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select></div>
+            </div>
+            <div class="form-row full"><div class="fld"><label for="e2-obs">Observações</label><input id="e2-obs" placeholder="Ex: veículo com dano na lateral…"/></div></div>
+            <div class="form-footer"><button type="button" class="btn-sec" onclick="limparForm2()">Limpar</button><button type="button" class="btn-prim" onclick="registrarEntrada2()">Confirmar entrada</button></div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:20px;">
+            <div class="fc-title" style="margin-bottom:16px;">Registrar Saída e Pagamento</div>
+            <div class="form-row full">
+              <div class="fld"><label for="s2-placa">Buscar por placa *</label>
+                <div style="display:flex;gap:7px;"><input class="plate-input" id="s2-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()" style="flex:1;"/><button type="button" class="btn-prim" onclick="buscarVeiculo2()">Buscar</button></div>
+              </div>
+            </div>
+            <div id="s2-veiculo-info" style="display:none;">
+              <div style="background:var(--bg-secondary);border-radius:8px;padding:13px;margin:10px 0;border:1px solid var(--border);">
+                <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:9px;">Veículo encontrado</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+                  <div class="dpf"><div class="dpk">Placa</div><span class="dp-pl" id="s2-info-placa"></span></div>
+                  <div class="dpf"><div class="dpk">Proprietário</div><div class="dpv" id="s2-info-nome"></div></div>
+                  <div class="dpf"><div class="dpk">Vaga</div><div class="dpv" id="s2-info-vaga"></div></div>
+                  <div class="dpf"><div class="dpk">Entrada</div><div class="dpv" id="s2-info-ent"></div></div>
+                  <div class="dpf"><div class="dpk">Permanência</div><div class="dpv" id="s2-info-dur"></div></div>
+                  <div class="dpf"><div class="dpk">Veículo</div><div class="dpv" id="s2-info-vei"></div></div>
+                </div>
+              </div>
+              <div class="total-box">
+                <div class="total-row"><span>Valor por hora</span><span>R$ 5,00</span></div>
+                <div class="total-row"><span>Horas/frações</span><span id="s2-horas">—</span></div>
+                <div class="total-final"><span>Total a pagar</span><span id="s2-total">R$ —</span></div>
+              </div>
+              <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin:12px 0 6px;">Forma de pagamento</div>
+              <div class="pay-method">
+                <div class="pay-opt" onclick="selectPay2('pix',this)"><div class="pay-icon">📱</div><div class="pay-lbl">PIX</div><div class="pay-sub">Instantâneo</div></div>
+                <div class="pay-opt" onclick="selectPay2('dinheiro',this)"><div class="pay-icon">💵</div><div class="pay-lbl">Dinheiro</div><div class="pay-sub">Troco disponível</div></div>
+                <div class="pay-opt" onclick="selectPay2('cartao',this)"><div class="pay-icon">💳</div><div class="pay-lbl">Cartão</div><div class="pay-sub">Débito / Crédito</div></div>
+              </div>
+              <div id="s2-pix-section" style="display:none;"><div class="pix-box"><div class="pix-qr">QR Code</div><div class="pix-key">Chave PIX: <span>acc.park@avanade.com</span></div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px;">Aguardando confirmação…</div></div></div>
+              <div id="s2-dinheiro-section" style="display:none;"><div class="fld" style="margin-top:8px;"><label>Valor recebido (R$)</label><input id="s2-recebido" type="number" placeholder="0,00" oninput="calcTroco2()" style="max-width:160px;"><div style="margin-top:6px;font-size:12px;color:var(--text-secondary);">Troco: <strong id="s2-troco" style="color:var(--green-text);">R$ 0,00</strong></div></div></div>
+              <div id="s2-cartao-section" style="display:none;"><div style="background:var(--bg-secondary);border-radius:8px;padding:12px;font-size:11px;color:var(--text-secondary);margin-top:8px;border:1px solid var(--border);"><div style="margin-bottom:4px;">💳 Aproxime ou insira o cartão na maquininha.</div><div>Débito ou crédito em até 12x sem juros.</div></div></div>
+              <div class="form-footer"><button type="button" class="btn-sec" onclick="cancelarSaida2()">Cancelar</button><button type="button" class="btn-prim" id="s2-btn-confirmar" onclick="confirmarSaida2()" disabled style="opacity:0.5;">Confirmar saída</button></div>
+            </div>
+            <div id="s2-saida-vazio" style="margin-top:12px;font-size:12px;color:var(--text-tertiary);">Digite a placa do veículo para iniciar o processo de saída.</div>
+          </div>
         </div>
       </section>
 
@@ -368,7 +445,6 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 
       <!-- MAPA -->
       <section class="page" id="page-mapa" aria-label="Mapa de vagas">
-        <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
           <div class="map-tb">
             <div class="mst">
               <div class="ms"><span class="dot do"></span><span class="ms-n" id="m-o">—</span>&nbsp;ocupadas</div>
@@ -394,7 +470,6 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       <!-- HISTÓRICO -->
@@ -503,15 +578,18 @@ let USERS=[
 let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0;
 
 function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
-function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;}
+function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
-function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-pat').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
+function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';document.getElementById('d-ent').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-sai2').textContent=saidas.toLocaleString('pt-BR');const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
 
 function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button type="button" class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
 
-function buildMap(){const area=document.getElementById('map-scroll');let gi=0;allSpots=[];area.innerHTML='';SECTORS.forEach(sec=>{const lbl=document.createElement('div');lbl.className='sec-lbl';lbl.textContent=sec.name+' ('+sec.count+' vagas)';area.appendChild(lbl);const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
-function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}selIdx=idx;el.classList.add('sel');const s=states[idx];document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;const body=document.getElementById('dp-bd');if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:8px;">Nenhum veículo nesta vaga.</div>';}else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}  }
+let selectedSector=null;
+function buildMap(){const area=document.getElementById('map-scroll');let gi=0;allSpots=[];area.innerHTML='';SECTORS.forEach((sec,sIdx)=>{const secStart=gi;const livresNoSetor=states.slice(gi,gi+sec.count).filter(s=>s.st==='f').length;const lbl=document.createElement('div');lbl.className='sec-lbl'+(selectedSector===sIdx?' sec-lbl-sel':'');lbl.innerHTML=`<span class="sec-name">${sec.name}</span> <span class="sec-info">(Vagas disponíveis: <strong>${livresNoSetor}</strong>)</span>`;lbl.style.cursor='pointer';lbl.addEventListener('click',()=>{if(selectedSector===sIdx){selectedSector=null;document.getElementById('dp-s').textContent='Nenhuma selecionada';document.getElementById('dp-bd').innerHTML='<div class="dp-mt">Clique em uma vaga para ver detalhes.</div>';}else{selectedSector=sIdx;showSectorAvailable(sec,sIdx,secStart);}buildMap();});area.appendChild(lbl);if(selectedSector!==null&&selectedSector!==sIdx){gi+=sec.count;return;}const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
+
+function showSectorAvailable(sec,sIdx,secStart){const prefix=sec.name.replace('Setor ','');const livres=[];for(let i=0;i<sec.count;i++){if(states[secStart+i].st==='f')livres.push(prefix+(i+1));}document.getElementById('dp-s').textContent=sec.name+' — Vagas livres';const body=document.getElementById('dp-bd');if(livres.length===0){body.innerHTML='<div class="dp-mt">Nenhuma vaga disponível neste setor.</div>';}else{body.innerHTML=`<div style="font-size:10px;color:var(--text-secondary);margin-bottom:8px;">${livres.length} vaga(s) disponível(eis)</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">${livres.map(v=>`<span style="background:var(--green-bg,#e6f7e9);color:var(--green-text,#1a7431);border:1px solid #b7dfc0;border-radius:5px;padding:4px 2px;font-size:10px;font-weight:600;text-align:center;">${v}</span>`).join('')}</div>`;}body.parentElement.scrollTop=0;}
+function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}selIdx=idx;el.classList.add('sel');const s=states[idx];document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;const body=document.getElementById('dp-bd');if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:8px;">Nenhum veículo nesta vaga.</div>';}else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}document.getElementById('dp-bd').parentElement.scrollTop=0;}
 function setFlt(f,btn){document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');allSpots.forEach(({el,idx})=>{el.style.opacity=(f==='all'||states[idx].st===f)?'1':'0.12';});}
 
 const swRow=document.getElementById('swatch-row');
