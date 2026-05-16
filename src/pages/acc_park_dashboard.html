@@ -206,6 +206,8 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 .uf-btn.danger{border-color:#f87171;color:var(--red-text);}
 
 .pay-method{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0;}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.veiculo-anim{animation:fadeSlideIn 0.3s ease;}
 .pay-opt{border:1px solid var(--border2);border-radius:8px;padding:12px 8px;cursor:pointer;text-align:center;background:var(--bg-primary);}
 .pay-opt:hover,.pay-opt.sel{border-color:var(--accent);background:var(--blue-bg);}
 .pay-icon{font-size:22px;margin-bottom:5px;}
@@ -290,40 +292,38 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 
       <!-- ENTRADA E SAÍDA -->
       <section class="page" id="page-entradaSaida" aria-label="Entrada e Saída de Veículos">
-        <div style="display:flex;flex:1;overflow:hidden;gap:0;">
-          <div style="flex:1;overflow-y:auto;padding:20px;border-right:1px solid var(--border);">
+        <div style="display:flex;flex-direction:column;flex:1;overflow-y:auto;gap:0;">
+
+          <!-- LINHA 1: ENTRADA -->
+          <div style="padding:20px 24px;border-bottom:2px solid var(--border);">
             <div class="fc-title" style="margin-bottom:16px;">Registrar entrada de veículo</div>
             <div id="suc-box2" class="success-box"></div>
-            <div class="form-row">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
               <div class="fld"><label for="e2-placa">Placa *</label><input class="plate-input" id="e2-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
-              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="e2-vaga-num">A-001</span><button type="button" class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga2()">Sortear</button></div></div>
-            </div>
-            <div class="form-row">
+              <div class="fld"><label>Vaga atribuída</label><div style="margin-top:3px;"><span class="vaga-badge" id="e2-vaga-num" style="font-size:13px;padding:6px 12px;border-radius:6px;letter-spacing:0.5px;">A-001</span></div></div>
               <div class="fld"><label for="e2-nome">Proprietário *</label><input id="e2-nome" placeholder="Nome completo"/></div>
               <div class="fld"><label for="e2-doc">Documento (CPF/RG)</label><input id="e2-doc" placeholder="000.000.000-00"/></div>
-            </div>
-            <div class="form-row">
               <div class="fld"><label for="e2-marca">Marca *</label><select id="e2-marca"><option value="">Selecione…</option><option>Toyota</option><option>Volkswagen</option><option>Chevrolet</option><option>Hyundai</option><option>Fiat</option><option>Jeep</option><option>Honda</option><option>Renault</option><option>Ford</option><option>BMW</option><option>Mercedes-Benz</option><option>Outro</option></select></div>
               <div class="fld"><label for="e2-modelo">Modelo *</label><input id="e2-modelo" placeholder="Ex: Corolla"/></div>
-            </div>
-            <div class="form-row">
-              <div class="fld"><label for="e2-cor">Cor *</label><div class="swatch-row" id="e2-swatch-row"></div><input id="e2-cor" placeholder="Selecione uma cor" readonly style="margin-top:5px;font-size:11px;"/></div>
+              <div class="fld"><label for="e2-cor">Cor *</label><div class="swatch-row" id="e2-swatch-row"></div><div style="display:flex;align-items:center;gap:6px;margin-top:6px;"><span id="e2-cor-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ccc;border:1px solid #aaa;flex-shrink:0;"></span><span id="e2-cor-label" style="font-size:11px;color:var(--text-secondary);">Nenhuma selecionada</span><input id="e2-cor" type="hidden"/></div></div>
               <div class="fld"><label for="e2-tipo">Tipo</label><select id="e2-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select></div>
+              <div class="fld"><label for="e2-obs">Observações</label><input id="e2-obs" placeholder="Ex: veículo com dano na lateral…"/></div>
             </div>
-            <div class="form-row full"><div class="fld"><label for="e2-obs">Observações</label><input id="e2-obs" placeholder="Ex: veículo com dano na lateral…"/></div></div>
-            <div class="form-footer"><button type="button" class="btn-sec" onclick="limparForm2()">Limpar</button><button type="button" class="btn-prim" onclick="registrarEntrada2()">Confirmar entrada</button></div>
+            <div class="form-footer" style="margin-top:14px;"><button type="button" class="btn-sec" onclick="limparForm2()">Limpar</button><button type="button" class="btn-prim" onclick="registrarEntrada2()">Confirmar entrada</button></div>
           </div>
-          <div style="flex:1;overflow-y:auto;padding:20px;">
+
+          <!-- LINHA 2: SAÍDA -->
+          <div style="padding:20px 24px;">
             <div class="fc-title" style="margin-bottom:16px;">Registrar Saída e Pagamento</div>
-            <div class="form-row full">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start;">
               <div class="fld"><label for="s2-placa">Buscar por placa *</label>
                 <div style="display:flex;gap:7px;"><input class="plate-input" id="s2-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()" style="flex:1;"/><button type="button" class="btn-prim" onclick="buscarVeiculo2()">Buscar</button></div>
               </div>
             </div>
-            <div id="s2-veiculo-info" style="display:none;">
+            <div id="s2-veiculo-info" style="display:none;margin-top:14px;">
               <div style="background:var(--bg-secondary);border-radius:8px;padding:13px;margin:10px 0;border:1px solid var(--border);">
                 <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:9px;">Veículo encontrado</div>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;">
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px;">
                   <div class="dpf"><div class="dpk">Placa</div><span class="dp-pl" id="s2-info-placa"></span></div>
                   <div class="dpf"><div class="dpk">Proprietário</div><div class="dpv" id="s2-info-nome"></div></div>
                   <div class="dpf"><div class="dpk">Vaga</div><div class="dpv" id="s2-info-vaga"></div></div>
@@ -333,23 +333,18 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
                 </div>
               </div>
               <div class="total-box">
-                <div class="total-row"><span>Valor por hora</span><span>R$ 5,00</span></div>
-                <div class="total-row"><span>Horas/frações</span><span id="s2-horas">—</span></div>
-                <div class="total-final"><span>Total a pagar</span><span id="s2-total">R$ —</span></div>
-              </div>
-              <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin:12px 0 6px;">Forma de pagamento</div>
-              <div class="pay-method">
-                <div class="pay-opt" onclick="selectPay2('pix',this)"><div class="pay-icon">📱</div><div class="pay-lbl">PIX</div><div class="pay-sub">Instantâneo</div></div>
-                <div class="pay-opt" onclick="selectPay2('dinheiro',this)"><div class="pay-icon">💵</div><div class="pay-lbl">Dinheiro</div><div class="pay-sub">Troco disponível</div></div>
-                <div class="pay-opt" onclick="selectPay2('cartao',this)"><div class="pay-icon">💳</div><div class="pay-lbl">Cartão</div><div class="pay-sub">Débito / Crédito</div></div>
-              </div>
+                  <div class="total-row"><span>Valor por hora</span><span>R$ 5,00</span></div>
+                  <div class="total-row"><span>Horas/frações</span><span id="s2-horas">—</span></div>
+                  <div class="total-final"><span>Total a pagar</span><span id="s2-total">R$ —</span></div>
+                </div>
               <div id="s2-pix-section" style="display:none;"><div class="pix-box"><div class="pix-qr">QR Code</div><div class="pix-key">Chave PIX: <span>acc.park@avanade.com</span></div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px;">Aguardando confirmação…</div></div></div>
               <div id="s2-dinheiro-section" style="display:none;"><div class="fld" style="margin-top:8px;"><label>Valor recebido (R$)</label><input id="s2-recebido" type="number" placeholder="0,00" oninput="calcTroco2()" style="max-width:160px;"><div style="margin-top:6px;font-size:12px;color:var(--text-secondary);">Troco: <strong id="s2-troco" style="color:var(--green-text);">R$ 0,00</strong></div></div></div>
               <div id="s2-cartao-section" style="display:none;"><div style="background:var(--bg-secondary);border-radius:8px;padding:12px;font-size:11px;color:var(--text-secondary);margin-top:8px;border:1px solid var(--border);"><div style="margin-bottom:4px;">💳 Aproxime ou insira o cartão na maquininha.</div><div>Débito ou crédito em até 12x sem juros.</div></div></div>
-              <div class="form-footer"><button type="button" class="btn-sec" onclick="cancelarSaida2()">Cancelar</button><button type="button" class="btn-prim" id="s2-btn-confirmar" onclick="confirmarSaida2()" disabled style="opacity:0.5;">Confirmar saída</button></div>
+              <div class="form-footer" style="margin-top:14px;"><button type="button" class="btn-sec" onclick="cancelarSaida2()">Cancelar</button><button type="button" class="btn-prim" id="s2-btn-confirmar" onclick="irParaPagamento()">Ir para pagamento</button></div>
             </div>
             <div id="s2-saida-vazio" style="margin-top:12px;font-size:12px;color:var(--text-tertiary);">Digite a placa do veículo para iniciar o processo de saída.</div>
           </div>
+
         </div>
       </section>
 
@@ -361,7 +356,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
             <div id="suc-box" class="success-box"></div>
             <div class="form-row">
               <div class="fld"><label for="f-placa">Placa *</label><input class="plate-input" id="f-placa" maxlength="7" placeholder="ABC1D23" oninput="this.value=this.value.toUpperCase()"/></div>
-              <div class="fld"><label>Vaga atribuída</label><div style="display:flex;align-items:center;gap:7px;margin-top:3px;"><span class="vaga-badge" id="vaga-num">A-247</span><button type="button" class="btn-sec" style="font-size:10px;padding:4px 9px;" onclick="sortearVaga()">Sortear</button></div></div>
+              <div class="fld"><label>Vaga atribuída</label><div style="margin-top:3px;"><span class="vaga-badge" id="vaga-num" style="font-size:13px;padding:6px 12px;border-radius:6px;letter-spacing:0.5px;">A-247</span></div></div>
             </div>
             <div class="form-row">
               <div class="fld"><label for="f-nome">Proprietário *</label><input id="f-nome" placeholder="Nome completo"/></div>
@@ -372,7 +367,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
               <div class="fld"><label for="f-modelo">Modelo *</label><input id="f-modelo" placeholder="Ex: Corolla"/></div>
             </div>
             <div class="form-row">
-              <div class="fld"><label for="f-cor">Cor *</label><div class="swatch-row" id="swatch-row"></div><input id="f-cor" placeholder="Selecione uma cor" readonly style="margin-top:5px;font-size:11px;"/></div>
+              <div class="fld"><label for="f-cor">Cor *</label><div class="swatch-row" id="swatch-row"></div><div style="display:flex;align-items:center;gap:6px;margin-top:6px;"><span id="f-cor-dot" style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#ccc;border:1px solid #aaa;flex-shrink:0;"></span><span id="f-cor-label" style="font-size:11px;color:var(--text-secondary);">Nenhuma selecionada</span><input id="f-cor" type="hidden"/></div></div>
               <div class="fld"><label for="f-tipo">Tipo</label><select id="f-tipo"><option>Carro</option><option>Moto</option><option>Van</option><option>Caminhonete</option></select></div>
             </div>
             <div class="form-row full"><div class="fld"><label for="f-obs">Observações</label><input id="f-obs" placeholder="Ex: veículo com dano na lateral…"/></div></div>
@@ -470,6 +465,53 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
               </div>
             </div>
           </div>
+      </section>
+
+      <!-- PAGAMENTO -->
+      <section class="page" id="page-pagamento" aria-label="Pagamento">
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;background:#e8ebf0;overflow-y:auto;padding:24px;">
+          <div style="background:#fff;border-radius:16px;width:560px;padding:28px 32px 24px;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+              <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:#1a1a2e;text-transform:uppercase;letter-spacing:0.5px;">
+                <div style="width:26px;height:26px;background:#2563eb;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:14px;">P</div>
+                PAGUE AQUI
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:12px;color:#6b7280;" id="pag-datetime">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5V8l2.5 2" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div style="text-align:center;margin-bottom:28px;">
+              <h1 style="font-size:26px;font-weight:700;color:#1a1a2e;margin-bottom:6px;">Bem-vindo ao ACC PARK!</h1>
+              <p style="font-size:14px;color:#6b7280;">Escolha a forma de pagamento</p>
+              <div id="pag-placa-info" style="margin-top:10px;display:none;font-size:13px;color:#2563eb;font-weight:600;"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;">
+              <div onclick="window.location.href='index.html'" style="background:#2563eb;border-radius:14px;padding:18px 14px 14px;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div><h3 style="font-size:14px;font-weight:700;">Cartão</h3><p style="font-size:11px;opacity:0.85;margin-top:3px;">Débito ou crédito</p></div>
+                <div style="background:rgba(255,255,255,0.25);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-top:14px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+              </div>
+              <div onclick="window.location.href='index.html'" style="background:#16a34a;border-radius:14px;padding:18px 14px 14px;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div><h3 style="font-size:14px;font-weight:700;">Pix</h3><p style="font-size:11px;opacity:0.85;margin-top:3px;">Pagamento instantâneo</p></div>
+                <div style="background:rgba(255,255,255,0.25);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-top:14px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+              </div>
+              <div onclick="window.location.href='index.html'" style="background:#ea8c00;border-radius:14px;padding:18px 14px 14px;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div><h3 style="font-size:14px;font-weight:700;">Dinheiro</h3><p style="font-size:11px;opacity:0.85;margin-top:3px;">Pagamento em espécie</p></div>
+                <div style="background:rgba(255,255,255,0.25);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-top:14px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+              </div>
+              <div onclick="window.location.href='index.html'" style="background:#7c3aed;border-radius:14px;padding:18px 14px 14px;color:#fff;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 20px rgba(0,0,0,0.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                <div><h3 style="font-size:14px;font-weight:700;">QR Code</h3><p style="font-size:11px;opacity:0.85;margin-top:3px;">Débito contactless</p></div>
+                <div style="background:rgba(255,255,255,0.25);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-top:14px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid #f0f0f0;padding-top:14px;">
+              <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#6b7280;">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5"><path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/></svg>
+                Transação segura
+              </div>
+              <div style="font-size:11px;color:#9ca3af;">Visa · Master · Elo · Pix</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- HISTÓRICO -->
@@ -578,7 +620,7 @@ let USERS=[
 let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0;
 
 function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
-function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários'};document.getElementById('page-title').textContent=titles[id]||id;if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}}
+function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários',entradaSaida:'Entrada e Saída de Veículos',pagamento:'Pagamento'};document.getElementById('page-title').textContent=titles[id]||id;if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
 function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';document.getElementById('d-ent').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-sai2').textContent=saidas.toLocaleString('pt-BR');const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
@@ -593,17 +635,29 @@ function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpot
 function setFlt(f,btn){document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');allSpots.forEach(({el,idx})=>{el.style.opacity=(f==='all'||states[idx].st===f)?'1':'0.12';});}
 
 const swRow=document.getElementById('swatch-row');
-CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;};swRow.appendChild(sw);});
-function sortearVaga(){const sec=rnd(SETORES);const num=Math.floor(Math.random()*1000)+1;document.getElementById('vaga-num').textContent=sec+'-'+num;}
-function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sortearVaga();}
+CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;document.getElementById('f-cor-dot').style.background=c.h;document.getElementById('f-cor-label').textContent=c.n;document.getElementById('f-cor-label').style.color='var(--text-primary)';};swRow.appendChild(sw);});
+const swRow2=document.getElementById('e2-swatch-row');
+CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#e2-swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('e2-cor').value=c.n;document.getElementById('e2-cor-dot').style.background=c.h;document.getElementById('e2-cor-label').textContent=c.n;document.getElementById('e2-cor-label').style.color='var(--text-primary)';};swRow2.appendChild(sw);});
+function getVagasLivres(){const livres=[];let gi=0;SECTORS.forEach(sec=>{const prefix=sec.name.replace('Setor ','');for(let i=0;i<sec.count;i++){if(states[gi].st==='f')livres.push({label:prefix+'-'+(i+1),idx:gi,secIdx:SECTORS.indexOf(sec)});gi++;}});return livres;}
+function getProximaVaga(){const livres=getVagasLivres();if(livres.length===0)return null;// Prioriza o setor de menor índice com vagas livres
+return livres[0].label;}
+function sortearVaga(){const vaga=getProximaVaga();document.getElementById('vaga-num').textContent=vaga||'Sem vagas';}
+function sortearVaga2(){const vaga=getProximaVaga();document.getElementById('e2-vaga-num').textContent=vaga||'Sem vagas';}
+function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');document.getElementById('f-cor-dot').style.background='#ccc';document.getElementById('f-cor-label').textContent='Nenhuma selecionada';document.getElementById('f-cor-label').style.color='var(--text-secondary)';sortearVaga();}
 function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
 
 function iniciarSaida(placa){goPage('saida',document.querySelectorAll('.ni')[2]);document.getElementById('s-placa').value=placa;buscarVeiculo();}
-function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
-function selectPay(method,el){payMethod=method;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById(method+'-section').style.display='block';document.getElementById('btn-confirmar-saida').disabled=false;document.getElementById('btn-confirmar-saida').style.opacity='1';}
+function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';info.classList.remove('veiculo-anim');void info.offsetWidth;info.classList.add('veiculo-anim');vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
+function buscarVeiculo2(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('s2-veiculo-info');const vazio=document.getElementById('s2-saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s2-info-placa').textContent=v.placa;document.getElementById('s2-info-nome').textContent=v.nome;document.getElementById('s2-info-vaga').textContent=v.vaga;document.getElementById('s2-info-ent').textContent=v.entrada;document.getElementById('s2-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s2-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s2-horas').textContent=horas+'h';document.getElementById('s2-total').textContent=fmt(totalSaida);info.style.display='block';info.classList.remove('veiculo-anim');void info.offsetWidth;info.classList.add('veiculo-anim');vazio.style.display='none';payMethod=null;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-btn-confirmar').disabled=true;document.getElementById('s2-btn-confirmar').style.opacity='0.5';}
+function selectPay(method,el){payMethod=method;document.querySelectorAll('#page-saida .pay-opt').forEach(p=>p.classList.remove('sel'));if(el)el.classList.add('sel');['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById(method+'-section').style.display='block';document.getElementById('btn-confirmar-saida').disabled=false;document.getElementById('btn-confirmar-saida').style.opacity='1';if(!el){goPage('saida',document.querySelectorAll('.ni')[3]);document.getElementById('s-placa').value=placaSaida;buscarVeiculo();setTimeout(()=>{const payEl=document.querySelector('#page-saida .pay-opt[onclick*="'+method+'"]');if(payEl){payEl.classList.add('sel');}},100);}}
+function irParaPagamento(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();placaSaida=placa;goPage('pagamento',null);const info=document.getElementById('pag-placa-info');if(placa){info.textContent='Veículo: '+placa+' — '+fmt(totalSaida);info.style.display='block';}const now=new Date();const d=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});const h=now.getHours().toString().padStart(2,'0');const m=now.getMinutes().toString().padStart(2,'0');const dtEl=document.getElementById('pag-datetime');if(dtEl){const svg=dtEl.querySelector('svg');dtEl.innerHTML='';if(svg)dtEl.appendChild(svg);dtEl.appendChild(document.createTextNode(' '+d+' · '+h+':'+m));}}
+function selectPay2(method,el){payMethod=method;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-'+method+'-section').style.display='block';document.getElementById('s2-btn-confirmar').disabled=false;document.getElementById('s2-btn-confirmar').style.opacity='1';}
 function calcTroco(){const rec=parseFloat(document.getElementById('s-recebido').value)||0;document.getElementById('s-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
+function calcTroco2(){const rec=parseFloat(document.getElementById('s2-recebido').value)||0;document.getElementById('s2-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
 function confirmarSaida(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida();}
+function confirmarSaida2(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida2();}
 function cancelarSaida(){document.getElementById('veiculo-info').style.display='none';document.getElementById('saida-vazio').textContent='Digite a placa do veículo para iniciar o processo de saída.';document.getElementById('saida-vazio').style.display='block';document.getElementById('s-placa').value='';payMethod=null;placaSaida='';}
+function cancelarSaida2(){document.getElementById('s2-veiculo-info').style.display='none';document.getElementById('s2-saida-vazio').textContent='Digite a placa do veículo para iniciar o processo de saída.';document.getElementById('s2-saida-vazio').style.display='block';document.getElementById('s2-placa').value='';payMethod=null;placaSaida='';}
 function closePayModal(){document.getElementById('pay-modal').style.display='none';}
 
 function payPill(pay){if(!pay)return'—';const map={pix:'📱 PIX',dinheiro:'💵 Dinheiro',cartao:'💳 Cartão'};const cls={pix:'tp',dinheiro:'td',cartao:'tc'};return`<span class="pill ${cls[pay]}">${map[pay]}</span>`;}
@@ -624,7 +678,7 @@ function salvarUsuario(){const nome=document.getElementById('m-nome').value.trim
 
 const now=new Date();
 document.getElementById('date-badge').textContent=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-buildMap();updateStats();renderDash();renderHist(histData);renderUsers(USERS);sortearVaga();
+buildMap();updateStats();renderDash();renderHist(histData);renderUsers(USERS);sortearVaga();sortearVaga2();
 </script>
 </body>
 </html>
