@@ -4,7 +4,8 @@
 <meta charset="UTF-8"/>
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Bad weather Park — Dashboard v3</title>
+<title>Bad weather Park &mdash; Dashboard v3</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
   --bg-primary:#ffffff; --bg-secondary:#f9fafb; --bg-tertiary:#f3f4f6;
@@ -245,9 +246,8 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
 
     <nav class="sb-nav" role="navigation" aria-label="Menu principal">
       <button type="button" class="ni active" aria-current="page" onclick="goPage('dashboard',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="1" width="6" height="6" rx="1" fill="currentColor"/><rect x="1" y="9" width="6" height="6" rx="1" fill="currentColor"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/></svg>Dashboard</button>
-      <button type="button" class="ni" onclick="goPage('entradaSaida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Entrada e Saída de Veículos</button>
-      <button type="button" class="ni" onclick="goPage('entrada',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 6V4a3 3 0 0 1 6 0v2" stroke="currentColor" stroke-width="1.2"/></svg>Entrada de Veículos</button>
-      <button type="button" class="ni" onclick="goPage('saida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="2" y="6" width="12" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M5 10V12a3 3 0 0 0 6 0v-2" stroke="currentColor" stroke-width="1.2"/></svg>Saída / Pagamento</button>
+      <button type="button" class="ni" onclick="goPage('dashES',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M2 12V6l4-3 4 3 4-3v9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 16V9h4v7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Dashboard Entrada e Saída</button>
+      <button type="button" class="ni" onclick="goPage('entradaSaida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Registro de Entrada e Saída</button>
       <button type="button" class="ni" onclick="goPage('mapa',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Vagas</button>
       <button type="button" class="ni" onclick="goPage('hist',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Histórico</button>
       <button type="button" class="ni" onclick="goPage('usuarios',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 14c0-2.2 2.7-4 6-4s6 1.8 6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Usuários</button>
@@ -267,7 +267,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
   <main class="main">
     <header class="topbar">
       <h1 id="page-title">Dashboard — Entrada e Saída</h1>
-      <div class="tb-r"><span class="bdg" id="date-badge"></span><button type="button" class="btn-bl" onclick="goPage('entrada',document.querySelectorAll('.ni')[1])">+ Registrar entrada</button></div>
+      <div class="tb-r"><span class="bdg" id="date-badge"></span><button type="button" class="btn-bl" onclick="goPage('entradaSaida',document.querySelectorAll('.ni')[1])">+ Registrar entrada</button></div>
     </header>
     <div class="content">
 
@@ -279,8 +279,8 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
             <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
           </div>
           <div class="stats-row2">
-            <div class="sc" style="cursor:pointer;" onclick="goPage('entrada',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Entrada ↗</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">Total de entradas</div></div>
-            <div class="sc" style="cursor:pointer;" onclick="goPage('saida',document.querySelectorAll('.ni')[2])"><div class="sc-lbl">Saída ↗</div><div class="sc-val" id="d-sai2">0</div><div class="sc-sub g">Total de saídas</div></div>
+            <div class="sc" style="cursor:pointer;" onclick="goPage('entradaSaida',document.querySelectorAll('.ni')[2])"><div class="sc-lbl">Entradas hoje ↗</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">registros manuais</div></div>
+            <div class="sc" style="cursor:pointer;" onclick="goPage('entradaSaida',document.querySelectorAll('.ni')[2])"><div class="sc-lbl">Saídas hoje ↗</div><div class="sc-val" id="d-sai2">0</div><div class="sc-sub g">veículos liberados</div></div>
             <div class="sc"><div class="sc-lbl">Receita hoje</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
           </div>
         </div>
@@ -291,7 +291,62 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
       </section>
 
       <!-- ENTRADA E SAÍDA -->
-      <section class="page" id="page-entradaSaida" aria-label="Entrada e Saída de Veículos">
+      <!-- DASHBOARD ENTRADA E SAÍDA -->
+      <section class="page" id="page-dashES" aria-label="Dashboard Entrada e Saída">
+        <div style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:14px;">
+
+          <!-- Cards resumo -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+            <div class="sc"><div class="sc-lbl">Entradas hoje</div><div class="sc-val" id="des-ent">0</div><div class="sc-sub g">registros manuais</div></div>
+            <div class="sc"><div class="sc-lbl">Saídas hoje</div><div class="sc-val" id="des-sai">0</div><div class="sc-sub g">veículos liberados</div></div>
+            <div class="sc"><div class="sc-lbl">No pátio agora</div><div class="sc-val" id="des-pat">0</div><div class="sc-sub g">veículos ativos</div></div>
+          </div>
+
+          <!-- Gráficos -->
+          <div style="display:flex;flex-direction:column;gap:14px;">
+
+            <!-- Gráfico de barras: ocupação por hora - largura total -->
+            <div class="sc" style="padding:16px;">
+              <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Movimentação por hora</div>
+              <canvas id="chart-horas" height="100"></canvas>
+            </div>
+
+            <!-- Gráfico de rosca: distribuição de pagamentos -->
+            <div class="sc" style="padding:16px;display:flex;gap:24px;align-items:center;">
+              <div style="flex-shrink:0;">
+                <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:12px;">Formas de pagamento</div>
+                <canvas id="chart-pagamentos" width="160" height="160"></canvas>
+              </div>
+              <div id="chart-pag-legenda" style="display:flex;flex-direction:column;gap:8px;font-size:11px;flex:1;"></div>
+              <div class="sc" style="flex-shrink:0;min-width:160px;align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:10px;">
+                <div>
+                  <div class="sc-lbl">Receita hoje</div>
+                  <div class="sc-val" id="des-rec" style="font-size:14px;">R$ 0,00</div>
+                  <div class="sc-sub g">veículos que saíram</div>
+                </div>
+                <div style="border-top:1px solid var(--border);padding-top:10px;">
+                  <div class="sc-lbl">Receita futura</div>
+                  <div class="sc-val" id="des-rec-fut" style="font-size:14px;">R$ 0,00</div>
+                  <div class="sc-sub" style="color:var(--accent);">veículos no pátio</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Histórico recente -->
+          <div class="sc" style="padding:0;overflow:hidden;">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--text-primary);">Histórico recente de movimentações</div>
+            <div style="overflow-x:auto;">
+              <div class="th th5" style="grid-template-columns:1fr 1.5fr 0.8fr 0.8fr 0.8fr;"><span>Placa</span><span>Proprietário</span><span>Entrada</span><span>Saída</span><span>Tipo</span></div>
+              <div id="des-hist-body"></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- REGISTRO ENTRADA E SAÍDA -->
+      <section class="page" id="page-entradaSaida" aria-label="Registro de Entrada e Saída">
         <div style="display:flex;flex-direction:column;flex:1;overflow-y:auto;gap:0;">
 
           <!-- LINHA 1: ENTRADA -->
@@ -617,13 +672,26 @@ let USERS=[
   {id:5,nome:'Thiago Pinto',iniciais:'TP',role:'Operador',email:'t.pinto@avanade.com',registros:19,ativo:false,cor:'#c0392b'},
   {id:6,nome:'Mariana Costa',iniciais:'MC',role:'Supervisor',email:'m.costa@avanade.com',registros:87,ativo:true,cor:'#BA7517'},
 ];
-let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0;
+let editingUserId=null,selectedAvatarColor=AVATAR_COLORS[0],receita=0,saidas=0,darkMode=false,payMethod=null,totalSaida=0,placaSaida='',entradasManuais=0,simEntradas=0,simSaidas=0;
+
+// Calcula simulação SP uma vez ao carregar
+(function(){
+  const perfilSP=[0.08,0.06,0.05,0.04,0.05,0.10,0.20,0.38,0.62,0.72,0.74,0.70,0.68,0.65,0.68,0.72,0.78,0.82,0.75,0.60,0.45,0.32,0.20,0.12];
+  const horaAtual=new Date().getHours();
+  const variacao=0.85+Math.random()*0.30;
+  let entSim=0,saiSim=0;
+  for(let h=1;h<=horaAtual;h++){const diff=Math.round((perfilSP[h]-perfilSP[h-1])*5000);if(diff>0)entSim+=diff;else saiSim+=Math.abs(diff);}
+  simEntradas=Math.round(entSim*variacao);
+  simSaidas=Math.round(saiSim*(0.80+Math.random()*0.35));
+})();
 
 function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
-function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários',entradaSaida:'Entrada e Saída de Veículos',pagamento:'Pagamento'};document.getElementById('page-title').textContent=titles[id]||id;if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}}
+function goPage(id,navEl){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));if(navEl)navEl.classList.add('active');const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários',entradaSaida:'Registro de Entrada e Saída',pagamento:'Pagamento',dashES:'Dashboard Entrada e Saída'};document.getElementById('page-title').textContent=titles[id]||id;if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}if(id==='dashES'){requestAnimationFrame(()=>updateDashES());}}
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
-function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';document.getElementById('d-ent').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-sai2').textContent=saidas.toLocaleString('pt-BR');const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
+function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';
+  document.getElementById('d-ent').textContent=(entradasManuais>0?entradasManuais:simEntradas).toLocaleString('pt-BR');
+  document.getElementById('d-sai2').textContent=(saidas>0?saidas:simSaidas).toLocaleString('pt-BR');document.getElementById('d-ent').textContent=entradasManuais.toLocaleString('pt-BR');document.getElementById('d-sai2').textContent=saidas.toLocaleString('pt-BR');const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
 
 function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button type="button" class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
 
@@ -646,12 +714,64 @@ function sortearVaga2(){const vaga=getProximaVaga();document.getElementById('e2-
 function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');document.getElementById('f-cor-dot').style.background='#ccc';document.getElementById('f-cor-label').textContent='Nenhuma selecionada';document.getElementById('f-cor-label').style.color='var(--text-secondary)';sortearVaga();}
 function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
 
-function iniciarSaida(placa){goPage('saida',document.querySelectorAll('.ni')[2]);document.getElementById('s-placa').value=placa;buscarVeiculo();}
+function iniciarSaida(placa){goPage('entradaSaida',document.querySelectorAll('.ni')[1]);setTimeout(()=>{document.getElementById('s2-placa').value=placa;buscarVeiculo2();},100);}
 function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';info.classList.remove('veiculo-anim');void info.offsetWidth;info.classList.add('veiculo-anim');vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
 function buscarVeiculo2(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('s2-veiculo-info');const vazio=document.getElementById('s2-saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s2-info-placa').textContent=v.placa;document.getElementById('s2-info-nome').textContent=v.nome;document.getElementById('s2-info-vaga').textContent=v.vaga;document.getElementById('s2-info-ent').textContent=v.entrada;document.getElementById('s2-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s2-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s2-horas').textContent=horas+'h';document.getElementById('s2-total').textContent=fmt(totalSaida);info.style.display='block';info.classList.remove('veiculo-anim');void info.offsetWidth;info.classList.add('veiculo-anim');vazio.style.display='none';payMethod=null;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-btn-confirmar').disabled=true;document.getElementById('s2-btn-confirmar').style.opacity='0.5';}
 function selectPay(method,el){payMethod=method;document.querySelectorAll('#page-saida .pay-opt').forEach(p=>p.classList.remove('sel'));if(el)el.classList.add('sel');['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById(method+'-section').style.display='block';document.getElementById('btn-confirmar-saida').disabled=false;document.getElementById('btn-confirmar-saida').style.opacity='1';if(!el){goPage('saida',document.querySelectorAll('.ni')[3]);document.getElementById('s-placa').value=placaSaida;buscarVeiculo();setTimeout(()=>{const payEl=document.querySelector('#page-saida .pay-opt[onclick*="'+method+'"]');if(payEl){payEl.classList.add('sel');}},100);}}
-function irParaPagamento(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();placaSaida=placa;goPage('pagamento',null);const info=document.getElementById('pag-placa-info');if(placa){info.textContent='Veículo: '+placa+' — '+fmt(totalSaida);info.style.display='block';}const now=new Date();const d=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});const h=now.getHours().toString().padStart(2,'0');const m=now.getMinutes().toString().padStart(2,'0');const dtEl=document.getElementById('pag-datetime');if(dtEl){const svg=dtEl.querySelector('svg');dtEl.innerHTML='';if(svg)dtEl.appendChild(svg);dtEl.appendChild(document.createTextNode(' '+d+' · '+h+':'+m));}}
-function selectPay2(method,el){payMethod=method;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-'+method+'-section').style.display='block';document.getElementById('s2-btn-confirmar').disabled=false;document.getElementById('s2-btn-confirmar').style.opacity='1';}
+function updateDashES(){
+  const c=getCounts();
+  // Calcula entradas e saidas baseado no perfil de pico SP (soma das movimentações simuladas)
+  const entExib=entradasManuais>0?entradasManuais:simEntradas;
+  const saiExib=saidas>0?saidas:simSaidas;
+  document.getElementById('des-ent').textContent=entExib.toLocaleString('pt-BR');
+  document.getElementById('des-sai').textContent=saiExib.toLocaleString('pt-BR');
+  document.getElementById('des-pat').textContent=c.o.toLocaleString('pt-BR');
+  const receitaReal=histData.filter(x=>x.tipo==='saida'&&x.total).reduce((acc,x)=>acc+(x.total||0),0);
+  const receitaExib=saidas>0?receitaReal:saiExib*40;
+  document.getElementById('des-rec').textContent=fmt(receitaExib);
+  const receitaFutura=c.o*40;
+  document.getElementById('des-rec-fut').textContent=fmt(receitaFutura);
+
+  // Histórico recente
+  const body=document.getElementById('des-hist-body');
+  body.innerHTML='';
+  histData.slice(0,10).forEach(h=>{
+    const row=document.createElement('div');
+    row.className='tr';
+    row.style.cssText='display:grid;grid-template-columns:1fr 1.5fr 0.8fr 0.8fr 0.8fr;padding:8px 16px;border-bottom:1px solid var(--border);font-size:11px;align-items:center;';
+    const pill=h.tipo==='entrada'?'<span class="pill pi">Entrada</span>':'<span class="pill ps">Saída</span>';
+    row.innerHTML=`<span><span class="pl">${h.placa}</span></span><span>${h.nome}</span><span>${h.entrada}</span><span>${h.saida||'—'}</span><span>${pill}</span>`;
+    body.appendChild(row);
+  });
+  if(histData.length===0)body.innerHTML='<div class="dp-mt" style="padding:16px;">Nenhuma movimentação registrada.</div>';
+
+  // Gráfico de barras por hora - ocupação vs disponível baseado em picos de SP
+  const ctxH=document.getElementById('chart-horas').getContext('2d');
+  const horas=Array.from({length:24},(_,i)=>i);
+  const ocupPorHora=horas.map(h=>Math.round(perfilSP[h]*TOTAL));
+  const livrePorHora=horas.map(h=>TOTAL-ocupPorHora[h]);
+  if(window._chartHoras)window._chartHoras.destroy();
+  window._chartHoras=new Chart(ctxH,{type:'bar',data:{labels:horas.map(h=>h.toString().padStart(2,'0')+'h'),datasets:[{label:'Ocupadas',data:ocupPorHora,backgroundColor:'#E24B4A99',borderColor:'#E24B4A',borderWidth:1},{label:'Disponíveis',data:livrePorHora,backgroundColor:'#19A82B99',borderColor:'#19A82B',borderWidth:1}]},options:{responsive:true,plugins:{legend:{labels:{font:{size:10},boxWidth:12}},tooltip:{callbacks:{label:(ctx)=>ctx.dataset.label+': '+ctx.raw.toLocaleString('pt-BR')+' vagas'}}},scales:{x:{stacked:false,ticks:{font:{size:9}}},y:{beginAtZero:true,max:TOTAL,ticks:{font:{size:10},callback:(v)=>v.toLocaleString('pt-BR')}}}}});
+
+  // Gráfico de rosca pagamentos - baseado nas saídas reais + simulação realista SP
+  const totalSaidas=saidas||0;
+  const pixBase=histData.filter(x=>x.pay==='pix').length;
+  const dinBase=histData.filter(x=>x.pay==='dinheiro').length;
+  const cartBase=histData.filter(x=>x.pay==='cartao').length;
+  const pagRegistrados=pixBase+dinBase+cartBase;
+  // Se não houver pagamentos registrados, simula distribuição realista SP: 48% PIX, 38% Cartão, 14% Dinheiro
+  const simTotal=Math.max(totalSaidas,pagRegistrados,1);
+  const pix=pagRegistrados>0?pixBase:Math.round(simTotal*0.48);
+  const cart=pagRegistrados>0?cartBase:Math.round(simTotal*0.38);
+  const din=pagRegistrados>0?dinBase:Math.max(simTotal-pix-cart,0);
+  const total=pix+din+cart||1;
+  const ctxP=document.getElementById('chart-pagamentos').getContext('2d');
+  if(window._chartPag)window._chartPag.destroy();
+  window._chartPag=new Chart(ctxP,{type:'doughnut',data:{labels:['PIX','Cartão','Dinheiro'],datasets:[{data:[pix,cart,din],backgroundColor:['#19A82B','#2563eb','#DB7A04'],borderColor:['#fff','#fff','#fff'],borderWidth:3,hoverOffset:6}]},options:{responsive:false,cutout:'65%',plugins:{legend:{display:false},tooltip:{callbacks:{label:(ctx)=>ctx.label+': '+ctx.raw+' ('+Math.round(ctx.raw/total*100)+'%)'}}}}});
+  const leg=document.getElementById('chart-pag-legenda');
+  leg.innerHTML=[{l:'PIX',c:'#19A82B',v:pix},{l:'Cartão',c:'#2563eb',v:cart},{l:'Dinheiro',c:'#DB7A04',v:din}].map(x=>`<div style="display:flex;align-items:center;gap:8px;"><span style="width:12px;height:12px;border-radius:50%;background:${x.c};display:inline-block;flex-shrink:0;"></span><span style="color:var(--text-primary);font-weight:600;">${x.l}</span><span style="color:var(--text-secondary);margin-left:auto;">${x.v} · ${Math.round(x.v/total*100)}%</span></div>`).join('');
+}
+function irParaPagamento(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();placaSaida=placa;goPage('pagamento',null);const info=document.getElementById('pag-placa-info');if(placa){info.textContent='Veículo: '+placa+' — '+fmt(totalSaida);info.style.display='block';}const now=new Date();const d=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});const h=now.getHours().toString().padStart(2,'0');const m=now.getMinutes().toString().padStart(2,'0');const dtEl=document.getElementById('pag-datetime');if(dtEl){const svg=dtEl.querySelector('svg');dtEl.innerHTML='';if(svg)dtEl.appendChild(svg);dtEl.appendChild(document.createTextNode(' '+d+' · '+h+':'+m));}}function selectPay2(method,el){payMethod=method;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-'+method+'-section').style.display='block';document.getElementById('s2-btn-confirmar').disabled=false;document.getElementById('s2-btn-confirmar').style.opacity='1';}
 function calcTroco(){const rec=parseFloat(document.getElementById('s-recebido').value)||0;document.getElementById('s-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
 function calcTroco2(){const rec=parseFloat(document.getElementById('s2-recebido').value)||0;document.getElementById('s2-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
 function confirmarSaida(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida();}
