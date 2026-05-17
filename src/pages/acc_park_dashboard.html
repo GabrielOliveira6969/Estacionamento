@@ -828,16 +828,18 @@ function updateDashES(){
   document.getElementById('des-rec-fut').textContent=fmt(receitaFutura);
 
   // Histórico recente
-  const body=document.getElementById('des-hist-body');
-  body.innerHTML='';
+  const desHistBody=document.getElementById('des-hist-body');
+  const desHistScroll=desHistBody?desHistBody.parentElement.scrollTop:0;
+  desHistBody.innerHTML='';
   histData.forEach(h=>{
     const row=document.createElement('div');
     row.className='htr';
     row.style.borderLeft=`3px solid ${h.tipo==='entrada'?'#00FA9A':'#FF6347'}`;
     row.innerHTML=`<span><span class="pl">${h.placa}</span></span><span>${h.nome}</span><span>${h.vaga}</span><span>${h.entrada}</span><span>${h.saida||'—'}</span><span>${payPill(h.pay)}</span><span>${h.total?fmt(h.total):'—'}</span>`;
-    body.appendChild(row);
+    desHistBody.appendChild(row);
   });
-  if(histData.length===0)body.innerHTML='<div class="dp-mt" style="padding:16px;">Nenhuma movimentação registrada.</div>';
+  if(histData.length===0)desHistBody.innerHTML='<div class="dp-mt" style="padding:16px;">Nenhuma movimentação registrada.</div>';
+  if(desHistBody&&desHistBody.parentElement)desHistBody.parentElement.scrollTop=desHistScroll;
 
   // Gráfico de barras por hora - ocupação vs disponível baseado em picos de SP
   const ctxH=document.getElementById('chart-horas').getContext('2d');
@@ -876,9 +878,10 @@ function closePayModal(){document.getElementById('pay-modal').style.display='non
 
 function payPill(pay){if(!pay)return'—';const map={pix:'📱 PIX',dinheiro:'💵 Dinheiro',cartao:'💳 Cartão'};const cls={pix:'tp',dinheiro:'td',cartao:'tc'};return`<span class="pill ${cls[pay]}">${map[pay]}</span>`;}
 function renderHist(data){
+  const tblBody=document.getElementById('hist-tbl-body');
+  const scrollAtual=tblBody?tblBody.scrollTop:0;
   const body=document.getElementById('hist-body');
   body.innerHTML='';
-  // Novos no topo (ordem original do array)
   data.forEach(h=>{
     const row=document.createElement('div');
     row.className='htr';
@@ -887,9 +890,8 @@ function renderHist(data){
     body.appendChild(row);
   });
   document.getElementById('hist-count').textContent=data.length+' registros';
-  // Scroll sempre no topo para mostrar os novos
-  const tblBody=document.getElementById('hist-tbl-body');
-  if(tblBody)tblBody.scrollTop=0;
+  // Só volta ao topo se o usuário já estiver no topo (scrollAtual == 0)
+  if(tblBody)tblBody.scrollTop=scrollAtual;
 }
 function filterHist(){const q=document.getElementById('hist-search').value.toLowerCase();const f=document.getElementById('hist-filter').value;const p=document.getElementById('hist-pay').value;renderHist(histData.filter(h=>(h.placa.toLowerCase().includes(q)||h.nome.toLowerCase().includes(q))&&(f==='all'||h.tipo===f)&&(p==='all'||h.pay===p)));}
 
