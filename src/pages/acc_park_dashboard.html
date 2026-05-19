@@ -252,6 +252,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
       <button type="button" class="ni" onclick="goPage('entradaSaida',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 5l3 3-3 3M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Registro de Entrada e Saída</button>
       <button type="button" class="ni" onclick="goPage('mapa',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 3v10M11 3v10M1 8h14" stroke="currentColor" stroke-width="1.2"/></svg>Mapa de Vagas</button>
       <button type="button" class="ni" onclick="goPage('hist',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.2"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Histórico</button>
+      <button type="button" class="ni" onclick="goPage('avaliacao',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3.5L13 6l-2.5 2.5.6 3.5L8 10.5 4.9 12l.6-3.5L3 6l3.5-.5L8 2z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Avaliação</button>
       <button type="button" class="ni" onclick="goPage('usuarios',this)"><svg class="nic" viewBox="0 0 16 16" fill="none"><path d="M8 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM2 14c0-2.2 2.7-4 6-4s6 1.8 6 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Usuários</button>
     </nav>
     <div class="sb-footer">
@@ -280,15 +281,14 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
             <div class="sc" id="card-ocu" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('o',document.querySelectorAll('.flt')[2]);" style="cursor:pointer;border-color:#E24B4A;" title="Ver vagas ocupadas no mapa"><div class="sc-lbl">Vagas ocupadas ↗</div><div class="sc-val" id="d-ocu">—</div><div class="sc-sub r" id="d-opct">—</div></div>
             <div class="sc" id="card-liv" onclick="goPage('mapa',document.querySelectorAll('.ni')[3]);setFlt('f',document.querySelectorAll('.flt')[1]);" style="cursor:pointer;border-color:#19A82B;" title="Ver vagas livres no mapa"><div class="sc-lbl">Vagas disponíveis ↗</div><div class="sc-val" id="d-liv">—</div><div class="sc-sub r" id="d-pct">—</div></div>
           </div>
-          <div class="stats-row2">
-            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Entradas hoje ↗</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">registros manuais</div></div>
-            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Saídas hoje ↗</div><div class="sc-val" id="d-sai2">0</div><div class="sc-sub g">veículos liberados</div></div>
-            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Receita futura ↗</div><div class="sc-val" id="d-rec">R$0</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
+          <div class="stats-row1">
+            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Entradas hoje ↗</div><div class="sc-val" id="d-ent">0</div><div class="sc-sub g">veículos que entraram</div></div>
+            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Saídas hoje ↗</div><div class="sc-val" id="d-sai2">0</div><div class="sc-sub g">veículos que saíram</div></div>
           </div>
-        </div>
-        <div class="tbl-wrap">
-          <div class="th th5"><span>Placa</span><span>Proprietário</span><span>Entrada</span><span>Status</span><span>Ação</span></div>
-          <div id="dash-body"></div>
+          <div class="stats-row1">
+            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Receita hoje ↗</div><div class="sc-val" id="d-rec-hoje">R$ 0,00</div><div class="sc-sub g" id="d-sai">0 saídas</div></div>
+            <div class="sc" style="cursor:pointer;" onclick="goPage('dashES',document.querySelectorAll('.ni')[1])"><div class="sc-lbl">Receita futura ↗</div><div class="sc-val" id="d-rec">R$ 0,00</div><div class="sc-sub g">veículos no pátio</div></div>
+          </div>
         </div>
       </section>
 
@@ -515,6 +515,7 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
             <div class="dp">
               <div class="dp-hd"><div class="dp-t">Detalhes da vaga</div><div class="dp-s" id="dp-s">Nenhuma selecionada</div></div>
               <div class="dp-bd" id="dp-bd"><div class="dp-mt">Clique em uma vaga para ver detalhes.</div></div>
+              <div id="dp-sector-vagas" style="display:none;padding:0 13px 12px;flex:1;overflow-y:auto;"></div>
               <div style="padding:10px 12px;border-top:1px solid var(--border);">
                 <div style="font-size:10px;color:var(--text-secondary);margin-bottom:3px;">Ocupação geral</div>
                 <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:4px;" id="dp-pct">—%</div>
@@ -588,6 +589,111 @@ button.ni:focus{outline:2px solid rgba(74,159,224,0.8);outline-offset:2px;}
       </section>
 
       <!-- USUÁRIOS -->
+      <!-- AVALIAÇÃO -->
+      <section class="page" id="page-avaliacao" aria-label="Avaliação de colaboradores">
+        <div style="display:flex;flex-direction:column;flex:1;overflow-y:auto;background:var(--bg-secondary);">
+
+          <!-- Toolbar -->
+          <div style="padding:12px 18px;background:var(--card-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="font-size:13px;font-weight:700;color:var(--text-primary);">Avaliação de Colaboradores</div>
+              <div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Registre opiniões e dificuldades da equipe</div>
+            </div>
+            <button type="button" class="btn-bl" onclick="abrirFormAvaliacao()">+ Nova avaliação</button>
+          </div>
+
+          <!-- Formulário (oculto por padrão) -->
+          <div id="aval-form-wrap" style="display:none;padding:16px 18px;background:var(--bg-secondary);border-bottom:2px solid var(--border);">
+            <div class="form-card" style="max-width:680px;">
+              <div class="fc-title">Nova avaliação</div>
+              <div id="aval-suc" class="success-box"></div>
+              <div class="form-row">
+                <div class="fld">
+                  <label for="av-colab">Colaborador *</label>
+                  <select id="av-colab"><option value="">Selecione…</option></select>
+                </div>
+                <div class="fld">
+                  <label for="av-data">Data *</label>
+                  <input type="date" id="av-data"/>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="fld">
+                  <label for="av-tipo">Tipo de registro *</label>
+                  <select id="av-tipo">
+                    <option value="">Selecione…</option>
+                    <option value="opiniao">💬 Opinião / Sugestão</option>
+                    <option value="dificuldade">⚠️ Dificuldade operacional</option>
+                    <option value="elogio">⭐ Elogio / Destaque</option>
+                    <option value="melhoria">🔧 Proposta de melhoria</option>
+                    <option value="problema">🚨 Problema / Reclamação</option>
+                  </select>
+                </div>
+                <div class="fld">
+                  <label>Nota geral (1–5)</label>
+                  <div id="av-estrelas" style="display:flex;gap:6px;margin-top:6px;">
+                    <span class="av-star" data-v="1" onclick="setNota(1)" style="font-size:22px;cursor:pointer;opacity:0.3;">★</span>
+                    <span class="av-star" data-v="2" onclick="setNota(2)" style="font-size:22px;cursor:pointer;opacity:0.3;">★</span>
+                    <span class="av-star" data-v="3" onclick="setNota(3)" style="font-size:22px;cursor:pointer;opacity:0.3;">★</span>
+                    <span class="av-star" data-v="4" onclick="setNota(4)" style="font-size:22px;cursor:pointer;opacity:0.3;">★</span>
+                    <span class="av-star" data-v="5" onclick="setNota(5)" style="font-size:22px;cursor:pointer;opacity:0.3;">★</span>
+                  </div>
+                  <input type="hidden" id="av-nota" value="0"/>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="fld">
+                  <label for="av-titulo">Título *</label>
+                  <input id="av-titulo" placeholder="Ex: Dificuldade com o sistema de caixas…"/>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="fld">
+                  <label for="av-desc">Descrição detalhada *</label>
+                  <textarea id="av-desc" rows="4" placeholder="Descreva com detalhes a opinião, dificuldade ou sugestão do colaborador…" style="font-size:12px;padding:8px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg-primary);color:var(--text-primary);outline:none;width:100%;resize:vertical;font-family:inherit;"></textarea>
+                </div>
+              </div>
+              <div class="form-row full">
+                <div class="fld">
+                  <label for="av-acao">Ação sugerida / encaminhamento</label>
+                  <input id="av-acao" placeholder="Ex: Treinamento adicional, reunião de alinhamento…"/>
+                </div>
+              </div>
+              <div class="form-footer">
+                <button type="button" class="btn-sec" onclick="fecharFormAvaliacao()">Cancelar</button>
+                <button type="button" class="btn-prim" onclick="salvarAvaliacao()">Salvar avaliação</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filtros e lista -->
+          <div style="padding:14px 18px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex-shrink:0;">
+            <input id="av-search" placeholder="Buscar por colaborador ou título…" oninput="renderAvaliacoes()" style="font-size:11px;padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg-primary);color:var(--text-primary);width:220px;"/>
+            <select id="av-filt-tipo" onchange="renderAvaliacoes()" style="font-size:11px;padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg-primary);color:var(--text-primary);">
+              <option value="all">Todos os tipos</option>
+              <option value="opiniao">Opinião</option>
+              <option value="dificuldade">Dificuldade</option>
+              <option value="elogio">Elogio</option>
+              <option value="melhoria">Melhoria</option>
+              <option value="problema">Problema</option>
+            </select>
+            <select id="av-filt-nota" onchange="renderAvaliacoes()" style="font-size:11px;padding:6px 10px;border-radius:7px;border:1px solid var(--border2);background:var(--bg-primary);color:var(--text-primary);">
+              <option value="all">Todas as notas</option>
+              <option value="5">★★★★★ 5</option>
+              <option value="4">★★★★ 4+</option>
+              <option value="3">★★★ 3+</option>
+              <option value="2">★★ 2+</option>
+              <option value="1">★ 1+</option>
+            </select>
+            <span id="av-count" style="margin-left:auto;font-size:11px;color:var(--text-secondary);"></span>
+          </div>
+
+          <!-- Cards de avaliações -->
+          <div id="av-lista" style="padding:12px 18px 18px;display:flex;flex-direction:column;gap:10px;"></div>
+
+        </div>
+      </section>
+
       <section class="page" id="page-usuarios" aria-label="Gestão de usuários">
         <div class="usr-toolbar">
           <input placeholder="Buscar usuário…" oninput="filterUsers(this.value)"/>
@@ -716,52 +822,65 @@ function gerarNovasMovimentacoes(){
 }
 
 let _histInterval=null;
-let _proximoTipo='entrada'; // alterna entre entrada e saida
+// Fila de entradas aguardando saída
+let _filaEspera=[];
+let _entradasDesdeUltimaSaida=0;
+const PERMANENCIAS=[10,30,60,120,300,600,1440];
+function _addMinutosHora(horaStr,minutos){const[h,m]=horaStr.split(':').map(Number);const total=h*60+m+minutos;const hf=Math.floor(total/60)%24;const mf=total%60;return(hf<10?'0':'')+hf+':'+(mf<10?'0':'')+mf;}
 
 function gerarRegistroAoVivo(){
-  const car=randCar();
-  const sec=rnd(SETORES);
-  const vaga=sec+'-'+Math.floor(Math.random()*999+1).toString().padStart(3,'0');
   const now=new Date();
   const entStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
 
-  if(_proximoTipo==='entrada'){
-    histData.unshift({placa:car.placa,nome:rnd(NOMES),vaga,entrada:entStr,saida:'—',tipo:'entrada',pay:null,total:null});
-    // Ocupa uma vaga livre no array de states
-    const vagaLivre=states.findIndex(s=>s.st==='f');
-    if(vagaLivre!==-1){
-      states[vagaLivre].st='o';
-      states[vagaLivre].car=car;
-      states[vagaLivre].time=entStr;
-    }
-    entradasManuais++;
-    _proximoTipo='saida';
-  } else {
-    const semSaida=histData.find(h=>h.tipo==='entrada'&&h.saida==='—');
-    const horas=Math.floor(Math.random()*4)+1;
-    const total=horas*5;
+  // Verifica se há algum carro na fila pronto para sair (já esperou entradas suficientes)
+  const prontoIdx=_filaEspera.findIndex(f=>_entradasDesdeUltimaSaida>=f.entradasAguardar);
+
+  let changedVagaIdx=-1;
+
+  if(prontoIdx!==-1 && _entradasDesdeUltimaSaida>=1){
+    // Processa a saída
+    const item=_filaEspera[prontoIdx];
+    const reg=item.registro;
     const pay=rnd(PAYOPTS);
-    const saidaStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
-    if(semSaida){
-      semSaida.saida=saidaStr;
-      semSaida.tipo='saida';
-      semSaida.pay=pay;
-      semSaida.total=total;
-      histData.splice(histData.indexOf(semSaida),1);
-      histData.unshift(semSaida);
-    } else {
-      histData.unshift({placa:car.placa,nome:rnd(NOMES),vaga,entrada:entStr,saida:saidaStr,tipo:'saida',pay,total});
-    }
-    // Libera uma vaga ocupada no array de states
-    const vagaOcupada=states.findIndex(s=>s.st==='o');
-    if(vagaOcupada!==-1){
-      states[vagaOcupada].st='f';
-      states[vagaOcupada].car=null;
-      states[vagaOcupada].time=null;
+    const saidaStr=_addMinutosHora(reg.entrada,item.permMin);
+    const horas=Math.max(1,Math.ceil(item.permMin/60));
+    const total=horas*5;
+    reg.saida=saidaStr;
+    reg.tipo='saida';
+    reg.pay=pay;
+    reg.total=total;
+    histData.splice(histData.indexOf(reg),1);
+    histData.unshift(reg);
+    if(item.vagaIdx!==-1){
+      states[item.vagaIdx].st='f';
+      states[item.vagaIdx].car=null;
+      states[item.vagaIdx].time=null;
+      changedVagaIdx=item.vagaIdx;
     }
     saidas++;
-    receita+=40;
-    _proximoTipo='entrada';
+    receita+=total;
+    _filaEspera.splice(prontoIdx,1);
+    _entradasDesdeUltimaSaida=0;
+  } else {
+    // Registra nova entrada
+    const car=randCar();
+    const sec=rnd(SETORES);
+    const vaga=sec+'-'+Math.floor(Math.random()*999+1).toString().padStart(3,'0');
+    const reg={placa:car.placa,nome:rnd(NOMES),vaga,entrada:entStr,saida:'—',tipo:'entrada',pay:null,total:null};
+    histData.unshift(reg);
+    const vagaIdx=states.findIndex(s=>s.st==='f');
+    if(vagaIdx!==-1){
+      states[vagaIdx].st='o';
+      states[vagaIdx].car=car;
+      states[vagaIdx].time=entStr;
+      changedVagaIdx=vagaIdx;
+    }
+    entradasManuais++;
+    _entradasDesdeUltimaSaida++;
+    // Agenda saída: esperar 1 a 3 entradas, com permanência aleatória realista
+    const entradasAguardar=Math.floor(Math.random()*3)+1;
+    const permMin=rnd(PERMANENCIAS);
+    _filaEspera.push({registro:reg,entradasAguardar,permMin,vagaIdx});
   }
 
   // Atualiza dashboard e stats em tempo real
@@ -771,9 +890,17 @@ function gerarRegistroAoVivo(){
   if(document.getElementById('page-dashES').classList.contains('active')){
     updateDashES();
   }
+  // Atualiza mapa ao vivo se estiver ativo — só os spots alterados, sem reconstruir o DOM
+  if(document.getElementById('page-mapa').classList.contains('active') && changedVagaIdx!==-1){
+    updateMapSpots([changedVagaIdx]);
+  }
 
+  // Preserva scroll da página entradaSaida durante atualização
+  const esContainer = document.getElementById('page-entradaSaida') && document.getElementById('page-entradaSaida').querySelector('div[style*="overflow-y"]');
+  const esScroll = esContainer ? esContainer.scrollTop : 0;
   filterHist();
   document.getElementById('hist-count').textContent=histData.length+' registros';
+  if(esContainer) esContainer.scrollTop = esScroll;
 }
 
 function toggleTheme(){darkMode=!darkMode;document.getElementById('app').classList.toggle('dark',darkMode);document.getElementById('theme-lbl').textContent=darkMode?' Tema escuro':' Tema claro';}
@@ -782,25 +909,86 @@ function goPage(id,navEl){
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   if(navEl)navEl.classList.add('active');
-  const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários',entradaSaida:'Registro de Entrada e Saída',pagamento:'Pagamento',dashES:'Dashboard Entrada e Saída'};
+  const titles={dashboard:'Dashboard — Entrada e Saída',mapa:'Mapa de Vagas',entrada:'Entrada de Veículos',saida:'Saída / Pagamento',hist:'Histórico de Movimentações',usuarios:'Gestão de Usuários',entradaSaida:'Registro de Entrada e Saída',pagamento:'Pagamento',dashES:'Dashboard Entrada e Saída',avaliacao:'Avaliação de Colaboradores'};
   document.getElementById('page-title').textContent=titles[id]||id;
   if(id==='mapa'){requestAnimationFrame(()=>{buildMap();updateStats();});}
   if(id==='dashES'){gerarNovasMovimentacoes();requestAnimationFrame(()=>updateDashES());}
 }
 
 function getCounts(){let f=0,o=0,res=0;states.forEach(s=>{if(s.st==='f')f++;else if(s.st==='o')o++;else res++;});return{f,o,res};}
-function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(vagasOcupadas*40);document.getElementById('d-sai').textContent=saidas+' saídas hoje';
+function updateStats(){const c=getCounts();const vagasOcupadas=c.o;const vagasLivres=c.f;document.getElementById('m-f').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('m-o').textContent=c.o.toLocaleString('pt-BR');document.getElementById('m-r').textContent=c.res.toLocaleString('pt-BR');document.getElementById('d-liv').textContent=vagasLivres.toLocaleString('pt-BR');document.getElementById('d-pct').textContent=Math.round((vagasLivres/TOTAL)*100)+'% livre';document.getElementById('d-ocu').textContent=vagasOcupadas.toLocaleString('pt-BR');document.getElementById('d-opct').textContent=Math.round((vagasOcupadas/TOTAL)*100)+'% ocupado';document.getElementById('dp-pct').textContent=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('dp-prog').style.width=Math.round(((c.o+c.res)/TOTAL)*100)+'%';document.getElementById('d-rec').textContent=fmt(c.o*40);document.getElementById('d-rec-hoje').textContent=fmt(receita);document.getElementById('d-sai').textContent=saidas+' saídas hoje';
   document.getElementById('d-ent').textContent=entradasManuais.toLocaleString('pt-BR');
   document.getElementById('d-sai2').textContent=saidas.toLocaleString('pt-BR');const cardOcuEl=document.getElementById('card-ocu');if(vagasOcupadas>=TOTAL){cardOcuEl.style.background='#E24B4A';cardOcuEl.style.borderColor='#c0392b';cardOcuEl.classList.remove('card-ocu-green','card-ocu-orange');cardOcuEl.classList.add('card-full');}else if(vagasOcupadas>3500){cardOcuEl.style.background='#DB7A04';cardOcuEl.style.borderColor='#DB7A04';cardOcuEl.classList.remove('card-full','card-ocu-green');cardOcuEl.classList.add('card-ocu-orange');}else{cardOcuEl.style.background='#19A82B';cardOcuEl.style.borderColor='#19A82B';cardOcuEl.classList.remove('card-full','card-ocu-orange');cardOcuEl.classList.add('card-ocu-green');}cardOcuEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');const cardLivEl=document.getElementById('card-liv');if(vagasLivres===0){cardLivEl.style.background='#E24B4A';cardLivEl.style.borderColor='#c0392b';cardLivEl.classList.remove('card-liv-green','card-liv-orange');cardLivEl.classList.add('card-zero');}else if(vagasLivres<3500){cardLivEl.style.background='#DB7A04';cardLivEl.style.borderColor='#DB7A04';cardLivEl.classList.remove('card-zero','card-liv-green');cardLivEl.classList.add('card-liv-orange');}else{cardLivEl.style.background='#19A82B';cardLivEl.style.borderColor='#19A82B';cardLivEl.classList.remove('card-zero','card-liv-orange');cardLivEl.classList.add('card-liv-green');}cardLivEl.querySelectorAll('.sc-lbl,.sc-val,.sc-sub').forEach(el=>el.style.color='#fff');}
 
-function renderDash(){const body=document.getElementById('dash-body');body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button type="button" class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
+function renderDash(){const body=document.getElementById('dash-body');if(!body)return;body.innerHTML='';patioVeiculos.forEach(v=>{const row=document.createElement('div');row.className='tr tr5';row.innerHTML=`<span><span class="pl">${v.placa}</span></span><span>${v.nome}</span><span>${v.entrada}</span><span><span class="pill pi">No pátio</span></span><button type="button" class="ab" onclick="iniciarSaida('${v.placa}')">Saída</button>`;body.appendChild(row);});}
 
 let selectedSector=null;
-function buildMap(){const area=document.getElementById('map-scroll');let gi=0;allSpots=[];area.innerHTML='';SECTORS.forEach((sec,sIdx)=>{const secStart=gi;const livresNoSetor=states.slice(gi,gi+sec.count).filter(s=>s.st==='f').length;const lbl=document.createElement('div');lbl.className='sec-lbl'+(selectedSector===sIdx?' sec-lbl-sel':'');lbl.innerHTML=`<span class="sec-name">${sec.name}</span> <span class="sec-info">(Vagas disponíveis: <strong>${livresNoSetor}</strong>)</span>`;lbl.style.cursor='pointer';lbl.addEventListener('click',()=>{if(selectedSector===sIdx){selectedSector=null;document.getElementById('dp-s').textContent='Nenhuma selecionada';document.getElementById('dp-bd').innerHTML='<div class="dp-mt">Clique em uma vaga para ver detalhes.</div>';}else{selectedSector=sIdx;showSectorAvailable(sec,sIdx,secStart);}buildMap();});area.appendChild(lbl);if(selectedSector!==null&&selectedSector!==sIdx){gi+=sec.count;return;}const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
+function buildMap(){const area=document.getElementById('map-scroll');let gi=0;allSpots=[];area.innerHTML='';SECTORS.forEach((sec,sIdx)=>{const secStart=gi;const livresNoSetor=states.slice(gi,gi+sec.count).filter(s=>s.st==='f').length;const lbl=document.createElement('div');lbl.className='sec-lbl'+(selectedSector===sIdx?' sec-lbl-sel':'');lbl.innerHTML=`<span class="sec-name">${sec.name}</span> <span class="sec-info">(Vagas disponíveis: <strong>${livresNoSetor}</strong>)</span>`;lbl.style.cursor='pointer';lbl.addEventListener('click',()=>{if(selectedSector===sIdx){selectedSector=null;document.getElementById('dp-s').textContent='Nenhuma selecionada';document.getElementById('dp-bd').style.display='block';document.getElementById('dp-bd').innerHTML='<div class="dp-mt">Clique em uma vaga para ver detalhes.</div>';document.getElementById('dp-sector-vagas').style.display='none';}else{selectedSector=sIdx;showSectorAvailable(sec,sIdx,secStart);}buildMap();});area.appendChild(lbl);if(selectedSector!==null&&selectedSector!==sIdx){gi+=sec.count;return;}const road=document.createElement('div');road.className='road';area.appendChild(road);const grid=document.createElement('div');grid.className='spots';for(let i=0;i<sec.count;i++){const idx=gi++;const s=states[idx];const el=document.createElement('div');el.className='sp '+s.st;el.addEventListener('click',()=>selectSpot(idx,el,sec.name,i+1));grid.appendChild(el);allSpots.push({el,idx,sec:sec.name});}area.appendChild(grid);});}
 
-function showSectorAvailable(sec,sIdx,secStart){const prefix=sec.name.replace('Setor ','');const livres=[];for(let i=0;i<sec.count;i++){if(states[secStart+i].st==='f')livres.push(prefix+(i+1));}document.getElementById('dp-s').textContent=sec.name+' — Vagas livres';const body=document.getElementById('dp-bd');if(livres.length===0){body.innerHTML='<div class="dp-mt">Nenhuma vaga disponível neste setor.</div>';}else{body.innerHTML=`<div style="font-size:10px;color:var(--text-secondary);margin-bottom:8px;">${livres.length} vaga(s) disponível(eis)</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">${livres.map(v=>`<span style="background:var(--green-bg,#e6f7e9);color:var(--green-text,#1a7431);border:1px solid #b7dfc0;border-radius:5px;padding:4px 2px;font-size:10px;font-weight:600;text-align:center;">${v}</span>`).join('')}</div>`;}body.parentElement.scrollTop=0;}
-function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}selIdx=idx;el.classList.add('sel');const s=states[idx];document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;const body=document.getElementById('dp-bd');if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:8px;">Nenhum veículo nesta vaga.</div>';}else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}document.getElementById('dp-bd').parentElement.scrollTop=0;}
+function renderSectorVagas(sec,secStart){
+  const prefix=sec.name.replace('Setor ','');
+  const livres=[];
+  const ocupadas=[];
+  for(let i=0;i<sec.count;i++){
+    const s=states[secStart+i];
+    if(s.st==='f') livres.push(prefix+'-'+(i+1));
+    else if(s.st==='o') ocupadas.push(prefix+'-'+(i+1));
+  }
+  const total=sec.count;
+  const pctOcup=Math.round((ocupadas.length/total)*100);
+  const container=document.getElementById('dp-sector-vagas');
+  container.innerHTML=`
+    <div style="border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+        <span style="font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.3px;">Resumo do setor</span>
+        <span style="font-size:9px;color:var(--text-tertiary);">${total} vagas total</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+        <div style="background:var(--green-bg);border-radius:7px;padding:7px 9px;text-align:center;">
+          <div style="font-size:18px;font-weight:800;color:var(--green-text);" id="dp-sec-livres">${livres.length}</div>
+          <div style="font-size:9px;color:var(--green-text);font-weight:600;">Livres</div>
+        </div>
+        <div style="background:var(--red-bg);border-radius:7px;padding:7px 9px;text-align:center;">
+          <div style="font-size:18px;font-weight:800;color:var(--red-text);" id="dp-sec-ocup">${ocupadas.length}</div>
+          <div style="font-size:9px;color:var(--red-text);font-weight:600;">Ocupadas</div>
+        </div>
+      </div>
+      <div style="height:5px;background:var(--bg-tertiary);border-radius:3px;overflow:hidden;">
+        <div id="dp-sec-prog" style="height:100%;border-radius:3px;background:#E24B4A;width:${pctOcup}%;transition:width 0.4s;"></div>
+      </div>
+      <div id="dp-sec-pct" style="font-size:9px;color:var(--text-tertiary);margin-top:3px;text-align:right;">${pctOcup}% ocupado</div>
+    </div>
+    <div style="font-size:10px;font-weight:600;color:var(--green-text);margin-bottom:6px;display:flex;align-items:center;gap:5px;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#639922;display:inline-block;"></span>
+      Vagas livres agora
+    </div>
+    <div id="dp-sec-lista" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;">
+      ${livres.length===0
+        ? '<div style="grid-column:1/-1;font-size:10px;color:var(--text-tertiary);text-align:center;padding:8px 0;">Nenhuma vaga livre</div>'
+        : livres.map(v=>`<span style="background:var(--green-bg);color:var(--green-text);border:1px solid #b7dfc0;border-radius:5px;padding:3px 2px;font-size:9px;font-weight:700;text-align:center;">${v}</span>`).join('')
+      }
+    </div>
+  `;
+}
+
+function showSectorAvailable(sec,sIdx,secStart){
+  document.getElementById('dp-s').textContent=sec.name+' — visão geral';
+  document.getElementById('dp-bd').style.display='none';
+  const container=document.getElementById('dp-sector-vagas');
+  container.style.display='block';
+  renderSectorVagas(sec,secStart);
+}
+
+function _getSectorStart(sIdx){let gi=0;for(let i=0;i<sIdx;i++)gi+=SECTORS[i].count;return gi;}
+function selectSpot(idx,el,secName,numVaga){if(selIdx!==null){const prev=allSpots.find(x=>x.idx===selIdx);if(prev)prev.el.classList.remove('sel');}selIdx=idx;el.classList.add('sel');const s=states[idx];document.getElementById('dp-s').textContent=secName+' · Vaga '+numVaga;const body=document.getElementById('dp-bd');body.style.display='block';document.getElementById('dp-sector-vagas').style.display='none';if(s.st==='f'){body.innerHTML='<div class="dpf"><div class="dpk">Status</div><span class="dps sf">Livre</span></div><div class="dp-mt" style="margin-top:8px;">Nenhum veículo nesta vaga.</div>';}else{const c=s.car;const sl=s.st==='o'?'Ocupada':'Reservada';const sc=s.st==='o'?'so':'sr';body.innerHTML=`<div class="dpf"><div class="dpk">Status</div><span class="dps ${sc}">${sl}</span></div><div class="dpf"><div class="dpk">Placa</div><span class="dp-pl">${c.placa}</span></div><div class="dpf"><div class="dpk">Marca</div><div class="dpv">${c.marca}</div></div><div class="dpf"><div class="dpk">Modelo</div><div class="dpv">${c.modelo}</div></div><div class="dpf"><div class="dpk">Cor</div><div class="dpv"><span class="csw" style="background:${c.cor.h};"></span>${c.cor.n}</div></div>${s.time?`<div class="dpf"><div class="dpk">Entrada</div><div class="dpv">${s.time}</div></div>`:''}`;}}
 function setFlt(f,btn){document.querySelectorAll('.flt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');allSpots.forEach(({el,idx})=>{el.style.opacity=(f==='all'||states[idx].st===f)?'1':'0.12';});}
+function updateMapSpots(changedIdxs){if(!allSpots||allSpots.length===0)return;const fltBtn=document.querySelector('.flt.on');const fltAtivo=fltBtn?(fltBtn.getAttribute('onclick')||'').match(/setFlt\('(\w+)'/)?.[1]||'all':'all';changedIdxs.forEach(idx=>{const spot=allSpots.find(s=>s.idx===idx);if(!spot)return;const s=states[idx];spot.el.className='sp '+s.st+(selIdx===idx?' sel':'');spot.el.style.opacity=(fltAtivo==='all'||s.st===fltAtivo)?'1':'0.12';});let gi=0;SECTORS.forEach((sec,sIdx)=>{const livres=states.slice(gi,gi+sec.count).filter(s=>s.st==='f').length;const lbls=document.querySelectorAll('#map-scroll .sec-lbl');if(lbls[sIdx]){const info=lbls[sIdx].querySelector('.sec-info');if(info)info.innerHTML='(Vagas disponíveis: <strong>'+livres+'</strong>)';}gi+=sec.count;});
+  // Atualiza painel lateral do setor se estiver aberto
+  if(selectedSector!==null&&document.getElementById('dp-sector-vagas').style.display!=='none'){
+    const secStart=_getSectorStart(selectedSector);
+    renderSectorVagas(SECTORS[selectedSector],secStart);
+  }
+  if(selIdx!==null&&changedIdxs.includes(selIdx)){const spot=allSpots.find(s=>s.idx===selIdx);if(spot)selectSpot(selIdx,spot.el,spot.sec,selIdx+1);}}
 
 const swRow=document.getElementById('swatch-row');
 CORES.forEach(c=>{const sw=document.createElement('div');sw.className='sw';sw.style.background=c.h;if(c.n==='Branco')sw.style.border='1px solid #d1d5db';sw.title=c.n;sw.onclick=()=>{document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');sw.style.borderColor='#BA7517';document.getElementById('f-cor').value=c.n;document.getElementById('f-cor-dot').style.background=c.h;document.getElementById('f-cor-label').textContent=c.n;document.getElementById('f-cor-label').style.color='var(--text-primary)';};swRow.appendChild(sw);});
@@ -812,7 +1000,9 @@ return livres[0].label;}
 function sortearVaga(){const vaga=getProximaVaga();document.getElementById('vaga-num').textContent=vaga||'Sem vagas';}
 function sortearVaga2(){const vaga=getProximaVaga();document.getElementById('e2-vaga-num').textContent=vaga||'Sem vagas';}
 function limparForm(){['f-placa','f-nome','f-doc','f-modelo','f-obs','f-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-marca').selectedIndex=0;document.querySelectorAll('#swatch-row .sw').forEach(s=>s.style.borderColor='transparent');document.getElementById('f-cor-dot').style.background='#ccc';document.getElementById('f-cor-label').textContent='Nenhuma selecionada';document.getElementById('f-cor-label').style.color='var(--text-secondary)';sortearVaga();}
-function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
+function limparForm2(){['e2-placa','e2-nome','e2-doc','e2-modelo','e2-obs','e2-cor'].forEach(id=>document.getElementById(id).value='');document.getElementById('e2-marca').selectedIndex=0;document.querySelectorAll('#e2-swatch-row .sw').forEach(s=>s.style.borderColor='transparent');document.getElementById('e2-cor-dot').style.background='#ccc';document.getElementById('e2-cor-label').textContent='Nenhuma selecionada';document.getElementById('e2-cor-label').style.color='var(--text-secondary)';sortearVaga2();}
+function registrarEntrada2(){const placa=document.getElementById('e2-placa').value.trim();const nome=document.getElementById('e2-nome').value.trim();const marca=document.getElementById('e2-marca').value;const modelo=document.getElementById('e2-modelo').value.trim();const cor=document.getElementById('e2-cor').value;const vaga=document.getElementById('e2-vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box2');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;renderDash();renderHist(histData);updateStats();_atualizaMapaSeAtivo();setTimeout(()=>{box.style.display='none';limparForm2();},4000);}
+function registrarEntrada(){const placa=document.getElementById('f-placa').value.trim();const nome=document.getElementById('f-nome').value.trim();const marca=document.getElementById('f-marca').value;const modelo=document.getElementById('f-modelo').value.trim();const cor=document.getElementById('f-cor').value;const vaga=document.getElementById('vaga-num').textContent;if(!placa||!nome||!marca||!modelo||!cor){alert('Preencha todos os campos obrigatórios (*).');return;}const box=document.getElementById('suc-box');box.textContent='✅ Entrada registrada! Placa '+placa+' · Vaga '+vaga+' · '+nowTime();box.style.display='block';patioVeiculos.push({placa,nome,entrada:nowTime(),vaga,marca,modelo,cor:{n:cor,h:'#888'}});histData.unshift({placa,nome,vaga,entrada:nowTime(),saida:'—',tipo:'entrada',pay:null,total:null});entradasManuais++;document.getElementById('d-ent').textContent=entradasManuais;renderDash();renderHist(histData);updateStats();_atualizaMapaSeAtivo();setTimeout(()=>{box.style.display='none';limparForm();},4000);}
 
 function iniciarSaida(placa){goPage('entradaSaida',document.querySelectorAll('.ni')[2]);setTimeout(()=>{document.getElementById('s2-placa').value=placa;buscarVeiculo2();},100);}
 function buscarVeiculo(){const placa=document.getElementById('s-placa').value.trim().toUpperCase();const v=patioVeiculos.find(x=>x.placa===placa);const info=document.getElementById('veiculo-info');const vazio=document.getElementById('saida-vazio');if(!v){vazio.textContent='Veículo "'+placa+'" não encontrado no pátio.';vazio.style.display='block';info.style.display='none';return;}placaSaida=placa;const[hEnt,mEnt]=v.entrada.split(':').map(Number);const agora=new Date();let minutos=(agora.getHours()*60+agora.getMinutes())-(hEnt*60+mEnt);if(minutos<1)minutos=30;const horas=Math.ceil(minutos/60);totalSaida=horas*5;document.getElementById('s-info-placa').textContent=v.placa;document.getElementById('s-info-nome').textContent=v.nome;document.getElementById('s-info-vaga').textContent=v.vaga;document.getElementById('s-info-ent').textContent=v.entrada;document.getElementById('s-info-dur').textContent=horas+'h ('+minutos+' min)';document.getElementById('s-info-vei').textContent=v.marca+' '+v.modelo;document.getElementById('s-horas').textContent=horas+'h';document.getElementById('s-total').textContent=fmt(totalSaida);info.style.display='block';info.classList.remove('veiculo-anim');void info.offsetWidth;info.classList.add('veiculo-anim');vazio.style.display='none';payMethod=null;document.querySelectorAll('.pay-opt').forEach(p=>p.classList.remove('sel'));['pix-section','dinheiro-section','cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('btn-confirmar-saida').disabled=true;document.getElementById('btn-confirmar-saida').style.opacity='0.5';}
@@ -829,7 +1019,8 @@ function updateDashES(){
 
   // Histórico recente
   const desHistBody=document.getElementById('des-hist-body');
-  const desHistScroll=desHistBody?desHistBody.parentElement.scrollTop:0;
+  const desHistScrollEl=desHistBody?desHistBody.parentElement:null;
+  const desHistScroll=desHistScrollEl?desHistScrollEl.scrollTop:0;
   desHistBody.innerHTML='';
   histData.forEach(h=>{
     const row=document.createElement('div');
@@ -839,7 +1030,7 @@ function updateDashES(){
     desHistBody.appendChild(row);
   });
   if(histData.length===0)desHistBody.innerHTML='<div class="dp-mt" style="padding:16px;">Nenhuma movimentação registrada.</div>';
-  if(desHistBody&&desHistBody.parentElement)desHistBody.parentElement.scrollTop=desHistScroll;
+  if(desHistScrollEl) desHistScrollEl.scrollTop=desHistScroll;
 
   // Gráfico de barras por hora - ocupação vs disponível baseado em picos de SP
   const ctxH=document.getElementById('chart-horas').getContext('2d');
@@ -870,8 +1061,9 @@ function updateDashES(){
 function irParaPagamento(){const placa=document.getElementById('s2-placa').value.trim().toUpperCase();placaSaida=placa;goPage('pagamento',null);const info=document.getElementById('pag-placa-info');if(placa){info.textContent='Veículo: '+placa+' — '+fmt(totalSaida);info.style.display='block';}const now=new Date();const d=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});const h=now.getHours().toString().padStart(2,'0');const m=now.getMinutes().toString().padStart(2,'0');const dtEl=document.getElementById('pag-datetime');if(dtEl){const svg=dtEl.querySelector('svg');dtEl.innerHTML='';if(svg)dtEl.appendChild(svg);dtEl.appendChild(document.createTextNode(' '+d+' · '+h+':'+m));}}function selectPay2(method,el){payMethod=method;document.querySelectorAll('#page-entradaSaida .pay-opt').forEach(p=>p.classList.remove('sel'));el.classList.add('sel');['s2-pix-section','s2-dinheiro-section','s2-cartao-section'].forEach(id=>document.getElementById(id).style.display='none');document.getElementById('s2-'+method+'-section').style.display='block';document.getElementById('s2-btn-confirmar').disabled=false;document.getElementById('s2-btn-confirmar').style.opacity='1';}
 function calcTroco(){const rec=parseFloat(document.getElementById('s-recebido').value)||0;document.getElementById('s-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
 function calcTroco2(){const rec=parseFloat(document.getElementById('s2-recebido').value)||0;document.getElementById('s2-troco').textContent=fmt(Math.max(0,rec-totalSaida));}
-function confirmarSaida(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida();}
-function confirmarSaida2(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida2();}
+function _atualizaMapaSeAtivo(){if(document.getElementById('page-mapa').classList.contains('active')){buildMap();}}
+function confirmarSaida(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();_atualizaMapaSeAtivo();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida();}
+function confirmarSaida2(){if(!payMethod)return;const v=patioVeiculos.find(x=>x.placa===placaSaida);if(!v)return;patioVeiculos.splice(patioVeiculos.indexOf(v),1);receita+=totalSaida;saidas++;const payLabel={pix:'PIX',dinheiro:'Dinheiro',cartao:'Cartão'}[payMethod];histData.unshift({placa:v.placa,nome:v.nome,vaga:v.vaga,entrada:v.entrada,saida:nowTime(),tipo:'saida',pay:payMethod,total:totalSaida});renderDash();renderHist(histData);updateStats();_atualizaMapaSeAtivo();document.getElementById('pay-modal-info').innerHTML=`<strong>${v.placa}</strong> · ${v.nome}<br>Pagamento: ${payLabel} · <strong>${fmt(totalSaida)}</strong>`;document.getElementById('pay-modal').style.display='flex';cancelarSaida2();}
 function cancelarSaida(){document.getElementById('veiculo-info').style.display='none';document.getElementById('saida-vazio').textContent='Digite a placa do veículo para iniciar o processo de saída.';document.getElementById('saida-vazio').style.display='block';document.getElementById('s-placa').value='';payMethod=null;placaSaida='';}
 function cancelarSaida2(){document.getElementById('s2-veiculo-info').style.display='none';document.getElementById('s2-saida-vazio').textContent='Digite a placa do veículo para iniciar o processo de saída.';document.getElementById('s2-saida-vazio').style.display='block';document.getElementById('s2-placa').value='';payMethod=null;placaSaida='';}
 function closePayModal(){document.getElementById('pay-modal').style.display='none';}
@@ -909,7 +1101,134 @@ function salvarUsuario(){const nome=document.getElementById('m-nome').value.trim
 
 const now=new Date();
 document.getElementById('date-badge').textContent=now.toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
-buildMap();updateStats();renderDash();renderHist(histData);renderUsers(USERS);sortearVaga();sortearVaga2();
+
+// ── AVALIAÇÃO ──────────────────────────────────────────────
+let avaliacoes=[];
+let avNotaSel=0;
+
+const TIPO_MAP={
+  opiniao:  {label:'Opinião / Sugestão',   emoji:'💬', bg:'var(--blue-bg)',   cor:'var(--blue-text)'},
+  dificuldade:{label:'Dificuldade operacional',emoji:'⚠️',bg:'var(--orange-bg)',cor:'var(--orange-text)'},
+  elogio:   {label:'Elogio / Destaque',    emoji:'⭐', bg:'var(--green-bg)',  cor:'var(--green-text)'},
+  melhoria: {label:'Proposta de melhoria', emoji:'🔧', bg:'var(--blue-bg)',   cor:'var(--blue-text)'},
+  problema: {label:'Problema / Reclamação',emoji:'🚨', bg:'var(--red-bg)',    cor:'var(--red-text)'},
+};
+
+function abrirFormAvaliacao(){
+  // Popula select de colaboradores a partir de USERS
+  const sel=document.getElementById('av-colab');
+  sel.innerHTML='<option value="">Selecione…</option>';
+  USERS.filter(u=>u.ativo).forEach(u=>{
+    const opt=document.createElement('option');
+    opt.value=u.id;
+    opt.textContent=u.nome+' ('+u.role+')';
+    sel.appendChild(opt);
+  });
+  // Data padrão = hoje
+  document.getElementById('av-data').value=new Date().toISOString().split('T')[0];
+  document.getElementById('aval-form-wrap').style.display='block';
+  document.getElementById('aval-form-wrap').scrollIntoView({behavior:'smooth'});
+}
+
+function fecharFormAvaliacao(){
+  document.getElementById('aval-form-wrap').style.display='none';
+  ['av-colab','av-tipo','av-titulo','av-desc','av-acao'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el.tagName==='SELECT') el.selectedIndex=0; else el.value='';
+  });
+  setNota(0);
+}
+
+function setNota(v){
+  avNotaSel=v;
+  document.getElementById('av-nota').value=v;
+  document.querySelectorAll('.av-star').forEach(s=>{
+    s.style.opacity=parseInt(s.dataset.v)<=v?'1':'0.25';
+    s.style.color=parseInt(s.dataset.v)<=v?'#f59e0b':'var(--text-tertiary)';
+  });
+}
+
+function salvarAvaliacao(){
+  const colabId=document.getElementById('av-colab').value;
+  const tipo=document.getElementById('av-tipo').value;
+  const titulo=document.getElementById('av-titulo').value.trim();
+  const desc=document.getElementById('av-desc').value.trim();
+  const data=document.getElementById('av-data').value;
+  const acao=document.getElementById('av-acao').value.trim();
+  const nota=avNotaSel;
+  if(!colabId||!tipo||!titulo||!desc||!data){alert('Preencha todos os campos obrigatórios (*).');return;}
+  const colab=USERS.find(u=>u.id==colabId);
+  avaliacoes.unshift({
+    id:Date.now(), colabId, colabNome:colab?colab.nome:'—', colabRole:colab?colab.role:'—',
+    colabCor:colab?colab.cor:'#888', colabInic:colab?colab.iniciais:'?',
+    tipo, titulo, desc, data, acao, nota,
+    criadoEm:new Date().toLocaleString('pt-BR')
+  });
+  const box=document.getElementById('aval-suc');
+  box.textContent='✅ Avaliação registrada com sucesso!';
+  box.style.display='block';
+  setTimeout(()=>{box.style.display='none';fecharFormAvaliacao();renderAvaliacoes();},2000);
+}
+
+function renderAvaliacoes(){
+  const q=(document.getElementById('av-search').value||'').toLowerCase();
+  const ft=document.getElementById('av-filt-tipo').value;
+  const fn=parseInt(document.getElementById('av-filt-nota').value)||0;
+  const filtered=avaliacoes.filter(a=>{
+    const matchQ=!q||a.colabNome.toLowerCase().includes(q)||a.titulo.toLowerCase().includes(q);
+    const matchT=ft==='all'||a.tipo===ft;
+    const matchN=fn===0||fn==='all'||a.nota>=fn;
+    return matchQ&&matchT&&matchN;
+  });
+  document.getElementById('av-count').textContent=filtered.length+' registro(s)';
+  const lista=document.getElementById('av-lista');
+  if(filtered.length===0){
+    lista.innerHTML=`<div style="text-align:center;padding:40px 0;color:var(--text-tertiary);font-size:12px;">
+      <div style="font-size:32px;margin-bottom:8px;">📋</div>
+      Nenhuma avaliação registrada ainda.<br>Clique em <strong>+ Nova avaliação</strong> para começar.
+    </div>`;
+    return;
+  }
+  lista.innerHTML='';
+  filtered.forEach(a=>{
+    const t=TIPO_MAP[a.tipo]||{label:a.tipo,emoji:'📝',bg:'var(--bg-tertiary)',cor:'var(--text-secondary)'};
+    const estrelas='★'.repeat(a.nota)+'☆'.repeat(5-a.nota);
+    const card=document.createElement('div');
+    card.className='sc';
+    card.style.cssText='padding:14px 16px;display:flex;flex-direction:column;gap:10px;';
+    card.innerHTML=`
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:${a.colabCor}22;color:${a.colabCor};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">${a.colabInic}</div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--text-primary);">${a.colabNome}</div>
+            <div style="font-size:10px;color:var(--text-secondary);">${a.colabRole} · ${a.data.split('-').reverse().join('/')}</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:7px;">
+          ${a.nota>0?`<span style="color:#f59e0b;font-size:13px;letter-spacing:1px;">${estrelas}</span>`:''}
+          <span style="font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;background:${t.bg};color:${t.cor};">${t.emoji} ${t.label}</span>
+          <button type="button" onclick="excluirAvaliacao(${a.id})" style="background:none;border:none;cursor:pointer;color:var(--text-tertiary);font-size:16px;line-height:1;padding:2px 4px;border-radius:4px;" title="Excluir">×</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${a.titulo}</div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">${a.desc}</div>
+      </div>
+      ${a.acao?`<div style="background:var(--bg-secondary);border-radius:6px;padding:8px 10px;font-size:10px;color:var(--text-secondary);border-left:3px solid var(--accent);"><span style="font-weight:600;color:var(--text-primary);">Encaminhamento:</span> ${a.acao}</div>`:''}
+      <div style="font-size:9px;color:var(--text-tertiary);text-align:right;">Registrado em ${a.criadoEm}</div>
+    `;
+    lista.appendChild(card);
+  });
+}
+
+function excluirAvaliacao(id){
+  if(!confirm('Excluir esta avaliação?'))return;
+  avaliacoes=avaliacoes.filter(a=>a.id!==id);
+  renderAvaliacoes();
+}
+
+buildMap();updateStats();renderDash();renderHist(histData);renderUsers(USERS);sortearVaga();sortearVaga2();renderAvaliacoes();
 
 // Intervalo global: atualiza histórico e dashboard a cada 3s em qualquer tela
 setInterval(gerarRegistroAoVivo, 3000);
