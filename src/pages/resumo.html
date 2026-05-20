@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pague Aqui – Resumo do Pedido</title>
+  <title>Pague Aqui – Processando</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -20,24 +20,23 @@
     .card {
       background: #fff;
       border-radius: 16px;
-      width: 620px;
-      padding: 24px 28px 20px;
+      width: 480px;
+      padding: 24px 32px 20px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
       border: 2px solid #2563eb;
     }
 
-    /* Header */
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       font-size: 13px;
       font-weight: 700;
       color: #1a1a2e;
@@ -59,128 +58,88 @@
       color: #6b7280;
     }
 
-    /* Title */
-    .page-title {
-      margin-bottom: 4px;
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
     }
-    .page-title h1 {
-      font-size: 22px;
+
+    .hero .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-size: 24px;
       font-weight: 700;
       color: #1a1a2e;
+      margin-bottom: 6px;
     }
-    .page-title p {
+
+    .hero p {
       font-size: 13px;
       color: #6b7280;
-      margin-top: 2px;
     }
 
-    /* Content grid */
-    .content-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 20px;
+    /* Spinner */
+    .spinner-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+      position: relative;
     }
 
-    /* Left panel */
-    .location-panel {
-      background: #f8faff;
-      border-radius: 12px;
-      padding: 16px;
+    .spinner-ring {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      border: 5px solid #e5e7eb;
+      border-top-color: #2563eb;
+      animation: spin 1s linear infinite;
     }
 
-    .location-icon {
-      width: 36px;
-      height: 36px;
-      background: #2563eb;
+    .spinner-inner {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      background: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .location-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: #1a1a2e;
+    .spinner-inner svg {
+      width: 28px;
+      height: 18px;
     }
 
-    .location-address {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 4px;
-      line-height: 1.5;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    .location-details {
-      margin-top: 16px;
-      border-top: 1px solid #e5e7eb;
-      padding-top: 14px;
-    }
-
-    .detail-row {
+    /* Dots */
+    .dots {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: #374151;
-      padding: 6px 0;
-      border-bottom: 1px solid #f0f2f5;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 28px;
     }
 
-    .detail-row:last-child { border-bottom: none; }
-    .detail-row .label { color: #6b7280; }
-    .detail-row .value { font-weight: 500; }
-
-    /* Right panel */
-    .value-panel {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #d1d5db;
     }
 
-    .value-box {
-      background: #f8faff;
-      border-radius: 12px;
-      padding: 16px;
-    }
-
-    .value-box h3 {
-      font-size: 13px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 10px;
-    }
-
-    .value-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      color: #374151;
-      padding: 4px 0;
-    }
-
-    .value-row .label { color: #6b7280; }
-    .value-row .discount { color: #ef4444; }
-
-    .total {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-top: 10px;
-    }
-
-    .info-box {
-      background: #eff6ff;
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 12px;
-      color: #2563eb;
-      line-height: 1.5;
+    .dot.active {
+      background: #2563eb;
     }
 
     /* Footer */
@@ -188,12 +147,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 22px;
       border-top: 1px solid #f0f0f0;
-      padding-top: 16px;
+      padding-top: 14px;
     }
-
-    .footer-brands { font-size: 11px; color: #9ca3af; }
 
     .btn-back {
       background: #fff;
@@ -209,23 +165,13 @@
       text-decoration: none;
     }
 
-    .btn-continue {
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 22px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+    .footer-security {
       display: flex;
       align-items: center;
-      gap: 6px;
-      text-decoration: none;
+      gap: 5px;
+      font-size: 12px;
+      color: #2563eb;
     }
-
-    .btn-continue:hover { background: #1d4ed8; }
-    .btn-back:hover { background: #f9fafb; }
   
     .brand-icon {
       width: 26px; height: 26px;
@@ -241,89 +187,64 @@
 <body>
 
 <div class="card">
-  <!-- Header -->
   <div class="card-header">
     <div class="brand">
       <div class="brand-icon">P</div>
-      ESTACIONAMENTO PAGUE AQUI
+      PAGUE AQUI
     </div>
     <div class="header-datetime">
       <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#6b7280" stroke-width="1.5">
         <circle cx="8" cy="8" r="6.5"/>
         <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
       </svg>
-      13/06/2024 · 14:05
+      23/05/2024 · 14:30
     </div>
   </div>
 
-  <!-- Page title -->
-  <div class="page-title">
-    <h1>Resumo do pedido</h1>
-    <p>Confira os detalhes do seu estacionamento antes de continuar.</p>
+  <div class="hero">
+    <div class="eyebrow">Processando pagamento</div>
+    <h1>Processando pagamento...</h1>
+    <p>Aguarde, não retire o cartão</p>
   </div>
 
-  <!-- Content -->
-  <div class="content-grid">
-    <!-- Left -->
-    <div class="location-panel">
-      <div class="location-icon">P</div>
-      <div class="location-name">Estacionamento Central</div>
-      <div class="location-address">
-        Rua das Flores, 123 – Centro<br>
-        São Paulo – SP
-      </div>
-      <div class="location-details">
-        <div class="detail-row">
-          <span class="label">Entrada</span>
-          <span class="value">25/05/2024 – 08:15</span>
-        </div>
-        <div class="detail-row">
-          <span class="label">Duração</span>
-          <span class="value">6h 15min</span>
-        </div>
-        <div class="detail-row">
-          <span class="label">Veículo</span>
-          <span class="value">ABC-1233</span>
-        </div>
-        <div class="detail-row">
-          <span class="label">Tipo de tarifa</span>
-          <span class="value">Rotativa</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right -->
-    <div class="value-panel">
-      <div class="value-box">
-        <h3>Detalhes do valor</h3>
-        <div class="value-row">
-          <span class="label">Período utilizado</span>
-          <span>6h 15min</span>
-        </div>
-        <div class="value-row">
-          <span class="label">Tarifa por hora</span>
-          <span>R$ 6,00</span>
-        </div>
-        <div class="value-row">
-          <span class="label discount">Desconto</span>
-          <span class="discount">– R$ 2,00</span>
-        </div>
-        <div class="total">R$ 35,50</div>
-      </div>
-
-      <div class="info-box">
-        Este pagamento se refere ao estacionamento do veículo no período informado.
-      </div>
+  <div class="spinner-wrap">
+    <div class="spinner-ring"></div>
+    <div class="spinner-inner">
+      <!-- Card chip icon -->
+      <svg viewBox="0 0 44 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="28" rx="4" fill="#eab308"/>
+        <rect x="6" y="6" width="32" height="16" rx="2" fill="#d97706" opacity="0.5"/>
+        <line x1="6" y1="11" x2="38" y2="11" stroke="#d97706" stroke-width="1"/>
+        <line x1="6" y1="17" x2="38" y2="17" stroke="#d97706" stroke-width="1"/>
+        <line x1="18" y1="6" x2="18" y2="22" stroke="#d97706" stroke-width="1"/>
+        <line x1="26" y1="6" x2="26" y2="22" stroke="#d97706" stroke-width="1"/>
+      </svg>
     </div>
   </div>
 
-  <!-- Footer -->
+  <div class="dots">
+    <div class="dot"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+
   <div class="card-footer">
-    <a href="index.html" class="btn-back">← Voltar</a>
-    <span class="footer-brands">Visa · Master · Elo · Pix</span>
-    <a href="pagamento-cartao.html" class="btn-continue">Continuar para pagamento →</a>
+    <a href="pagamento-cartao.html" class="btn-back">← Voltar</a>
+    <div class="footer-security">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="#2563eb" stroke-width="1.5">
+        <path d="M8 1.5L2 4v4c0 3 2.5 5.5 6 6 3.5-.5 6-3 6-6V4L8 1.5z"/>
+      </svg>
+      Transação segura e criptografada
+    </div>
   </div>
 </div>
+
+<script>
+  // Redireciona para confirmação no index após 3 segundos
+  setTimeout(() => {
+    window.location.href = 'index.html?metodo=Cart%C3%A3o';
+  }, 3000);
+</script>
 
 <script>
   (function(){

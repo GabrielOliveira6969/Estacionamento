@@ -320,7 +320,7 @@
     </div>
 
     <div class="payment-grid">
-      <button class="payment-card cartao" onclick="irParaConfirmacao('Cartão')">
+      <button class="payment-card cartao" onclick="irPara('pagamento-cartao.html')">
         <div><h3>Cartão</h3><p>Débito ou crédito</p></div>
         <div class="arrow-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
@@ -329,7 +329,7 @@
         </div>
       </button>
 
-      <button class="payment-card pix" onclick="irParaConfirmacao('Pix')">
+      <button class="payment-card pix" onclick="irPara('pagamento-pix.html')">
         <div><h3>Pix</h3><p>Pagamento instantâneo</p></div>
         <div class="arrow-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
@@ -338,7 +338,7 @@
         </div>
       </button>
 
-      <button class="payment-card dinheiro" onclick="irParaConfirmacao('Dinheiro')">
+      <button class="payment-card dinheiro" onclick="irPara('pagamento-dinheiro.html')">
         <div><h3>Dinheiro</h3><p>Pagamento em espécie</p></div>
         <div class="arrow-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
@@ -347,7 +347,7 @@
         </div>
       </button>
 
-      <button class="payment-card qrcode" onclick="irParaConfirmacao('QR Code')">
+      <button class="payment-card qrcode" onclick="irPara('pagamento-qrcode.html')">
         <div><h3>QR Code</h3><p>Débito contactless</p></div>
         <div class="arrow-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
@@ -478,6 +478,26 @@ function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
+
+// Redireciona para as páginas externas de pagamento
+function irPara(url) {
+  window.location.href = url;
+}
+
+// Ao voltar das páginas externas com ?metodo=Cartão, mostra a confirmação direto
+(function verificarRetorno() {
+  const params = new URLSearchParams(window.location.search);
+  const metodo = params.get('metodo');
+  if (metodo) {
+    const agora = new Date();
+    const h = agora.getHours().toString().padStart(2,'0');
+    const m = agora.getMinutes().toString().padStart(2,'0');
+    document.getElementById('c-metodo').textContent = metodo;
+    document.getElementById('c-saida').textContent  = h + ':' + m;
+    showScreen('screen-confirmacao');
+    iniciarCountdownConfirmacao();
+  }
+})();
 
 // ── TELA 1 → 2: CONFIRMAÇÃO ───────────────────────────────────────────────
 let confirmTimer = null;
