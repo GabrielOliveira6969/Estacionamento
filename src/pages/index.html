@@ -2,10 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pague Aqui – Início</title>
-  <link rel="icon" type="image/png" href="/src/assets/images/favicon-projeto-estacionamento.ico" />
+  <title>Pague Aqui – ACC PARK</title>
+  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzI1NjNlYiIvPgogIDx0ZXh0IHg9IjUwJSIgeT0iNzIlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssQXJpYWwiIGZvbnQtd2VpZ2h0PSI5MDAiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5QPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,14 +25,13 @@
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
-    /* Header */
+    /* ── HEADER ── */
     .card-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 32px;
     }
-
     .brand {
       display: flex;
       align-items: center;
@@ -44,164 +42,256 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
-    .brand-flag {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: #2563eb;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-weight: 900; font-size: 14px; flex-shrink: 0;
     }
-
-    .brand-flag span {
-      display: block;
-      width: 14px;
-      height: 3px;
-      border-radius: 1px;
-    }
-    .brand-flag span:nth-child(1) { background: #2563eb; }
-    .brand-flag span:nth-child(2) { background: #16a34a; }
-    .brand-flag span:nth-child(3) { background: #eab308; }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .header-right { display: flex; align-items: center; gap: 12px; }
     .header-datetime {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      color: #6b7280;
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; color: #6b7280;
     }
-
     .header-datetime svg { width: 13px; height: 13px; }
-
     .btn-ajuda {
-      font-size: 12px;
-      color: #2563eb;
-      background: #eff6ff;
-      border: none;
-      border-radius: 20px;
-      padding: 4px 12px;
-      cursor: pointer;
-      font-weight: 500;
+      font-size: 12px; color: #2563eb; background: #eff6ff;
+      border: none; border-radius: 20px; padding: 4px 12px;
+      cursor: pointer; font-weight: 500;
     }
 
-    /* Hero */
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .screen.active { animation: fadeUp 0.35s ease both; }
+
+    /* ── TELA 1: PAGAMENTO ── */
     .hero {
       text-align: center;
       margin-bottom: 28px;
     }
+    .hero h1 { font-size: 26px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .hero p  { font-size: 14px; color: #6b7280; }
 
-    .hero h1 {
-      font-size: 26px;
-      font-weight: 700;
-      color: #1a1a2e;
-      margin-bottom: 6px;
-    }
-
-    .hero p {
-      font-size: 14px;
-      color: #6b7280;
-    }
-
-    /* Payment options */
     .payment-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-bottom: 28px;
     }
-
     .payment-card {
       border-radius: 14px;
       padding: 18px 14px 14px;
       color: #fff;
       cursor: pointer;
-      text-decoration: none;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       min-height: 120px;
       transition: transform 0.18s, box-shadow 0.18s;
+      border: none;
+      text-align: left;
     }
-
     .payment-card:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.18);
     }
-
-    .payment-card.cartao { background: #2563eb; }
-    .payment-card.pix    { background: #16a34a; }
+    .payment-card.cartao   { background: #2563eb; }
+    .payment-card.pix      { background: #16a34a; }
     .payment-card.dinheiro { background: #ea8c00; }
-    .payment-card.qrcode { background: #7c3aed; }
+    .payment-card.qrcode   { background: #7c3aed; }
 
-    .payment-card h3 {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .payment-card p {
-      font-size: 11px;
-      opacity: 0.85;
-      margin-top: 3px;
-    }
-
+    .payment-card h3 { font-size: 14px; font-weight: 700; }
+    .payment-card p  { font-size: 11px; opacity: 0.85; margin-top: 3px; }
     .payment-card .arrow-btn {
       align-self: flex-start;
       background: rgba(255,255,255,0.25);
       border-radius: 50%;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 28px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
       margin-top: 14px;
     }
+    .payment-card .arrow-btn svg { width: 14px; height: 14px; fill: #fff; }
 
-    .payment-card .arrow-btn svg {
-      width: 14px;
-      height: 14px;
-      fill: #fff;
+    /* ── TELA 2: CONFIRMAÇÃO DE PAGAMENTO ── */
+    .confirm-wrap { text-align: center; padding: 10px 0 20px; }
+    .confirm-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: #f0fdf4; margin-bottom: 14px;
+    }
+    .confirm-badge svg { width: 30px; height: 30px; }
+    .confirm-wrap h2 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .confirm-wrap p  { font-size: 14px; color: #6b7280; margin-bottom: 20px; }
+
+    .confirm-detail {
+      background: #f9fafb; border-radius: 12px;
+      padding: 16px 20px; margin-bottom: 22px; text-align: left;
+    }
+    .confirm-row {
+      display: flex; justify-content: space-between;
+      font-size: 12px; color: #6b7280; margin-bottom: 8px;
+    }
+    .confirm-row:last-child { margin-bottom: 0; }
+    .confirm-row span:last-child { font-weight: 600; color: #1a1a2e; }
+    .confirm-row.total span:last-child { font-size: 16px; color: #2563eb; }
+
+    .btn-primary {
+      width: 100%; padding: 13px; border: none; border-radius: 12px;
+      background: #2563eb; color: #fff; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s, transform 0.15s;
+      margin-bottom: 10px; position: relative; overflow: hidden;
+    }
+    .btn-primary:hover  { background: #1d4ed8; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Countdown na confirmação */
+    .confirm-countdown-wrap {
+      margin-bottom: 14px; text-align: center;
+    }
+    .confirm-countdown-txt {
+      font-size: 11px; color: #6b7280; opacity: 0.45;
+    }
+    .btn-ghost {
+      display: block; width: 100%; text-align: center;
+      font-size: 12px; color: #9ca3af; background: none; border: none;
+      cursor: pointer; padding: 4px; transition: color 0.15s;
+    }
+    .btn-ghost:hover { color: #6b7280; }
+
+    /* ── BARRA DE ETAPAS ── */
+    .steps-bar {
+      display: flex; gap: 6px; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .step-dot {
+      height: 4px; border-radius: 2px; background: #e5e7eb;
+      flex: 1; max-width: 60px;
+    }
+    .step-dot.done   { background: #16a34a; }
+    .step-dot.active { background: #2563eb; }
+
+    /* ── TELA 3: AVALIAÇÃO ── */
+    .rating-hero { text-align: center; margin-bottom: 24px; }
+    .rating-hero h1 { font-size: 24px; font-weight: 700; color: #1a1a2e; margin-bottom: 6px; }
+    .rating-hero p  { font-size: 14px; color: #6b7280; }
+
+    .rating-label {
+      font-size: 13px; font-weight: 600; color: #374151;
+      text-align: center; margin-bottom: 16px;
     }
 
-    /* Footer */
+    /* Estrelas */
+    .stars-row {
+      display: flex; justify-content: center; gap: 8px; margin-bottom: 10px;
+    }
+    .star-btn {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      transition: transform 0.15s; outline: none;
+    }
+    .star-btn:hover { transform: scale(1.18); }
+    .star-btn:focus-visible { outline: 2px solid #2563eb; border-radius: 4px; }
+    .star-btn svg { width: 46px; height: 46px; fill: #e5e7eb; transition: fill 0.18s, filter 0.18s; }
+    .star-btn svg path { fill: inherit; }
+    .star-btn svg.filled {
+      fill: #eab308;
+      filter: drop-shadow(0 2px 8px rgba(234,179,8,0.45));
+    }
+    .star-btn svg.empty { fill: #e5e7eb; filter: none; }
+
+    /* Labels de nível */
+    .level-labels {
+      display: flex; justify-content: space-between;
+      padding: 0 2px; margin-bottom: 14px;
+    }
+    .level-label {
+      font-size: 10px; color: #9ca3af; text-align: center;
+      line-height: 1.4; flex: 1;
+      transition: color 0.2s, font-weight 0.2s;
+    }
+    .level-label.active { color: #2563eb; font-weight: 700; }
+
+    /* Chip de feedback */
+    .feedback-chip {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 9px 18px; border-radius: 30px;
+      font-size: 13px; font-weight: 600;
+      margin: 0 auto 16px; width: fit-content;
+      transition: all 0.25s; opacity: 0; transform: translateY(6px);
+    }
+    .feedback-chip.show  { opacity: 1; transform: translateY(0); }
+    .feedback-chip.lv-1  { background: #fef2f2; color: #dc2626; }
+    .feedback-chip.lv-2  { background: #fff7ed; color: #ea580c; }
+    .feedback-chip.lv-3  { background: #fefce8; color: #ca8a04; }
+    .feedback-chip.lv-4  { background: #f0fdf4; color: #16a34a; }
+    .feedback-chip.lv-5  { background: #eff6ff; color: #2563eb; }
+
+    /* Comentário */
+    .comment-wrap {
+      margin-bottom: 18px;
+      transition: opacity 0.3s, transform 0.3s;
+      opacity: 0; transform: translateY(8px); pointer-events: none;
+    }
+    .comment-wrap.show { opacity: 1; transform: translateY(0); pointer-events: all; }
+    .comment-label {
+      font-size: 12px; font-weight: 600; color: #374151;
+      margin-bottom: 6px; display: block;
+    }
+    .comment-textarea {
+      width: 100%; border: 1px solid #e5e7eb; border-radius: 10px;
+      padding: 10px 12px; font-size: 12px; color: #374151;
+      font-family: 'Segoe UI', sans-serif; resize: none; outline: none;
+      transition: border-color 0.2s;
+    }
+    .comment-textarea:focus  { border-color: #2563eb; }
+    .comment-textarea::placeholder { color: #9ca3af; }
+    .char-count { font-size: 10px; color: #9ca3af; text-align: right; margin-top: 3px; }
+
+    .btn-submit {
+      width: 100%; padding: 13px; border: none; border-radius: 12px;
+      background: #2563eb; color: #fff; font-size: 15px; font-weight: 700;
+      cursor: pointer; transition: background 0.18s, transform 0.15s, opacity 0.2s;
+      opacity: 0.38; pointer-events: none; margin-bottom: 10px;
+    }
+    .btn-submit.enabled { opacity: 1; pointer-events: all; }
+    .btn-submit.enabled:hover  { background: #1d4ed8; transform: translateY(-1px); }
+    .btn-submit.enabled:active { transform: translateY(0); }
+
+    /* ── TELA 4: SUCESSO FINAL ── */
+    .success-wrap { text-align: center; padding: 16px 0; }
+    .success-wrap h2 { font-size: 22px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+    .success-wrap p  { font-size: 14px; color: #6b7280; margin-bottom: 22px; }
+    .countdown-bar-wrap {
+      background: #f3f4f6; border-radius: 8px; height: 6px;
+      overflow: hidden; margin-bottom: 6px;
+    }
+    .countdown-bar {
+      height: 100%; background: #2563eb; border-radius: 8px;
+      width: 100%; transition: width 0.1s linear;
+    }
+    .countdown-text { font-size: 11px; color: #9ca3af; }
+
+    /* ── FOOTER ── */
     .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px solid #f0f0f0;
-      padding-top: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 1px solid #f0f0f0; padding-top: 14px; margin-top: 4px;
     }
-
     .footer-security {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      color: #6b7280;
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; color: #6b7280;
     }
-
-    .footer-brands {
-      font-size: 11px;
-      color: #9ca3af;
-    }
-
-    .brand-icon {
-      width: 26px; height: 26px;
-      background: #2563eb;
-      border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: #fff; font-weight: 900; font-size: 14px;
-      flex-shrink: 0;
-    }
-    .brand-flag { display: none; }
+    .footer-brands { font-size: 11px; color: #9ca3af; }
   </style>
 </head>
 <body>
-
 <div class="card">
+
   <!-- Header -->
   <div class="card-header">
     <div class="brand">
@@ -214,58 +304,151 @@
           <circle cx="8" cy="8" r="6.5"/>
           <path d="M8 4.5V8l2.5 2" stroke-linecap="round"/>
         </svg>
-        23/05/2024 · 14:15
+        <span id="datetime-txt">--/--/---- · --:--</span>
       </div>
+      <button class="btn-ajuda">Ajuda</button>
     </div>
   </div>
 
-  <!-- Hero -->
-  <div class="hero">
-    <h1>Bem-vindo ao ACC PARK!</h1>
-    <p>Escolha a forma de pagamento</p>
+  <!-- ══════════════════════════════════════════
+       TELA 1 — ESCOLHA DE PAGAMENTO
+  ══════════════════════════════════════════ -->
+  <div class="screen active" id="screen-pagamento">
+    <div class="hero">
+      <h1>Bem-vindo ao ACC PARK!</h1>
+      <p>Escolha a forma de pagamento</p>
+    </div>
+
+    <div class="payment-grid">
+      <button class="payment-card cartao" onclick="irParaConfirmacao('Cartão')">
+        <div><h3>Cartão</h3><p>Débito ou crédito</p></div>
+        <div class="arrow-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </div>
+      </button>
+
+      <button class="payment-card pix" onclick="irParaConfirmacao('Pix')">
+        <div><h3>Pix</h3><p>Pagamento instantâneo</p></div>
+        <div class="arrow-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </div>
+      </button>
+
+      <button class="payment-card dinheiro" onclick="irParaConfirmacao('Dinheiro')">
+        <div><h3>Dinheiro</h3><p>Pagamento em espécie</p></div>
+        <div class="arrow-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </div>
+      </button>
+
+      <button class="payment-card qrcode" onclick="irParaConfirmacao('QR Code')">
+        <div><h3>QR Code</h3><p>Débito contactless</p></div>
+        <div class="arrow-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14M13 6l6 6-6 6"/>
+          </svg>
+        </div>
+      </button>
+    </div>
   </div>
 
-  <!-- Payment Grid -->
-  <div class="payment-grid">
-    <a href="pagamento-cartao.html" class="payment-card cartao">
-      <div>
-        <h3>Cartão</h3>
-        <p>Débito ou crédito</p>
+  <!-- ══════════════════════════════════════════
+       TELA 2 — CONFIRMAÇÃO DE PAGAMENTO
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="screen-confirmacao">
+    <div class="confirm-wrap">
+      <div class="confirm-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 6L9 17l-5-5"/>
+        </svg>
       </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-    </a>
+      <h2>Pagamento efetuado!</h2>
+      <p>Confira os detalhes da sua transação abaixo.</p>
 
-    <a href="pagamento-pix.html" class="payment-card pix">
-      <div>
-        <h3>Pix</h3>
-        <p>Pagamento instantâneo</p>
+      <div class="confirm-detail">
+        <div class="confirm-row"><span>Forma de pagamento</span><span id="c-metodo">—</span></div>
+        <div class="confirm-row"><span>Placa do veículo</span><span>ABC-1D23</span></div>
+        <div class="confirm-row"><span>Entrada</span><span>08:42</span></div>
+        <div class="confirm-row"><span>Saída</span><span id="c-saida">—</span></div>
+        <div class="confirm-row"><span>Permanência</span><span>3h 14min</span></div>
+        <div class="confirm-row total"><span>Total pago</span><span>R$ 15,00</span></div>
       </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-    </a>
 
-    <a href="pagamento-dinheiro.html" class="payment-card dinheiro">
-      <div>
-        <h3>Dinheiro</h3>
-        <p>Pagamento em espécie</p>
+      <div class="confirm-countdown-wrap">
+        <span class="confirm-countdown-txt" id="confirm-secs-txt">Avançando automaticamente em 10s…</span>
       </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-    </a>
 
-    <a href="pagamento-qrcode.html" class="payment-card qrcode">
-      <div>
-        <h3>QR Code</h3>
-        <p>Débito contactless</p>
+      <button class="btn-primary" onclick="irParaAvaliacaoManual()">Continuar para avaliação</button>
+      <button class="btn-ghost" onclick="pularAvaliacaoManual()">Encerrar sem avaliar →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TELA 3 — AVALIAÇÃO
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="screen-avaliacao">
+
+    <!-- Barra de etapas -->
+    <div class="steps-bar">
+      <div class="step-dot done"></div>
+      <div class="step-dot active"></div>
+    </div>
+
+    <div class="rating-hero">
+      <h1>Como foi sua experiência?</h1>
+      <p>Sua opinião nos ajuda a melhorar o ACC PARK</p>
+    </div>
+
+    <div class="rating-label">Toque em uma estrela para avaliar</div>
+
+    <div class="stars-row" id="stars-row" role="group" aria-label="Avaliação de 1 a 5 estrelas"></div>
+
+    <div class="level-labels">
+      <span class="level-label" data-lv="1">Muito<br>ruim</span>
+      <span class="level-label" data-lv="2">Ruim</span>
+      <span class="level-label" data-lv="3">Regular</span>
+      <span class="level-label" data-lv="4">Bom</span>
+      <span class="level-label" data-lv="5">Excelente</span>
+    </div>
+
+    <div class="feedback-chip" id="feedback-chip"></div>
+
+    <div class="comment-wrap" id="comment-wrap">
+      <label class="comment-label" for="comment">Quer nos contar algo? (opcional)</label>
+      <textarea id="comment" class="comment-textarea" rows="3" maxlength="300"
+        placeholder="Ex: O atendimento foi ótimo, mas a fila estava grande…"
+        oninput="document.getElementById('char-count').textContent = this.value.length + '/300'"
+      ></textarea>
+      <div class="char-count" id="char-count">0/300</div>
+    </div>
+
+    <button class="btn-submit" id="btn-submit" onclick="enviarAvaliacao()">Enviar avaliação</button>
+    <button class="btn-ghost" onclick="pularAvaliacao()">Pular avaliação →</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       TELA 4 — SUCESSO FINAL
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="screen-sucesso">
+    <!-- Barra de etapas -->
+    <div class="steps-bar">
+      <div class="step-dot done"></div>
+      <div class="step-dot done"></div>
+    </div>
+    <div class="success-wrap">
+      <h2 id="success-title">Obrigado pela avaliação!</h2>
+      <p id="success-msg">Sua opinião foi registrada. Até a próxima!</p>
+      <div class="countdown-bar-wrap">
+        <div class="countdown-bar" id="countdown-bar"></div>
       </div>
-      <div class="arrow-btn">
-        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-    </a>
+      <div class="countdown-text" id="countdown-text">Retornando à tela inicial em 5s…</div>
+    </div>
   </div>
 
   <!-- Footer -->
@@ -278,20 +461,159 @@
     </div>
     <div class="footer-brands">Visa · Master · Elo · Pix</div>
   </div>
-</div>
 
+</div>
 <script>
-  (function(){
-    var now=new Date();
-    var d=now.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"});
-    var h=now.getHours().toString().padStart(2,"0");
-    var m=now.getMinutes().toString().padStart(2,"0");
-    var dt=d+" · "+h+":"+m;
-    document.querySelectorAll(".header-datetime").forEach(function(el){
-      var svg=el.querySelector("svg");
-      if(svg){el.innerHTML="";el.appendChild(svg);el.appendChild(document.createTextNode(" "+dt));}
-    });
-  })();
+// ── DATA/HORA ─────────────────────────────────────────────────────────────
+(function tick() {
+  const n = new Date();
+  const d = n.toLocaleDateString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric'});
+  const t = n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
+  document.getElementById('datetime-txt').textContent = d + ' · ' + t;
+  setTimeout(tick, 10000);
+})();
+
+// ── NAVEGAÇÃO ENTRE TELAS ─────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── TELA 1 → 2: CONFIRMAÇÃO ───────────────────────────────────────────────
+let confirmTimer = null;
+
+function irParaConfirmacao(metodo) {
+  const agora = new Date();
+  const h = agora.getHours().toString().padStart(2,'0');
+  const m = agora.getMinutes().toString().padStart(2,'0');
+  document.getElementById('c-metodo').textContent = metodo;
+  document.getElementById('c-saida').textContent  = h + ':' + m;
+  showScreen('screen-confirmacao');
+  iniciarCountdownConfirmacao();
+}
+
+function iniciarCountdownConfirmacao() {
+  if (confirmTimer) clearInterval(confirmTimer);
+  let secs = 10;
+  const secsEl = document.getElementById('confirm-secs-txt');
+  secsEl.textContent = 'Avançando automaticamente em ' + secs + 's…';
+
+  confirmTimer = setInterval(() => {
+    secs--;
+    secsEl.textContent = 'Avançando automaticamente em ' + secs + 's…';
+    if (secs <= 0) {
+      clearInterval(confirmTimer);
+      confirmTimer = null;
+      irParaAvaliacao();
+    }
+  }, 1000);
+}
+
+function irParaAvaliacaoManual() {
+  if (confirmTimer) { clearInterval(confirmTimer); confirmTimer = null; }
+  irParaAvaliacao();
+}
+
+function pularAvaliacaoManual() {
+  if (confirmTimer) { clearInterval(confirmTimer); confirmTimer = null; }
+  pularAvaliacao();
+}
+
+// ── TELA 2 → 3: AVALIAÇÃO ────────────────────────────────────────────────
+function irParaAvaliacao() {
+  showScreen('screen-avaliacao');
+}
+
+// ── CONFIGURAÇÃO DAS ESTRELAS ─────────────────────────────────────────────
+const LEVELS = [
+  { label: 'Muito ruim', msg: 'Lamentamos pela experiência. Vamos trabalhar para melhorar!' },
+  { label: 'Ruim',       msg: 'Sentimos muito. Seu feedback é muito importante para nós.' },
+  { label: 'Regular',    msg: 'Obrigado! Continuaremos buscando melhorias.' },
+  { label: 'Bom',        msg: 'Fico feliz que tenha gostado. Até a próxima!' },
+  { label: 'Excelente',  msg: 'Que ótimo! Volte sempre ao ACC PARK!' },
+];
+
+let selected = 0;
+
+const starsRow = document.getElementById('stars-row');
+for (let i = 1; i <= 5; i++) {
+  const btn = document.createElement('button');
+  btn.className = 'star-btn';
+  btn.setAttribute('aria-label', 'Nota ' + i);
+  btn.dataset.v = i;
+  btn.innerHTML = `<svg viewBox="0 0 24 24" class="empty">
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </svg>`;
+  btn.addEventListener('click',      () => setRating(i));
+  btn.addEventListener('mouseenter', () => paintStars(i));
+  btn.addEventListener('mouseleave', () => paintStars(selected)); // mantém a nota selecionada
+  starsRow.appendChild(btn);
+}
+
+function paintStars(n) {
+  starsRow.querySelectorAll('svg').forEach((svg, idx) => {
+    svg.className = idx < n ? 'filled' : 'empty';
+  });
+}
+
+function setRating(n) {
+  selected = n;
+  paintStars(n); // preenche até a estrela clicada e mantém
+
+  document.querySelectorAll('.level-label').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.lv) === n);
+  });
+
+  const chip = document.getElementById('feedback-chip');
+  chip.className = 'feedback-chip show lv-' + n;
+  chip.textContent = LEVELS[n - 1].label;
+
+  document.getElementById('comment-wrap').classList.add('show');
+  document.getElementById('btn-submit').classList.add('enabled');
+}
+
+// ── ENVIAR AVALIAÇÃO ──────────────────────────────────────────────────────
+function enviarAvaliacao() {
+  if (!selected) return;
+  const lv = LEVELS[selected - 1];
+  mostrarSucesso('Obrigado pela avaliação!', lv.msg);
+}
+
+function pularAvaliacao() {
+  mostrarSucesso('Até a próxima!', 'Obrigado por usar o ACC PARK.');
+}
+
+// ── TELA 4: SUCESSO + COUNTDOWN ──────────────────────────────────────────
+function mostrarSucesso(titulo, msg) {
+  document.getElementById('success-title').textContent = titulo;
+  document.getElementById('success-msg').textContent   = msg;
+  showScreen('screen-sucesso');
+
+  let secs = 5;
+  const bar = document.getElementById('countdown-bar');
+  const txt = document.getElementById('countdown-text');
+
+  const timer = setInterval(() => {
+    secs--;
+    bar.style.width = (secs / 5 * 100) + '%';
+    txt.textContent = 'Retornando à tela inicial em ' + secs + 's…';
+    if (secs <= 0) {
+      clearInterval(timer);
+      // Reinicia para a tela de pagamento (sem recarregar a página)
+      selected = 0;
+      paintStars(0);
+      document.getElementById('comment').value = '';
+      document.getElementById('char-count').textContent = '0/300';
+      document.getElementById('comment-wrap').classList.remove('show');
+      document.getElementById('btn-submit').classList.remove('enabled');
+      document.getElementById('feedback-chip').className = 'feedback-chip';
+      document.querySelectorAll('.level-label').forEach(el => el.classList.remove('active'));
+      bar.style.width = '100%';
+      txt.textContent = 'Retornando à tela inicial em 5s…';
+      showScreen('screen-pagamento');
+    }
+  }, 1000);
+}
 </script>
 </body>
 </html>
